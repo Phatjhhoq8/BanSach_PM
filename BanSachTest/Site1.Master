@@ -1,0 +1,169 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="BanSachTest.Site1" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>bookshop - team 4</title>
+    <link rel="stylesheet" href="./css/swiper.css" />
+    <link rel="stylesheet" href="./css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  
+</head>
+<body class="bg-slate-100">
+    <form id="form1" runat="server">
+      <header class="bg-gradient-to-l from-secondary-500 to-primary-600 py-2">
+      <div class="container mx-auto lg:flex lg:justify-between lg:items-center">
+        <!-- logo -->
+        <a class="block w-32 mx-auto px-2 lg:w-48 md:pl-0" href="#">
+          <img class="w-full h-auto" src="./img/logo.png" alt="logo" />
+        </a>
+        <div class="flex justify-between items-center py-1 text-white lg:flex-1">
+          <!-- icon bar -->
+          <div id="hamburger" class="text-xl p-3 cursor-pointer lg:hidden">
+            <i class="fa-solid fa-bars"></i>
+          </div>
+          <!-- search bar -->
+          <div class="flex-1 shadow">
+            <input
+              class="w-full h-8 px-3 rounded-md text-sm text-slate-600 border-none outline-none"
+              type="text"
+              placeholder="tìm kiếm..."
+            />
+          </div>
+          <!-- cart -->
+          <div class="text-xl p-2 cursor-pointer">
+            <i class="fa-solid fa-cart-shopping"></i>
+          </div>
+          <!-- user - avatar -->
+          <div class="text-xl p-2 cursor-pointer md:pr-0">
+            <i class="fa-solid fa-user"></i>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- navigation bar section -->
+    <div class="container mx-auto mt-4 grid grid-cols-10 lg:gap-x-2">
+      <!-- menu -->
+      <div id="menu" class="fixed top-0 left-0 z-10 lg:col-span-2 hidden lg:relative lg:block">
+        <!-- overlay -->
+        <div id="menu-overlay" class="absolute bg-black opacity-80 h-screen w-screen -z-10 lg:hidden"></div>
+        <ul class="bg-white overflow-auto w-72 h-screen lg:w-auto lg:h-auto lg:absolute lg:inset-0">
+          <li class="uppercase px-5 py-3 text-center font-medium text-white bg-primary-600 lg:bg-primary-600">thể loại</li>
+           
+            <% for(int i=0;i<listDM.Count;i++)
+               { %>
+             <li class="px-3">
+            <a class="menu-item-link" href='<%="DanhMucSanPham.aspx?IdDanhMuc="+ listDM[i].IdDanhMuc.ToString() %>'
+              ><span class="block h-6 truncate"><%=listDM[i].TenDanhMuc %></span><i class="fa-solid fa-angle-right"></i
+            ></a>
+          </li>
+         
+            <% } %>
+
+        </ul>
+      </div>
+
+      <!-- slider - banner section -->
+      <div id="swiper-banner" class="swiper mySwiper col-span-10 lg:col-span-8">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <img class="w-full" src="./img/slides/slide-1.jpg" alt="slide 1" />
+          </div>
+          <div class="swiper-slide">
+            <img class="w-full" src="./img/slides/slide-2.jpg" alt="slide 2" />
+          </div>
+          <div class="swiper-slide">
+            <img class="w-full" src="./img/slides/slide-3.jpg" alt="slide 3" />
+          </div>
+          <div class="swiper-slide">
+            <img class="w-full" src="./img/slides/slide-4.jpg" alt="slide 4" />
+          </div>
+          <div class="swiper-slide">
+            <img class="w-full" src="./img/slides/slide-5.png" alt="slide 5" />
+          </div>
+          <div class="swiper-slide">
+            <img class="w-full" src="./img/slides/slide-6.png" alt="slide 6" />
+          </div>
+        </div>
+        <div class="swiper-button-next text-white"></div>
+        <div class="swiper-button-prev text-white"></div>
+      </div>
+    </div>
+    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+    </asp:ContentPlaceHolder>
+    
+          <!-- footer -->
+    <footer class="container mx-auto rounded-t-3xl overflow-hidden">
+      <div class="bg-gradient-to-l from-secondary-500 to-primary-600 text-white py-4 px-6 text-center">
+        Dự án website bán hàng của nhóm 4, lớp DH20TIN06, trường DNC
+      </div>
+      <!-- infomation of team -->
+      <div class="grid grid-cols-4">
+        <!-- member -->
+        <div class="col-span-1 flex flex-col items-center p-3">
+          <div class="w-1/3 rounded-full overflow-hidden">
+            <img class="w-full h-auto" src="./img/members/khuong.jpg" alt="Trần Minh Khương" />
+          </div>
+          <!-- description -->
+          <ul class="text-center">
+            <li>Trần Minh Khương</li>
+            <li>-Designer-</li>
+          </ul>
+        </div>
+
+        <div class="col-span-1 flex flex-col items-center p-3">
+          <div class="w-1/3 rounded-full overflow-hidden">
+            <img class="w-full h-auto" src="./img/members/tai.jpg" alt="Trương Hữu Tài" />
+          </div>
+          <!-- description -->
+          <ul class="text-center">
+            <li>Trương Hữu Tài</li>
+            <li>-Coder-</li>
+          </ul>
+        </div>
+
+        <div class="col-span-1 flex flex-col items-center p-3">
+          <div class="w-1/3 rounded-full overflow-hidden">
+            <img class="w-full h-auto" src="./img/members/do.jpg" alt="Trương Hữu Tài" />
+          </div>
+          <!-- description -->
+          <ul class="text-center">
+            <li>Phan Thành Đô</li>
+            <li>-Reporter-</li>
+          </ul>
+        </div>
+
+        <div class="col-span-1 flex flex-col items-center p-3">
+          <div class="w-1/3 rounded-full overflow-hidden">
+            <img class="w-full h-auto" src="./img/members/van.jpg" alt="Trương Hữu Tài" />
+          </div>
+          <!-- description -->
+          <ul class="text-center">
+            <li>Nguyễn Thị Hồng Vân</li>
+            <li>-Database design-</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    </footer>
+        <script src="./js/swiper.js"></script>
+    <script src="./js/main.js"></script>
+    </form>
+</body>
+</html>

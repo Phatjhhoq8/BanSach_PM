@@ -1,0 +1,17 @@
+D:\giangvien\ThayTri\laptrinhweb\BanSachTest\BanSachTest\bin\BanSachTest.dll.config
+D:\giangvien\ThayTri\laptrinhweb\BanSachTest\BanSachTest\bin\BanSachTest.dll
+D:\giangvien\ThayTri\laptrinhweb\BanSachTest\BanSachTest\bin\BanSachTest.pdb
+D:\giangvien\ThayTri\laptrinhweb\BanSachTest\BanSachTest\obj\Debug\BanSachTest.dll
+D:\giangvien\ThayTri\laptrinhweb\BanSachTest\BanSachTest\obj\Debug\BanSachTest.pdb
+D:\ThayTri\BanSachDemo\BanSachDemo\BanSachTest\bin\BanSachTest.dll.config
+D:\ThayTri\BanSachDemo\BanSachDemo\BanSachTest\bin\BanSachTest.dll
+D:\ThayTri\BanSachDemo\BanSachDemo\BanSachTest\bin\BanSachTest.pdb
+D:\ThayTri\BanSachDemo\BanSachDemo\BanSachTest\obj\Debug\BanSachTest.csprojResolveAssemblyReference.cache
+D:\ThayTri\BanSachDemo\BanSachDemo\BanSachTest\obj\Debug\BanSachTest.dll
+D:\ThayTri\BanSachDemo\BanSachDemo\BanSachTest\obj\Debug\BanSachTest.pdb
+D:\LUU TRU\ThayTri\laptrinhweb\backend\BanSachDemo\BanSachTest\bin\BanSachTest.dll.config
+D:\LUU TRU\ThayTri\laptrinhweb\backend\BanSachDemo\BanSachTest\bin\BanSachTest.dll
+D:\LUU TRU\ThayTri\laptrinhweb\backend\BanSachDemo\BanSachTest\bin\BanSachTest.pdb
+D:\LUU TRU\ThayTri\laptrinhweb\backend\BanSachDemo\BanSachTest\obj\Debug\BanSachTest.csprojResolveAssemblyReference.cache
+D:\LUU TRU\ThayTri\laptrinhweb\backend\BanSachDemo\BanSachTest\obj\Debug\BanSachTest.dll
+D:\LUU TRU\ThayTri\laptrinhweb\backend\BanSachDemo\BanSachTest\obj\Debug\BanSachTest.pdb
