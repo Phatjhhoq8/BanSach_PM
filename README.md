@@ -1,54 +1,38 @@
-# BanSachDemo - Hệ Thống Bán Sách Trực Tuyến
+# Hướng dẫn Khởi chạy Hệ thống Nhà Sách Premium (BanSachDemo)
 
-Đây là một dự án ứng dụng web bán sách được xây dựng bằng công nghệ ASP.NET Web Forms.
+Dự án này là hệ thống thương mại điện tử phục vụ mục đích bán sách cao cấp. Web sử dụng giao diện lấy cảm hứng thiết kế từ Stripe Press, Fahasa, và Nothing.tech (theo quy chuẩn tài liệu dự án).
 
-## Thành viên thực hiện
-- Trần Minh Khương - Designer
-- Trương Hữu Tài - Coder
-- Phan Thành Đô - Reporter
-- Nguyễn Thị Hồng Vân - Database design
+## Môi trường & Công nghệ
+- **Nền tảng:** ASP.NET Web Forms (.NET Framework 4.5 C#)
+- **Database:** SQL Server (LINQ to SQL)
+- **Frontend Stack:** HTML5, Tailwind CSS, Vanilla JS, Fetch API
 
-## Công nghệ sử dụng
-- **Ngôn ngữ**: C#
-- **Framework**: ASP.NET Web Forms (.NET Framework 4.5)
-- **Cơ sở dữ liệu**: SQL Server (sử dụng LINQ to SQL)
-- **Máy chủ**: IIS Express
+## Cấu trúc Dự án Mới
+Toàn bộ mã nguồn thực chạy mới nằm trong thư mục `Source/`. Cơ sở dữ liệu và thư mục cũ đã được dọn dẹp để đảm bảo ứng dụng vận hành mượt mà theo kiến trúc sạch sẽ nhất. 
 
-## Hướng dẫn cài đặt và chạy hệ thống
+- `Source/Default.aspx`: Trang chủ (Tích hợp Video Banner).
+- `Source/GioHang.aspx`: Quản lý giỏ hàng.
+- `Source/Site.Master`: Giao diện bao quát (Header/Footer Tailwind CSS).
+- `Database_Schema.sql`: File chứa script khởi tạo CSDL với đầy đủ quy trình Lưu Giỏ Hàng thẳng vào Database (không dùng Session tạm).
 
-### 1. Yêu cầu hệ thống
-- Hệ điều hành Windows.
-- **Visual Studio** (khuyên dùng VS 2013, 2015, 2017 hoặc mới hơn).
-- **SQL Server Express** (Mặc định cấu hình là `.\SQLEXPRESS`).
-- **.NET Framework 4.5** trở lên.
+## 🚀 Cách Thức Chạy Giao Diện Web Nhanh (Local IIS Express)
 
-### 2. Cấu hình Cơ sở dữ liệu
-Hệ thống sử dụng tệp cơ sở dữ liệu `BANSACH.mdf` nằm trong thư mục `database`.
-Để hệ thống hoạt động, bạn cần:
-1. Mở **SQL Server Management Studio (SSMS)**.
-2. Kết nối tới instance `.\SQLEXPRESS`.
-3. Nhấp chuột phải vào **Databases** -> **Attach...**
-4. Chọn tệp `database/BANSACH.mdf` để gắn vào máy chủ SQL.
+Để chạy nhanh giao diện này mà không cần thiết lập Visual Studio nặng nề, bạn có thể gọi trực tiếp IIS Express (đã được tích hợp sẵn trong công cụ đính kèm):
 
-*Lưu ý: Nếu bạn sử dụng instance tên khác, hãy cập nhật lại chuỗi kết nối trong tệp `BanSachTest/Web.config`.*
+### Tùy chọn 1: Chạy bằng Dòng lệnh PowerShell
+Mở command prompt / PowerShell tại thư mục gốc `BanSachDemo` và chạy lệnh sau:
+```powershell
+& ".\tools\IISExpress\IIS Express\iisexpress.exe" /path:"$(Get-Location)\Source" /port:8080
+```
+Sau đó mở trình duyệt tại: **http://localhost:8080/**
 
-### 3. Cách chạy ứng dụng
+### Tùy chọn 2: Chạy thông qua Visual Studio (Đề xuất Phát triển)
+Để trải nghiệm đầy đủ các Backend CodeBehind (C#) và tương tác được với CSDL LINQ to SQL:
+1. Mở CSDL (SQL Server Management Studio hoặc LocalDB), chạy file `Database_Schema.sql` để xây DB.
+2. Mở Visual Studio.
+3. Chọn **File -> Open Web Site...**
+4. Trỏ tới thư mục `c:\Users\Admin\Desktop\BanSachDemo\Source`.
+5. Thêm cấu hình LINQ to SQL `.dbml` từ CSDL và sửa các mock function tại `#CodeBehind` để hệ thống kết nối logic đầy đủ.
+6. Bấm `F5` / `Ctrl + F5` để khởi chạy ứng dụng web.
 
-#### Cách 1: Sử dụng Visual Studio (Khuyên dùng)
-1. Mở tệp `BanSachTest.sln` bằng Visual Studio.
-2. Nhấn phím **F5** hoặc nút **Start** để biên dịch và chạy ứng dụng trên trình duyệt mặc định.
-
-#### Cách 2: Sử dụng IIS Express (Nếu không có Visual Studio)
-Nếu bạn chỉ muốn xem trang web mà không có Visual Studio, bạn có thể sử dụng công cụ IIS Express đi kèm trong thư mục `tools`:
-1. Mở Terminal hoặc Command Prompt tại thư mục gốc của dự án.
-2. Chạy lệnh sau:
-   ```cmd
-   .\tools\IISExpress\"IIS Express"\iisexpress.exe /path:%cd%\BanSachTest /port:51234
-   ```
-3. Mở trình duyệt và truy cập: `http://localhost:51234/TrangChu.aspx`
-
-## Cấu trúc thư mục chính
-- `BanSachTest/`: Chứa mã nguồn của ứng dụng web (.aspx, .aspx.cs).
-- `database/`: Chứa tệp cơ sở dữ liệu SQL Server.
-- `tools/`: Chứa bộ chạy IIS Express di động.
-- `index.html`: Trang tĩnh (có thể dùng để giới thiệu hoặc test nhanh giao diện).
+> **Lưu ý tính năng Front-end**: Giỏ hàng (nút Add to Cart) hiện đang được cấu hình thực hiện gọi nền `cartCount` theo hướng non-postback (không tải lại trang). Hãy đảm bảo gọi Fetch API qua Handler `CartHandler.ashx` để hoàn tác trải nghiệm thay vì submit form .NET truyền thống.
