@@ -580,6 +580,12 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);", connection, transaction))
             }
         }
 
+        string repoLocalPath = Path.GetFullPath(Path.Combine(GetApplicationRootPath(), "App_Data", "product-details.json"));
+        if (File.Exists(repoLocalPath))
+        {
+            return repoLocalPath;
+        }
+
         string defaultPath = Path.GetFullPath(Path.Combine(GetApplicationRootPath(), "..", "..", "fahasa_output", "product-details.json"));
         if (!File.Exists(defaultPath))
         {

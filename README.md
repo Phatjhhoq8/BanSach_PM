@@ -14,6 +14,12 @@ Toàn bộ mã nguồn thực chạy mới nằm trong thư mục `Source/`. Cơ
 - `Source/GioHang.aspx`: Quản lý giỏ hàng.
 - `Source/Site.Master`: Giao diện bao quát (Header/Footer Tailwind CSS).
 - `Database_Schema.sql`: File chứa script khởi tạo CSDL với đầy đủ quy trình Lưu Giỏ Hàng thẳng vào Database (không dùng Session tạm).
+- `Source/App_Data/product-details.json`: Dữ liệu sách Fahasa đã được đưa sẵn vào repo để tự import khi chạy lần đầu.
+
+## Dữ liệu đi kèm repo
+- Repo đã chứa sẵn dữ liệu crawl tại `Source/App_Data/product-details.json`.
+- Khi ứng dụng khởi chạy và truy cập vào trang có đọc catalog, hệ thống sẽ tự tạo schema và import dữ liệu vào `BanSachPremium` nếu chưa có.
+- Vì vậy người khác chỉ cần clone repo, chạy web bằng môi trường phù hợp (`IIS Express`/Visual Studio + SQL Server hoặc LocalDB) là có dữ liệu để xem ngay.
 
 ## 🚀 Cách Thức Chạy Giao Diện Web Nhanh (Local IIS Express)
 
