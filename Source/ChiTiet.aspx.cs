@@ -1,6 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Web;
 
 public partial class ChiTiet : System.Web.UI.Page
 {
@@ -8,46 +7,73 @@ public partial class ChiTiet : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
-            string id = Request.QueryString["id"];
-            if (!string.IsNullOrEmpty(id))
-            {
-                LoadChiTiet(id);
-            }
-            else
-            {
-                // Mặc định load một sản phẩm mẫu nếu không có ID
-                LoadChiTiet("1");
-            }
+            LoadChiTiet();
         }
     }
 
-    private void LoadChiTiet(string id)
+    private void LoadChiTiet()
     {
-        // Giả lập dữ liệu từ CSDL (Sẽ thay bằng LINQ to SQL)
-        // var db = new BanSachDataContext();
-        // var sp = db.SanPhams.FirstOrDefault(s => s.MaSP.ToString() == id);
-
-        // Demo Data
-        var sampleData = new Dictionary<string, dynamic>
+        string id = Request.QueryString["id"];
+        if (string.IsNullOrWhiteSpace(id))
         {
-            { "TenSP", "Dế Mèn Phiêu Lưu Ký (Ấn bản Premium)" },
-            { "TacGia", "Tô Hoài" },
-            { "Gia", 120000 },
-            { "HinhAnh", "demen.png" },
-            { "MoTa", "Phiên bản kỷ niệm đặc biệt với thiết kế bìa nhũ vàng trên nền vải Canvas xanh thẫm. Câu chuyện về chú Dế Mèn kiêu căng, bồng bột đã trải qua bao sóng gió để trưởng thành, nay được tái hiện trong một diện mạo đẳng cấp quốc tế." }
-        };
+            id = Request.QueryString["slug"];
+        }
 
-        litTenSP.Text = sampleData["TenSP"];
-        litTacGia.Text = sampleData["TacGia"];
-        litGia.Text = string.Format("{0:N0}đ", sampleData["Gia"]);
-        litMoTa.Text = sampleData["MoTa"];
-        litBreadcrumb.Text = sampleData["TenSP"];
-        
-        // Cập nhật text cho bìa sách 3D
-        litTitleCover.Text = sampleData["TenSP"];
-        litTitleCoverShine.Text = sampleData["TenSP"];
-        
-        // Cập nhật ảnh cho hiệu ứng 3D
-        bookFront.Style["background-image"] = "url('img/books/" + sampleData["HinhAnh"] + "')";
+        CatalogProduct product = null;
+
+        try
+        {
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                product = FahasaCatalogService.GetProductByIdOrSlug(id);
+            }
+
+            if (product == null)
+            {
+                product = FahasaCatalogService.GetFirstProduct();
+            }
+        }
+        catch
+        {
+        }
+
+        if (product == null)
+        {
+            Response.StatusCode = 404;
+            product = new CatalogProduct
+            {
+                TenSP = "Không tìm thấy sản phẩm",
+                TacGia = "Dữ liệu đang được cập nhật",
+                MoTa = "Sản phẩm bạn đang tìm chưa có trong hệ thống hoặc dữ liệu chưa kịp đồng bộ.",
+                HinhAnh = "https://placehold.co/400x550/FFF/333?text=Book"
+            };
+        }
+
+        litTenSP.Text = HttpUtility.HtmlEncode(product.TenSP);
+        litTacGia.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.TacGia) ? "Đang cập nhật" : product.TacGia);
+        litGia.Text = HttpUtility.HtmlEncode(product.GiaText);
+        litGiaGoc.Text = HttpUtility.HtmlEncode(product.GiaGocText);
+        litDiscount.Text = HttpUtility.HtmlEncode(product.DiscountText);
+        litMoTa.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.MoTa) ? "Chưa có mô tả cho sản phẩm này." : product.MoTa);
+        litBreadcrumb.Text = HttpUtility.HtmlEncode(product.TenSP);
+        litTitleCover.Text = HttpUtility.HtmlEncode(product.TenSP);
+        litTitleCoverShine.Text = HttpUtility.HtmlEncode(product.TenSP);
+        litCoverType.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.LoaiBia) ? "Đang cập nhật" : product.LoaiBia);
+        litSupplier.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.NhaCungCap) ? "Fahasa" : product.NhaCungCap);
+        litPublisher.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.NhaXuatBan) ? "Đang cập nhật" : product.NhaXuatBan);
+        litRating.Text = HttpUtility.HtmlEncode(product.DanhGia.HasValue && product.DanhGia.Value > 0 ? product.DanhGia.Value.ToString("0.0") + "/5" : "Chưa có đánh giá");
+
+        if (!string.IsNullOrWhiteSpace(product.DiscountText))
+        {
+            discountBadge.Attributes["class"] = "bg-rose-500 text-white px-3 py-1 text-xs font-black rounded-lg";
+            oldPriceContainer.Attributes["class"] = "text-lg text-gray-300 line-through";
+        }
+        else
+        {
+            discountBadge.Attributes["class"] = "hidden";
+            oldPriceContainer.Attributes["class"] = "hidden";
+        }
+
+        bookFront.Style["background-image"] = "url('" + product.DisplayImageUrl + "')";
     }
 }

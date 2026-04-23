@@ -116,14 +116,15 @@
                         <div class="group flex flex-col bg-white">
                             <!-- Ảnh sách -->
                             <a href='ChiTiet.aspx?id=<%# Eval("MaSP") %>' class="block relative aspect-w-3 aspect-h-4 bg-transparent overflow-hidden mb-3">
-                                <img src='<%# "img/books/" + Eval("HinhAnh") %>' onerror="this.src='https://placehold.co/400x550/FFF/333?text=Book';" alt='<%# Eval("TenSP") %>' class="w-full h-full object-contain mix-blend-multiply drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300"/>
-                                <div class="absolute top-1 right-1 bg-rose-500 text-white text-[11px] font-bold h-8 w-8 flex items-center justify-center rounded-full shadow-sm">-20%</div>
+                                <img src='<%# Eval("DisplayImageUrl") %>' onerror="this.src='https://placehold.co/400x550/FFF/333?text=Book';" alt='<%# Eval("TenSP") %>' class="w-full h-full object-contain mix-blend-multiply drop-shadow-sm group-hover:drop-shadow-md transition-all duration-300"/>
+                                <div class='<%# string.IsNullOrEmpty(Eval("DiscountText") as string) ? "hidden" : "absolute top-1 right-1 bg-rose-500 text-white text-[11px] font-bold h-8 min-w-8 px-2 flex items-center justify-center rounded-full shadow-sm" %>'><%# Eval("DiscountText") %></div>
                             </a>
                             <div class="flex flex-col flex-1">
                                 <a href='ChiTiet.aspx?id=<%# Eval("MaSP") %>' class="text-[13px] font-bold text-gray-800 hover:text-primary line-clamp-2 leading-snug transition-colors mb-2"><%# Eval("TenSP") %></a>
+                                <p class="text-[11px] text-gray-500 line-clamp-1 mb-2"><%# Eval("TacGia") %></p>
                                 <div class="flex items-center gap-2 mt-auto">
-                                    <span class="text-[13px] font-bold text-primary"><%# string.Format("{0:N0}đ", Eval("Gia")) %></span>
-                                    <span class="text-[11px] text-gray-400 line-through"><%# string.Format("{0:N0}đ", Convert.ToDecimal(Eval("Gia")) * 1.25m) %></span>
+                                    <span class="text-[13px] font-bold text-primary"><%# Eval("GiaText") %></span>
+                                    <span class='<%# string.IsNullOrEmpty(Eval("GiaGocText") as string) ? "hidden" : "text-[11px] text-gray-400 line-through" %>'><%# Eval("GiaGocText") %></span>
                                 </div>
                             </div>
                         </div>

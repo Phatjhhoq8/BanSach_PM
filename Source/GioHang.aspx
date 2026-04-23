@@ -16,10 +16,10 @@
                         <asp:Repeater ID="rptCart" runat="server">
                             <ItemTemplate>
                             <li class="p-6 flex items-center">
-                                <img src='<%# "img/books/" + Eval("HinhAnh") %>' onerror="this.src='https://via.placeholder.com/100x150'" class="w-20 h-28 object-cover rounded shadow" alt='<%# Eval("TenSP") %>'>
+                                <img src='<%# Eval("DisplayImageUrl") %>' onerror="this.src='https://via.placeholder.com/100x150'" class="w-20 h-28 object-cover rounded shadow" alt='<%# Eval("TenSP") %>'>
                                 <div class="ml-6 flex-1">
                                     <h3 class="text-xl font-bold text-gray-900"><%# Eval("TenSP") %></h3>
-                                    <p class="text-primary font-medium mt-1"><%# string.Format("{0:N0} đ", Eval("Gia")) %></p>
+                                    <p class="text-primary font-medium mt-1"><%# Eval("GiaText") %></p>
                                 </div>
                                 <div class="flex items-center space-x-4">
                                     Mã SP: <%# Eval("MaSP") %> | SL: 1

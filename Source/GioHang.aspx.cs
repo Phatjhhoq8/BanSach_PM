@@ -18,10 +18,10 @@ public partial class GioHang : System.Web.UI.Page
         // int maKH = 1; // get from Session
         // var items = db.ChiTietGioHangs.Where(x => x.MaKH == maKH).Select(x => new { x.SanPham.TenSP, x.SanPham.HinhAnh, x.SoLuong, x.SanPham.Gia }).ToList();
 
-        var danhSach = new List<SanPhamDTO>
+        var danhSach = new List<CatalogProduct>
         {
-            new SanPhamDTO { MaSP = 1, TenSP = "Dế Mèn Phiêu Lưu Ký", Gia = 45000, HinhAnh = "demen.jpg" },
-            new SanPhamDTO { MaSP = 4, TenSP = "Clean Code", Gia = 450000, HinhAnh = "cleancode.jpg" }
+            new CatalogProduct { MaSP = 1, TenSP = "Dế Mèn Phiêu Lưu Ký", Gia = 45000, HinhAnh = "demen.jpg" },
+            new CatalogProduct { MaSP = 4, TenSP = "Clean Code", Gia = 450000, HinhAnh = "cleancode.jpg" }
         };
 
         if(danhSach.Count > 0){

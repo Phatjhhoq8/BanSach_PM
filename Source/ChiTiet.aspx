@@ -251,12 +251,12 @@
                                 <div class="text-3xl font-bold text-gray-900 tracking-tighter">
                                     <asp:Literal ID="litGia" runat="server"></asp:Literal>
                                 </div>
-                                <div class="text-lg text-gray-300 line-through">150.000đ</div>
-                                <span class="bg-rose-500 text-white px-3 py-1 text-xs font-black rounded-lg">SAVE 20%</span>
+                                <div class="text-lg text-gray-300 line-through" id="oldPriceContainer" runat="server"><asp:Literal ID="litGiaGoc" runat="server"></asp:Literal></div>
+                                <span class="bg-rose-500 text-white px-3 py-1 text-xs font-black rounded-lg" id="discountBadge" runat="server"><asp:Literal ID="litDiscount" runat="server"></asp:Literal></span>
                             </div>
 
                             <p class="text-gray-500 italic opacity-80 mb-10 leading-relaxed text-lg">
-                                "<asp:Literal ID="litMoTa" runat="server"></asp:Literal>"
+                                <asp:Literal ID="litMoTa" runat="server"></asp:Literal>
                             </p>
 
                             <button type="button" class="w-full bg-primary text-white py-5 rounded-2xl font-bold text-lg hover:bg-secondary transition-all shadow-xl shadow-primary/30 flex items-center justify-center gap-4 active:scale-95 group">
@@ -273,19 +273,19 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
             <div class="group">
                 <span class="text-gray-400 text-xs uppercase tracking-widest block mb-2">Quality</span>
-                <span class="text-lg font-bold text-gray-900 group-hover:text-primary transition">Premium Hardcover</span>
+                <span class="text-lg font-bold text-gray-900 group-hover:text-primary transition"><asp:Literal ID="litCoverType" runat="server">Đang cập nhật</asp:Literal></span>
             </div>
             <div class="group">
-                <span class="text-gray-400 text-xs uppercase tracking-widest block mb-2">Format</span>
-                <span class="text-lg font-bold text-gray-900 group-hover:text-primary transition">320 Pages / Cream</span>
+                <span class="text-gray-400 text-xs uppercase tracking-widest block mb-2">Nhà cung cấp</span>
+                <span class="text-lg font-bold text-gray-900 group-hover:text-primary transition"><asp:Literal ID="litSupplier" runat="server">Fahasa</asp:Literal></span>
             </div>
             <div class="group">
-                <span class="text-gray-400 text-xs uppercase tracking-widest block mb-2">Release</span>
-                <span class="text-lg font-bold text-gray-900 group-hover:text-primary transition">Spring 2024</span>
+                <span class="text-gray-400 text-xs uppercase tracking-widest block mb-2">Đánh giá</span>
+                <span class="text-lg font-bold text-gray-900 group-hover:text-primary transition"><asp:Literal ID="litRating" runat="server">Chưa có đánh giá</asp:Literal></span>
             </div>
             <div class="group">
                 <span class="text-gray-400 text-xs uppercase tracking-widest block mb-2">Publisher</span>
-                <span class="text-lg font-bold text-gray-900 group-hover:text-primary transition">Kim Dong Press</span>
+                <span class="text-lg font-bold text-gray-900 group-hover:text-primary transition"><asp:Literal ID="litPublisher" runat="server">Đang cập nhật</asp:Literal></span>
             </div>
         </div>
     </div>

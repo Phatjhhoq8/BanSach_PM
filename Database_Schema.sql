@@ -1,5 +1,4 @@
--- Khởi tạo Database nếu chưa có
-IF NOT EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'BanSachPremium')
+IF DB_ID(N'BanSachPremium') IS NULL
 BEGIN
     CREATE DATABASE BanSachPremium;
 END
@@ -8,127 +7,299 @@ GO
 USE BanSachPremium;
 GO
 
--- 1. Bảng AdminUser
-CREATE TABLE AdminUser (
-    Username VARCHAR(50) PRIMARY KEY,
-    Password VARCHAR(255) NOT NULL,
-    FullName NVARCHAR(100) NOT NULL,
-    Role NVARCHAR(50) DEFAULT 'Admin'
-);
+IF OBJECT_ID(N'dbo.AdminUser', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.AdminUser (
+        Username VARCHAR(50) NOT NULL PRIMARY KEY,
+        Password VARCHAR(255) NOT NULL,
+        FullName NVARCHAR(100) NOT NULL,
+        Role NVARCHAR(50) NOT NULL CONSTRAINT DF_AdminUser_Role DEFAULT N'Admin'
+    );
+END
+GO
 
--- 2. Bảng DanhMuc (Danh mục sách)
-CREATE TABLE DanhMuc (
-    MaDM INT IDENTITY(1,1) PRIMARY KEY,
-    TenDM NVARCHAR(100) NOT NULL,
-    TrangThai BIT DEFAULT 1
-);
+IF OBJECT_ID(N'dbo.DanhMuc', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.DanhMuc (
+        MaDM INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        TenDM NVARCHAR(100) NOT NULL,
+        TrangThai BIT NOT NULL CONSTRAINT DF_DanhMuc_TrangThai DEFAULT 1
+    );
+END
+GO
 
--- 3. Bảng KhuyenMai (Mã giảm giá)
-CREATE TABLE KhuyenMai (
-    MaKM VARCHAR(50) PRIMARY KEY,
-    PhanTramGiam INT DEFAULT 0,
-    GiaTriGiam DECIMAL(18, 2) DEFAULT 0,
-    NgayBatDau DATETIME,
-    NgayKetThuc DATETIME,
-    SoLuong INT DEFAULT 100,
-    DieuKien DECIMAL(18,2) DEFAULT 0
-);
+IF OBJECT_ID(N'dbo.KhuyenMai', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.KhuyenMai (
+        MaKM VARCHAR(50) NOT NULL PRIMARY KEY,
+        PhanTramGiam INT NOT NULL CONSTRAINT DF_KhuyenMai_PhanTramGiam DEFAULT 0,
+        GiaTriGiam DECIMAL(18, 2) NOT NULL CONSTRAINT DF_KhuyenMai_GiaTriGiam DEFAULT 0,
+        NgayBatDau DATETIME NULL,
+        NgayKetThuc DATETIME NULL,
+        SoLuong INT NOT NULL CONSTRAINT DF_KhuyenMai_SoLuong DEFAULT 100,
+        DieuKien DECIMAL(18, 2) NOT NULL CONSTRAINT DF_KhuyenMai_DieuKien DEFAULT 0
+    );
+END
+GO
 
--- 4. Bảng SanPham (Sách)
-CREATE TABLE SanPham (
-    MaSP INT IDENTITY(1,1) PRIMARY KEY,
-    TenSP NVARCHAR(255) NOT NULL,
-    TacGia NVARCHAR(100),
-    MoTa NVARCHAR(MAX),
-    Gia DECIMAL(18, 2) NOT NULL,
-    GiaKhuyenMai DECIMAL(18, 2), -- Giá sau khi giảm mặc định nếu có
-    SoLuongTon INT DEFAULT 0,
-    HinhAnh VARCHAR(255),
-    LoaiBia NVARCHAR(50), -- Bìa cứng, Bìa mềm
-    SoTrang INT,
-    NhaXuatBan NVARCHAR(100),
-    NgayXuatBan DATE,
-    MaDM INT NOT NULL,
-    TrangThai BIT DEFAULT 1,
-    FOREIGN KEY (MaDM) REFERENCES DanhMuc(MaDM)
-);
+IF OBJECT_ID(N'dbo.SanPham', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.SanPham (
+        MaSP INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        Slug NVARCHAR(255) NULL,
+        TenSP NVARCHAR(255) NOT NULL,
+        TacGia NVARCHAR(255) NULL,
+        MoTa NVARCHAR(MAX) NULL,
+        Gia DECIMAL(18, 2) NOT NULL,
+        GiaKhuyenMai DECIMAL(18, 2) NULL,
+        PhanTramGiam INT NULL,
+        SoLuongTon INT NOT NULL CONSTRAINT DF_SanPham_SoLuongTon DEFAULT 0,
+        HinhAnh NVARCHAR(500) NULL,
+        LoaiBia NVARCHAR(100) NULL,
+        SoTrang INT NULL,
+        NhaXuatBan NVARCHAR(255) NULL,
+        NhaCungCap NVARCHAR(255) NULL,
+        DanhGia DECIMAL(4, 2) NULL,
+        NguonUrl NVARCHAR(500) NULL,
+        NguonDuLieu NVARCHAR(50) NULL,
+        NgayXuatBan DATE NULL,
+        MaDM INT NOT NULL,
+        TrangThai BIT NOT NULL CONSTRAINT DF_SanPham_TrangThai DEFAULT 1,
+        CONSTRAINT FK_SanPham_DanhMuc FOREIGN KEY (MaDM) REFERENCES dbo.DanhMuc(MaDM)
+    );
+END
+GO
 
--- 5. Bảng KhachHang
-CREATE TABLE KhachHang (
-    MaKH INT IDENTITY(1,1) PRIMARY KEY,
-    HoTen NVARCHAR(100) NOT NULL,
-    Email VARCHAR(100) UNIQUE NOT NULL,
-    MatKhau VARCHAR(255) NOT NULL,
-    SoDienThoai VARCHAR(20),
-    DiaChi NVARCHAR(255),
-    NgayDangKy DATETIME DEFAULT GETDATE()
-);
+ALTER TABLE dbo.SanPham ALTER COLUMN TenSP NVARCHAR(255) NOT NULL;
+GO
+ALTER TABLE dbo.SanPham ALTER COLUMN TacGia NVARCHAR(255) NULL;
+GO
+ALTER TABLE dbo.SanPham ALTER COLUMN HinhAnh NVARCHAR(500) NULL;
+GO
+ALTER TABLE dbo.SanPham ALTER COLUMN LoaiBia NVARCHAR(100) NULL;
+GO
+ALTER TABLE dbo.SanPham ALTER COLUMN NhaXuatBan NVARCHAR(255) NULL;
+GO
 
--- 6. Bảng GioHang (Mỗi Khách Hàng 1 giỏ hàng duy nhất đang active)
--- Thực chất ta chỉ cần ChiTietGioHang map trực tiếp MaKH là đủ, nhưng làm 1 bảng GioHang để dễ quản lý Session
-CREATE TABLE GioHang (
-    MaKH INT PRIMARY KEY,
-    NgayCapNhat DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH)
-);
+IF COL_LENGTH(N'dbo.SanPham', N'Slug') IS NULL
+BEGIN
+    ALTER TABLE dbo.SanPham ADD Slug NVARCHAR(255) NULL;
+END
+GO
 
--- 7. Bảng ChiTietGioHang
-CREATE TABLE ChiTietGioHang (
-    MaKH INT,
-    MaSP INT,
-    SoLuong INT NOT NULL DEFAULT 1,
-    PRIMARY KEY (MaKH, MaSP),
-    FOREIGN KEY (MaKH) REFERENCES GioHang(MaKH),
-    FOREIGN KEY (MaSP) REFERENCES SanPham(MaSP)
-);
+IF COL_LENGTH(N'dbo.SanPham', N'PhanTramGiam') IS NULL
+BEGIN
+    ALTER TABLE dbo.SanPham ADD PhanTramGiam INT NULL;
+END
+GO
 
--- 8. Bảng DonHang
-CREATE TABLE DonHang (
-    MaDH INT IDENTITY(1,1) PRIMARY KEY,
-    MaKH INT NOT NULL,
-    NgayDat DATETIME DEFAULT GETDATE(),
-    TongTien DECIMAL(18, 2) NOT NULL,
-    MaKM VARCHAR(50) NULL,
-    DiaChiGiaoHang NVARCHAR(255),
-    SoDienThoaiGiao VARCHAR(20),
-    GhiChu NVARCHAR(500),
-    TrangThai INT DEFAULT 0, -- 0: Chờ xác nhận, 1: Đang giao, 2: Hoàn thành, 3: Đã hủy
-    HinhThucThanhToan NVARCHAR(50) DEFAULT 'COD',
-    FOREIGN KEY (MaKH) REFERENCES KhachHang(MaKH),
-    FOREIGN KEY (MaKM) REFERENCES KhuyenMai(MaKM)
-);
+IF COL_LENGTH(N'dbo.SanPham', N'NhaCungCap') IS NULL
+BEGIN
+    ALTER TABLE dbo.SanPham ADD NhaCungCap NVARCHAR(255) NULL;
+END
+GO
 
--- 9. Bảng ChiTietDonHang
-CREATE TABLE ChiTietDonHang (
-    MaDH INT,
-    MaSP INT,
-    SoLuong INT NOT NULL,
-    DonGia DECIMAL(18, 2) NOT NULL, -- Lưu giá tại thời điểm đặt
-    PRIMARY KEY (MaDH, MaSP),
-    FOREIGN KEY (MaDH) REFERENCES DonHang(MaDH),
-    FOREIGN KEY (MaSP) REFERENCES SanPham(MaSP)
-);
+IF COL_LENGTH(N'dbo.SanPham', N'DanhGia') IS NULL
+BEGIN
+    ALTER TABLE dbo.SanPham ADD DanhGia DECIMAL(4, 2) NULL;
+END
+GO
 
--- THÊM DỮ LIỆU MẪU (Mock Data)
-INSERT INTO AdminUser (Username, Password, FullName) VALUES ('admin', '123456', N'Quản trị viên');
+IF COL_LENGTH(N'dbo.SanPham', N'NguonUrl') IS NULL
+BEGIN
+    ALTER TABLE dbo.SanPham ADD NguonUrl NVARCHAR(500) NULL;
+END
+GO
 
-INSERT INTO DanhMuc (TenDM) VALUES 
-(N'Văn học'), 
-(N'Kỹ năng sống'), 
-(N'Kinh tế'), 
-(N'Công nghệ thông tin');
+IF COL_LENGTH(N'dbo.SanPham', N'NguonDuLieu') IS NULL
+BEGIN
+    ALTER TABLE dbo.SanPham ADD NguonDuLieu NVARCHAR(50) NULL;
+END
+GO
 
-INSERT INTO KhuyenMai (MaKM, PhanTramGiam, GiaTriGiam, NgayBatDau, NgayKetThuc, SoLuong) VALUES 
-('SALE10', 10, 0, GETDATE(), DATEADD(day, 30, GETDATE()), 100),
-('FREESHIP', 0, 30000, GETDATE(), DATEADD(day, 30, GETDATE()), 100);
+IF OBJECT_ID(N'dbo.KhachHang', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.KhachHang (
+        MaKH INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        HoTen NVARCHAR(100) NOT NULL,
+        Email VARCHAR(100) NOT NULL UNIQUE,
+        MatKhau VARCHAR(255) NOT NULL,
+        SoDienThoai VARCHAR(20) NULL,
+        DiaChi NVARCHAR(255) NULL,
+        NgayDangKy DATETIME NOT NULL CONSTRAINT DF_KhachHang_NgayDangKy DEFAULT GETDATE()
+    );
+END
+GO
 
-INSERT INTO SanPham (TenSP, TacGia, MoTa, Gia, SoLuongTon, HinhAnh, LoaiBia, MaDM) VALUES
-(N'Dế Mèn Phiêu Lưu Ký', N'Tô Hoài', N'Tác phẩm thiếu nhi kinh điển', 45000, 100, 'demen.jpg', N'Bìa mềm', 1),
-(N'Đắc Nhân Tâm', N'Dale Carnegie', N'Sách kỹ năng giao tiếp', 89000, 50, 'dacnhantam.jpg', N'Bìa cứng', 2),
-(N'Tư Duy Nhanh Và Chậm', N'Daniel Kahneman', N'Tìm hiểu về tư duy con người', 250000, 20, 'tuduynhanhvacham.jpg', N'Bìa cứng', 3),
-(N'Clean Code', N'Robert C. Martin', N'Kỹ thuật viết code gọn nhẹ, dễ bảo trì', 450000, 10, 'cleancode.jpg', N'Bìa mềm', 4);
+IF OBJECT_ID(N'dbo.GioHang', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.GioHang (
+        MaKH INT NOT NULL PRIMARY KEY,
+        NgayCapNhat DATETIME NOT NULL CONSTRAINT DF_GioHang_NgayCapNhat DEFAULT GETDATE(),
+        CONSTRAINT FK_GioHang_KhachHang FOREIGN KEY (MaKH) REFERENCES dbo.KhachHang(MaKH)
+    );
+END
+GO
 
-INSERT INTO KhachHang (HoTen, Email, MatKhau, SoDienThoai) VALUES 
-(N'Nguyễn Văn Trăm', 'user@gmail.com', '123456', '0901234567');
+IF OBJECT_ID(N'dbo.ChiTietGioHang', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.ChiTietGioHang (
+        MaKH INT NOT NULL,
+        MaSP INT NOT NULL,
+        SoLuong INT NOT NULL CONSTRAINT DF_ChiTietGioHang_SoLuong DEFAULT 1,
+        CONSTRAINT PK_ChiTietGioHang PRIMARY KEY (MaKH, MaSP),
+        CONSTRAINT FK_ChiTietGioHang_GioHang FOREIGN KEY (MaKH) REFERENCES dbo.GioHang(MaKH),
+        CONSTRAINT FK_ChiTietGioHang_SanPham FOREIGN KEY (MaSP) REFERENCES dbo.SanPham(MaSP)
+    );
+END
+GO
 
-INSERT INTO GioHang (MaKH) VALUES (1);
+IF OBJECT_ID(N'dbo.DonHang', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.DonHang (
+        MaDH INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        MaKH INT NOT NULL,
+        NgayDat DATETIME NOT NULL CONSTRAINT DF_DonHang_NgayDat DEFAULT GETDATE(),
+        TongTien DECIMAL(18, 2) NOT NULL,
+        MaKM VARCHAR(50) NULL,
+        DiaChiGiaoHang NVARCHAR(255) NULL,
+        SoDienThoaiGiao VARCHAR(20) NULL,
+        GhiChu NVARCHAR(500) NULL,
+        TrangThai INT NOT NULL CONSTRAINT DF_DonHang_TrangThai DEFAULT 0,
+        HinhThucThanhToan NVARCHAR(50) NOT NULL CONSTRAINT DF_DonHang_HinhThucThanhToan DEFAULT N'COD',
+        CONSTRAINT FK_DonHang_KhachHang FOREIGN KEY (MaKH) REFERENCES dbo.KhachHang(MaKH),
+        CONSTRAINT FK_DonHang_KhuyenMai FOREIGN KEY (MaKM) REFERENCES dbo.KhuyenMai(MaKM)
+    );
+END
+GO
+
+IF OBJECT_ID(N'dbo.ChiTietDonHang', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.ChiTietDonHang (
+        MaDH INT NOT NULL,
+        MaSP INT NOT NULL,
+        SoLuong INT NOT NULL,
+        DonGia DECIMAL(18, 2) NOT NULL,
+        CONSTRAINT PK_ChiTietDonHang PRIMARY KEY (MaDH, MaSP),
+        CONSTRAINT FK_ChiTietDonHang_DonHang FOREIGN KEY (MaDH) REFERENCES dbo.DonHang(MaDH),
+        CONSTRAINT FK_ChiTietDonHang_SanPham FOREIGN KEY (MaSP) REFERENCES dbo.SanPham(MaSP)
+    );
+END
+GO
+
+IF OBJECT_ID(N'dbo.SanPhamHinhAnh', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.SanPhamHinhAnh (
+        MaAnh INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        MaSP INT NOT NULL,
+        UrlAnh NVARCHAR(500) NOT NULL,
+        ThuTu INT NOT NULL CONSTRAINT DF_SanPhamHinhAnh_ThuTu DEFAULT 0,
+        CONSTRAINT FK_SanPhamHinhAnh_SanPham FOREIGN KEY (MaSP) REFERENCES dbo.SanPham(MaSP)
+    );
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = N'UX_SanPham_Slug'
+      AND object_id = OBJECT_ID(N'dbo.SanPham')
+)
+BEGIN
+    CREATE UNIQUE INDEX UX_SanPham_Slug ON dbo.SanPham (Slug) WHERE Slug IS NOT NULL;
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = N'IX_SanPham_NguonDuLieu_TrangThai'
+      AND object_id = OBJECT_ID(N'dbo.SanPham')
+)
+BEGIN
+    CREATE INDEX IX_SanPham_NguonDuLieu_TrangThai ON dbo.SanPham (NguonDuLieu, TrangThai, MaSP DESC);
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM sys.indexes
+    WHERE name = N'IX_SanPhamHinhAnh_MaSP_ThuTu'
+      AND object_id = OBJECT_ID(N'dbo.SanPhamHinhAnh')
+)
+BEGIN
+    CREATE INDEX IX_SanPhamHinhAnh_MaSP_ThuTu ON dbo.SanPhamHinhAnh (MaSP, ThuTu);
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM dbo.AdminUser WHERE Username = 'admin')
+BEGIN
+    INSERT INTO dbo.AdminUser (Username, Password, FullName, Role)
+    VALUES ('admin', '123456', N'Quản trị viên', N'Admin');
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM dbo.DanhMuc WHERE TenDM = N'Văn học')
+BEGIN
+    INSERT INTO dbo.DanhMuc (TenDM, TrangThai) VALUES (N'Văn học', 1);
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM dbo.DanhMuc WHERE TenDM = N'Kỹ năng sống')
+BEGIN
+    INSERT INTO dbo.DanhMuc (TenDM, TrangThai) VALUES (N'Kỹ năng sống', 1);
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM dbo.DanhMuc WHERE TenDM = N'Kinh tế')
+BEGIN
+    INSERT INTO dbo.DanhMuc (TenDM, TrangThai) VALUES (N'Kinh tế', 1);
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM dbo.DanhMuc WHERE TenDM = N'Công nghệ thông tin')
+BEGIN
+    INSERT INTO dbo.DanhMuc (TenDM, TrangThai) VALUES (N'Công nghệ thông tin', 1);
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM dbo.DanhMuc WHERE TenDM = N'Thiếu nhi')
+BEGIN
+    INSERT INTO dbo.DanhMuc (TenDM, TrangThai) VALUES (N'Thiếu nhi', 1);
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM dbo.KhuyenMai WHERE MaKM = 'SALE10')
+BEGIN
+    INSERT INTO dbo.KhuyenMai (MaKM, PhanTramGiam, GiaTriGiam, NgayBatDau, NgayKetThuc, SoLuong, DieuKien)
+    VALUES ('SALE10', 10, 0, GETDATE(), DATEADD(DAY, 30, GETDATE()), 100, 0);
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM dbo.KhuyenMai WHERE MaKM = 'FREESHIP')
+BEGIN
+    INSERT INTO dbo.KhuyenMai (MaKM, PhanTramGiam, GiaTriGiam, NgayBatDau, NgayKetThuc, SoLuong, DieuKien)
+    VALUES ('FREESHIP', 0, 30000, GETDATE(), DATEADD(DAY, 30, GETDATE()), 100, 0);
+END
+GO
+
+IF NOT EXISTS (SELECT 1 FROM dbo.KhachHang WHERE Email = 'user@gmail.com')
+BEGIN
+    INSERT INTO dbo.KhachHang (HoTen, Email, MatKhau, SoDienThoai)
+    VALUES (N'Nguyễn Văn Trăm', 'user@gmail.com', '123456', '0901234567');
+END
+GO
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM dbo.GioHang gh
+    INNER JOIN dbo.KhachHang kh ON kh.MaKH = gh.MaKH
+    WHERE kh.Email = 'user@gmail.com'
+)
+BEGIN
+    INSERT INTO dbo.GioHang (MaKH)
+    SELECT TOP 1 MaKH
+    FROM dbo.KhachHang
+    WHERE Email = 'user@gmail.com';
+END
+GO
