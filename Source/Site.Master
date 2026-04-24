@@ -9,21 +9,21 @@
     <!-- Tailwind CSS qua CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Noto+Serif:wght@500;600;700&display=swap&subset=vietnamese');
     </style>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#0284c7',   // Sky Blue 600
-                        secondary: '#0369a1', // Sky Blue 700
-                        accent: '#38bdf8',    // Sky Blue 400
-                        background: '#ffffff' // Pure White
+                        primary: '#92400E',
+                        secondary: '#18181B',
+                        accent: '#D97706',
+                        background: '#FFFBEB'
                     },
                     fontFamily: {
-                        heading: ['Cormorant', 'serif'],
-                        sans: ['Montserrat', 'sans-serif'],
+                        heading: ['Noto Serif', 'serif'],
+                        sans: ['Be Vietnam Pro', 'sans-serif'],
                     }
                 }
             }
@@ -31,8 +31,8 @@
     </script>
     <!-- Custom CSS cho xử lý các viền và 3D (Liquid Glass) -->
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--color-background); }
-        h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Cormorant', serif; }
+        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #FFFBEB; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Noto Serif', serif; }
         
         .liquid-glass {
             background: rgba(255, 255, 255, 0.4);
@@ -147,8 +147,8 @@
                         
                         <!-- Search Expandable -->
                         <div class="relative group/search hidden sm:flex items-center justify-end">
-                            <input type="text" placeholder="Tìm kiếm sách..." class="w-0 opacity-0 group-hover/search:w-64 group-hover/search:opacity-100 transition-all duration-300 origin-right rounded-full bg-gray-100/80 border border-gray-200 outline-none py-2 px-4 pr-12 text-sm text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-primary/20">
-                            <button title="Tìm kiếm" class="absolute right-0 w-10 h-10 rounded-full bg-transparent text-gray-500 hover:text-primary flex items-center justify-center transition-colors z-10 focus:outline-none">
+                            <input id="siteSearchInput" type="text" placeholder="Tìm kiếm sách..." class="w-0 opacity-0 group-hover/search:w-64 group-hover/search:opacity-100 transition-all duration-300 origin-right rounded-full bg-amber-50/80 border border-amber-200 outline-none py-2 px-4 pr-12 text-sm text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-primary/30">
+                            <button type="button" onclick="submitSiteSearch()" title="Tìm kiếm" class="absolute right-0 min-w-[44px] min-h-[44px] rounded-full bg-transparent text-gray-500 hover:text-primary flex items-center justify-center transition-colors z-10 focus-visible:ring-2 focus-visible:ring-primary/40">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </button>
                         </div>
@@ -175,9 +175,10 @@
                                         <p class="text-sm font-bold text-gray-800"><asp:Literal ID="litUserName" runat="server"></asp:Literal></p>
                                         <p class="text-xs text-gray-500 truncate mt-0.5"><asp:Literal ID="litUserEmail" runat="server"></asp:Literal></p>
                                     </div>
-                                    <a href="Account.aspx" class="block px-4 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors">Tài khoản cá nhân</a>
-                                    <a href="Orders.aspx" class="block px-4 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors">Đơn hàng của tôi</a>
-                                    <asp:LinkButton ID="btnUserLogout" runat="server" OnClick="btnUserLogout_Click" CssClass="block w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition-colors">Đăng xuất</asp:LinkButton>
+                                     <a href="Account.aspx" class="block px-4 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors">Tài khoản cá nhân</a>
+                                     <a href="Orders.aspx" class="block px-4 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors">Đơn hàng của tôi</a>
+                                     <a href="Wishlist.aspx" class="block px-4 py-2 text-sm text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors">Danh sách yêu thích</a>
+                                     <asp:LinkButton ID="btnUserLogout" runat="server" OnClick="btnUserLogout_Click" CssClass="block w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 transition-colors">Đăng xuất</asp:LinkButton>
                                 </asp:PlaceHolder>
                             </div>
                         </div>
@@ -199,7 +200,7 @@
         </main>
 
         <!-- FOOTER (4-Column Layout) -->
-        <footer class="bg-secondary text-white py-16 mt-auto border-t-[6px] border-primary">
+        <footer class="bg-zinc-950 text-white py-16 mt-auto border-t-[6px] border-primary">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
                 <!-- Column 1: Dịch vụ -->
                 <div>
@@ -270,5 +271,18 @@
     <!-- AJAX Script Global -->
     <asp:ContentPlaceHolder ID="ScriptsContent" runat="server">
     </asp:ContentPlaceHolder>
+    <script>
+        function submitSiteSearch() {
+            var input = document.getElementById('siteSearchInput');
+            var q = input ? input.value.trim() : '';
+            window.location.href = 'DanhMuc.aspx' + (q ? '?q=' + encodeURIComponent(q) : '');
+        }
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter' && event.target && event.target.id === 'siteSearchInput') {
+                event.preventDefault();
+                submitSiteSearch();
+            }
+        });
+    </script>
 </body>
 </html>

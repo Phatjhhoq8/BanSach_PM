@@ -3,8 +3,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
     <style>
         :root {
-            --book-primary: #1e293b;
-            --bg-adaptive: #f8fafc;
+            --book-primary: #92400E;
+            --bg-adaptive: #FFFBEB;
         }
 
         .preview-stage {
@@ -82,7 +82,7 @@
         }
 
         .cover-title-text {
-            font-family: 'Cormorant', serif;
+            font-family: 'Noto Serif', serif;
             font-size: 28px;
             font-weight: 700;
             color: #1e293b;
@@ -149,8 +149,11 @@
 
                             <button type="button" onclick="addToCart(this)" data-id='<asp:Literal ID="litMaSP" runat="server"></asp:Literal>' class="w-full bg-primary text-white py-5 rounded-2xl font-bold text-lg hover:bg-secondary transition-all shadow-xl shadow-primary/30 flex items-center justify-center gap-4 active:scale-95 group">
                                 <svg class="w-6 h-6 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                                Add to Collection
+                                Thêm vào giỏ hàng
                             </button>
+                            <a href="Wishlist.aspx" class="mt-4 min-h-[44px] w-full border border-amber-200 bg-white text-zinc-800 py-3 rounded-2xl font-bold text-sm hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-3">
+                                Lưu vào danh sách yêu thích
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -181,7 +184,7 @@
     <script>
         // Adaptive Color Logic
         const stage = document.getElementById('stage');
-        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--book-primary').trim() || '#0284c7';
+        const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--book-primary').trim() || '#92400E';
         stage.style.background = `radial-gradient(circle at center, ${primaryColor}15 0%, #ffffff 100%)`;
 
         function addToCart(btn) {

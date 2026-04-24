@@ -14,6 +14,11 @@ public partial class DanhMuc : System.Web.UI.Page
         if (!IsPostBack)
         {
             LoadCategories();
+            string q = Request.QueryString["q"];
+            if (!string.IsNullOrWhiteSpace(q))
+            {
+                txtSearch.Text = q.Trim();
+            }
             LoadProducts();
         }
     }
@@ -48,8 +53,8 @@ public partial class DanhMuc : System.Web.UI.Page
         else
         {
             VideoBgUrl = "videos/book.mp4";
-            litTitle.Text = "Tất Cả Tác Phẩm";
-            litCatTitle.Text = "Tất Cả Sản Phẩm";
+            litTitle.Text = string.IsNullOrEmpty(search) ? "Tất Cả Tác Phẩm" : "Kết quả tìm kiếm";
+            litCatTitle.Text = string.IsNullOrEmpty(search) ? "Tất Cả Sản Phẩm" : "Tìm kiếm: " + Server.HtmlEncode(search);
         }
 
         string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
@@ -62,7 +67,7 @@ public partial class DanhMuc : System.Web.UI.Page
                 WHERE sp.TrangThai = 1";
 
             if (!string.IsNullOrEmpty(cat)) sql += " AND sp.MaDM = @Cat";
-            if (!string.IsNullOrEmpty(search)) sql += " AND (sp.TenSP LIKE @Search OR sp.TacGia LIKE @Search)";
+            if (!string.IsNullOrEmpty(search)) sql += " AND (sp.TenSP LIKE @Search OR sp.TacGia LIKE @Search OR sp.NhaXuatBan LIKE @Search OR sp.NhaCungCap LIKE @Search)";
 
             switch (sort)
             {
