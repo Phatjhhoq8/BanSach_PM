@@ -25,6 +25,7 @@ public class CatalogProduct
     public decimal Gia { get; set; }
     public decimal? GiaKhuyenMai { get; set; }
     public int? PhanTramGiam { get; set; }
+    public int SoLuongTon { get; set; }
     public string HinhAnh { get; set; }
     public string LoaiBia { get; set; }
     public string NhaXuatBan { get; set; }
@@ -141,7 +142,7 @@ public static class FahasaCatalogService
         {
             bool importedOnly = HasImportedCatalog(connection);
             string sql = string.Format(
-                "SELECT TOP ({0}) sp.MaSP, sp.Slug, sp.TenSP, sp.TacGia, sp.MoTa, sp.Gia, sp.GiaKhuyenMai, sp.PhanTramGiam, sp.HinhAnh, sp.LoaiBia, sp.NhaXuatBan, sp.NhaCungCap, sp.DanhGia, sp.NguonUrl FROM dbo.SanPham sp WHERE {1} ORDER BY sp.MaSP DESC",
+                "SELECT TOP ({0}) sp.MaSP, sp.Slug, sp.TenSP, sp.TacGia, sp.MoTa, sp.Gia, sp.GiaKhuyenMai, sp.PhanTramGiam, sp.SoLuongTon, sp.HinhAnh, sp.LoaiBia, sp.NhaXuatBan, sp.NhaCungCap, sp.DanhGia, sp.NguonUrl FROM dbo.SanPham sp WHERE {1} ORDER BY sp.MaSP DESC",
                 take,
                 importedOnly ? "sp.TrangThai = 1 AND sp.NguonDuLieu = @NguonDuLieu" : "sp.TrangThai = 1");
 
@@ -167,7 +168,7 @@ public static class FahasaCatalogService
         {
             string sql = @"
                 SELECT TOP (@Take) sp.MaSP, sp.Slug, sp.TenSP, sp.TacGia, sp.MoTa, sp.Gia, sp.GiaKhuyenMai, 
-                       sp.PhanTramGiam, sp.HinhAnh, sp.LoaiBia, sp.NhaXuatBan, sp.NhaCungCap, sp.DanhGia, sp.NguonUrl 
+                       sp.PhanTramGiam, sp.SoLuongTon, sp.HinhAnh, sp.LoaiBia, sp.NhaXuatBan, sp.NhaCungCap, sp.DanhGia, sp.NguonUrl
                 FROM dbo.SanPham sp 
                 WHERE sp.TrangThai = 1 AND sp.MaDM = @MaDM 
                 ORDER BY sp.MaSP DESC";
@@ -191,7 +192,7 @@ public static class FahasaCatalogService
         using (SqlConnection connection = CreateOpenConnection())
         {
             bool importedOnly = HasImportedCatalog(connection);
-            string sql = "SELECT sp.MaSP, sp.Slug, sp.TenSP, sp.TacGia, sp.MoTa, sp.Gia, sp.GiaKhuyenMai, sp.PhanTramGiam, sp.HinhAnh, sp.LoaiBia, sp.NhaXuatBan, sp.NhaCungCap, sp.DanhGia, sp.NguonUrl FROM dbo.SanPham sp WHERE " +
+            string sql = "SELECT sp.MaSP, sp.Slug, sp.TenSP, sp.TacGia, sp.MoTa, sp.Gia, sp.GiaKhuyenMai, sp.PhanTramGiam, sp.SoLuongTon, sp.HinhAnh, sp.LoaiBia, sp.NhaXuatBan, sp.NhaCungCap, sp.DanhGia, sp.NguonUrl FROM dbo.SanPham sp WHERE " +
                          (importedOnly ? "sp.TrangThai = 1 AND sp.NguonDuLieu = @NguonDuLieu" : "sp.TrangThai = 1") +
                          " ORDER BY sp.MaSP DESC";
 
@@ -236,7 +237,7 @@ public static class FahasaCatalogService
                 isNumericId = int.TryParse(idOrSlug, out maSP);
             }
 
-            string sql = "SELECT TOP 1 sp.MaSP, sp.Slug, sp.TenSP, sp.TacGia, sp.MoTa, sp.Gia, sp.GiaKhuyenMai, sp.PhanTramGiam, sp.HinhAnh, sp.LoaiBia, sp.NhaXuatBan, sp.NhaCungCap, sp.DanhGia, sp.NguonUrl FROM dbo.SanPham sp WHERE " +
+            string sql = "SELECT TOP 1 sp.MaSP, sp.Slug, sp.TenSP, sp.TacGia, sp.MoTa, sp.Gia, sp.GiaKhuyenMai, sp.PhanTramGiam, sp.SoLuongTon, sp.HinhAnh, sp.LoaiBia, sp.NhaXuatBan, sp.NhaCungCap, sp.DanhGia, sp.NguonUrl FROM dbo.SanPham sp WHERE " +
                          (importedOnly ? "sp.TrangThai = 1 AND sp.NguonDuLieu = @NguonDuLieu AND " : "sp.TrangThai = 1 AND ") +
                          (isNumericId ? "sp.MaSP = @Id" : "sp.Slug = @Slug") +
                          " ORDER BY sp.MaSP DESC";
@@ -513,6 +514,7 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);", connection, transaction))
             product.Gia = SafeGetDecimal(reader, "Gia");
             product.GiaKhuyenMai = SafeGetNullableDecimal(reader, "GiaKhuyenMai");
             product.PhanTramGiam = SafeGetNullableInt(reader, "PhanTramGiam");
+            product.SoLuongTon = SafeGetInt(reader, "SoLuongTon");
             product.HinhAnh = SafeGetString(reader, "HinhAnh");
             product.LoaiBia = SafeGetString(reader, "LoaiBia");
             product.NhaXuatBan = SafeGetString(reader, "NhaXuatBan");

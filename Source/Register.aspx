@@ -1,49 +1,44 @@
-<%@ Page Title="Đăng ký - Nhà Sách Premium" Language="C#" MasterPageFile="Site.master" AutoEventWireup="true" CodeFile="Register.aspx.cs" Inherits="Register" %>
+<%@ Page Title="Đăng ký - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Register.aspx.cs" Inherits="Register" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
-    <div class="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-[40px] shadow-2xl border border-gray-100">
-            <div class="text-center">
-                <h2 class="text-3xl font-extrabold text-gray-900 font-heading">Tạo tài khoản mới</h2>
-                <p class="mt-2 text-sm text-gray-600">Trở thành thành viên của Premium Books ngay hôm nay</p>
+    <section class="container-page py-16 lg:py-24">
+        <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+            <div>
+                <p class="eyebrow">Thành viên Premium Books</p>
+                <h1 class="mt-4 text-4xl font-bold sm:text-5xl">Tạo tài khoản để đặt sách và theo dõi đơn hàng.</h1>
+                <p class="mt-5 text-lg leading-8 text-[var(--ink-soft)]">Đồ án hỗ trợ đầy đủ vai trò khách hàng: đăng ký, đăng nhập, giỏ hàng, checkout và lịch sử đơn.</p>
             </div>
-            <div class="mt-8 space-y-6">
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Họ và tên</label>
-                        <asp:TextBox ID="txtFullName" runat="server" CssClass="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Nguyễn Văn A"></asp:TextBox>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Email</label>
-                        <asp:TextBox ID="txtEmail" runat="server" CssClass="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-primary focus:border-primary outline-none transition-all" placeholder="example@gmail.com"></asp:TextBox>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Số điện thoại</label>
-                        <asp:TextBox ID="txtPhone" runat="server" CssClass="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-primary focus:border-primary outline-none transition-all" placeholder="0901234567"></asp:TextBox>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Mật khẩu</label>
-                        <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-primary focus:border-primary outline-none transition-all" placeholder="••••••••"></asp:TextBox>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Xác nhận mật khẩu</label>
-                        <asp:TextBox ID="txtConfirmPassword" runat="server" TextMode="Password" CssClass="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-primary focus:border-primary outline-none transition-all" placeholder="••••••••"></asp:TextBox>
-                    </div>
-                </div>
 
-                <div>
-                    <asp:Button ID="btnRegister" runat="server" Text="Đăng ký tài khoản" OnClick="btnRegister_Click" CssClass="w-full flex justify-center py-4 px-4 border border-transparent text-sm font-bold rounded-2xl text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all active:scale-95" />
-                </div>
-                
-                <asp:Literal ID="litError" runat="server"></asp:Literal>
-
-                <div class="text-center pt-4">
-                    <p class="text-sm text-gray-600">
-                        Đã có tài khoản? 
-                        <a href="Login.aspx" class="font-bold text-primary hover:text-secondary">Đăng nhập ngay</a>
-                    </p>
+            <div class="surface-panel p-6 sm:p-8 lg:p-10">
+                <h2 class="text-3xl font-bold">Tạo tài khoản mới</h2>
+                <div class="mt-8 grid gap-5">
+                    <div>
+                        <label class="mb-2 block text-sm font-extrabold text-[var(--ink-soft)]">Họ và tên</label>
+                        <asp:TextBox ID="txtFullName" runat="server" CssClass="form-control" placeholder="Nguyễn Văn A"></asp:TextBox>
+                    </div>
+                    <div>
+                        <label class="mb-2 block text-sm font-extrabold text-[var(--ink-soft)]">Email</label>
+                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" placeholder="example@gmail.com"></asp:TextBox>
+                    </div>
+                    <div>
+                        <label class="mb-2 block text-sm font-extrabold text-[var(--ink-soft)]">Số điện thoại</label>
+                        <asp:TextBox ID="txtPhone" runat="server" CssClass="form-control" placeholder="0901234567"></asp:TextBox>
+                    </div>
+                    <div class="grid gap-5 sm:grid-cols-2">
+                        <div>
+                            <label class="mb-2 block text-sm font-extrabold text-[var(--ink-soft)]">Mật khẩu</label>
+                            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder="Tối thiểu 6 ký tự"></asp:TextBox>
+                        </div>
+                        <div>
+                            <label class="mb-2 block text-sm font-extrabold text-[var(--ink-soft)]">Xác nhận mật khẩu</label>
+                            <asp:TextBox ID="txtConfirmPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder="Nhập lại mật khẩu"></asp:TextBox>
+                        </div>
+                    </div>
+                    <asp:Button ID="btnRegister" runat="server" Text="Đăng ký tài khoản" OnClick="btnRegister_Click" CssClass="btn-primary w-full py-4" />
+                    <asp:Literal ID="litError" runat="server"></asp:Literal>
+                    <p class="pt-2 text-center text-sm text-[var(--ink-soft)]">Đã có tài khoản? <a href="Login.aspx" class="font-black text-[var(--primary-dark)] hover:underline">Đăng nhập</a></p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </asp:Content>

@@ -31,7 +31,7 @@
                 </tr>
             </thead>
             <tbody class="text-sm divide-y divide-white/5">
-                <asp:Repeater ID="rptOrders" runat="server">
+                <asp:Repeater ID="rptOrders" runat="server" OnItemDataBound="rptOrders_ItemDataBound">
                     <ItemTemplate>
                         <tr class="hover:bg-white/5 transition-colors">
                             <td class="px-8 py-4 text-white font-medium">#<%# Eval("MaDH") %></td>

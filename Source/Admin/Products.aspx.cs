@@ -18,7 +18,7 @@ public partial class Admin_Products : System.Web.UI.Page
 
     private void LoadCategories()
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             string sql = "SELECT MaDM, TenDM FROM dbo.DanhMuc WHERE TrangThai = 1";
@@ -35,10 +35,19 @@ public partial class Admin_Products : System.Web.UI.Page
 
     private void LoadProducts()
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
-            string sql = "SELECT MaSP, TenSP, TacGia, Gia, GiaKhuyenMai, SoLuongTon, HinhAnh, TrangThai FROM dbo.SanPham WHERE 1=1";
+            string sql = @"
+                SELECT MaSP, TenSP, TacGia, Gia, GiaKhuyenMai, SoLuongTon,
+                       CASE
+                           WHEN HinhAnh IS NULL OR LTRIM(RTRIM(HinhAnh)) = '' THEN 'https://placehold.co/400x550/f8f1e3/3b3028?text=Book'
+                           WHEN HinhAnh LIKE 'http%' OR HinhAnh LIKE '../%' OR HinhAnh LIKE '/%' THEN HinhAnh
+                           WHEN HinhAnh LIKE 'img/%' THEN '../' + HinhAnh
+                           ELSE '../img/books/' + HinhAnh
+                       END AS HinhAnh,
+                       TrangThai
+                FROM dbo.SanPham WHERE 1=1";
             
             if (!string.IsNullOrEmpty(txtSearch.Text))
             {
@@ -62,6 +71,7 @@ public partial class Admin_Products : System.Web.UI.Page
             da.Fill(dt);
             rptProducts.DataSource = dt;
             rptProducts.DataBind();
+            litProductSummary.Text = "Hiển thị " + dt.Rows.Count + " sản phẩm theo bộ lọc hiện tại";
         }
     }
 
@@ -79,7 +89,7 @@ public partial class Admin_Products : System.Web.UI.Page
 
     private void DeleteProduct(int id)
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             // Instead of hard delete, we could do soft delete by setting TrangThai = 0

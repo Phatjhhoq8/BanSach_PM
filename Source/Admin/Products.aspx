@@ -78,17 +78,8 @@
         
         <!-- Pagination -->
         <div class="p-8 border-t border-white/5 flex items-center justify-between">
-            <span class="text-sm text-slate-500">Hiển thị <span class="text-white">10</span> trên <span class="text-white">128</span> sản phẩm</span>
-            <div class="flex items-center gap-2">
-                <button class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-500 hover:text-white transition-all">
-                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
-                </button>
-                <button class="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold">1</button>
-                <button class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 hover:text-white transition-all">2</button>
-                <button class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-500 hover:text-white transition-all">
-                    <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                </button>
-            </div>
+            <span class="text-sm text-slate-500"><asp:Literal ID="litProductSummary" runat="server">Đang tải sản phẩm...</asp:Literal></span>
+            <a href="ProductEdit.aspx" class="text-sm font-bold text-adminaccent hover:underline">Thêm sách mới</a>
         </div>
     </div>
 </asp:Content>

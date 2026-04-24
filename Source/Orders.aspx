@@ -1,75 +1,68 @@
-<%@ Page Title="Đơn hàng của tôi - Nhà Sách Premium" Language="C#" MasterPageFile="Site.master" AutoEventWireup="true" CodeFile="Orders.aspx.cs" Inherits="Orders" %>
+<%@ Page Title="Đơn hàng của tôi - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Orders.aspx.cs" Inherits="Orders" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div class="flex items-center gap-4 mb-12">
-            <a href="Account.aspx" class="w-10 h-10 rounded-full bg-white border border-gray-100 flex items-center justify-center text-gray-400 hover:text-primary transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-            </a>
-            <h1 class="text-4xl font-bold text-gray-900 font-heading">Lịch sử đơn hàng</h1>
+    <section class="container-page py-10 lg:py-16">
+        <div class="mb-10 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+            <div>
+                <p class="eyebrow">Tài khoản</p>
+                <h1 class="mt-3 text-4xl font-bold sm:text-5xl">Lịch sử đơn hàng</h1>
+            </div>
+            <a href="Account.aspx" class="btn-secondary self-start md:self-auto">Quay lại tài khoản</a>
         </div>
 
-        <div class="space-y-6">
+        <div class="space-y-5">
             <asp:Repeater ID="rptOrders" runat="server">
                 <ItemTemplate>
-                    <div class="bg-white rounded-[40px] border border-gray-100 overflow-hidden shadow-sm hover:shadow-xl transition-all">
-                        <div class="p-8 border-b border-gray-50 flex flex-wrap items-center justify-between gap-6">
-                            <div class="flex items-center gap-8">
+                    <article class="surface-panel overflow-hidden">
+                        <div class="flex flex-col justify-between gap-5 border-b border-[var(--line)] p-5 sm:p-6 lg:flex-row lg:items-center">
+                            <div class="grid gap-4 sm:grid-cols-3 lg:flex lg:gap-10">
                                 <div>
-                                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Mã đơn hàng</p>
-                                    <p class="text-lg font-bold text-gray-900">#<%# Eval("MaDH") %></p>
+                                    <p class="text-xs font-black uppercase tracking-[0.12em] text-[var(--muted)]">Mã đơn</p>
+                                    <p class="mt-1 text-lg font-black">#<%# Eval("MaDH") %></p>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Ngày đặt</p>
-                                    <p class="text-sm font-medium text-gray-700"><%# Eval("NgayDat", "{0:dd/MM/yyyy HH:mm}") %></p>
+                                    <p class="text-xs font-black uppercase tracking-[0.12em] text-[var(--muted)]">Ngày đặt</p>
+                                    <p class="mt-1 text-sm font-bold text-[var(--ink-soft)]"><%# Eval("NgayDat", "{0:dd/MM/yyyy HH:mm}") %></p>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] text-gray-400 uppercase font-bold tracking-widest mb-1">Tổng tiền</p>
-                                    <p class="text-sm font-bold text-primary"><%# Eval("TongTien", "{0:N0}đ") %></p>
+                                    <p class="text-xs font-black uppercase tracking-[0.12em] text-[var(--muted)]">Tổng tiền</p>
+                                    <p class="mt-1 price-text text-sm"><%# Eval("TongTien", "{0:N0}đ") %></p>
                                 </div>
                             </div>
-                            <div>
-                                <span class="px-4 py-1.5 rounded-full text-xs font-bold uppercase <%# GetStatusClass(Eval("TrangThai")) %>">
-                                    <%# GetStatusText(Eval("TrangThai")) %>
-                                </span>
-                            </div>
+                            <span class="status-pill <%# GetStatusClass(Eval("TrangThai")) %>"><%# GetStatusText(Eval("TrangThai")) %></span>
                         </div>
-                        <div class="p-8 bg-gray-50/50">
-                            <div class="space-y-4">
-                                <asp:Repeater ID="rptOrderDetails" runat="server" DataSource='<%# Eval("Details") %>'>
-                                    <ItemTemplate>
-                                        <div class="flex items-center gap-4">
-                                            <div class="w-12 h-16 bg-white rounded-lg overflow-hidden flex-shrink-0 border border-gray-100">
-                                                <img src="<%# Eval("HinhAnh") %>" alt="" class="w-full h-full object-cover">
-                                            </div>
-                                            <div class="flex-1 min-w-0">
-                                                <h4 class="text-sm font-bold text-gray-800 truncate"><%# Eval("TenSP") %></h4>
-                                                <p class="text-xs text-gray-500 mt-1">Số lượng: <%# Eval("SoLuong") %> x <%# Eval("DonGia", "{0:N0}đ") %></p>
-                                            </div>
+                        <div class="space-y-4 bg-[var(--paper)] p-5 sm:p-6">
+                            <asp:Repeater ID="rptOrderDetails" runat="server" DataSource='<%# Eval("Details") %>'>
+                                <ItemTemplate>
+                                    <div class="flex items-center gap-4">
+                                        <div class="book-cover aspect-[3/4] w-14 flex-shrink-0 rounded-xl p-1.5">
+                                            <img src='<%# Eval("HinhAnh") %>' onerror="this.src='https://placehold.co/400x550/f8f1e3/3b3028?text=Book';" alt='<%# Eval("TenSP") %>' class="h-full w-full" />
                                         </div>
-                                    </ItemTemplate>
-                                </asp:Repeater>
-                            </div>
-                            <div class="mt-8 flex justify-end">
-                                <a href="OrderDetail.aspx?id=<%# Eval("MaDH") %>" class="text-sm font-bold text-gray-400 hover:text-primary transition-colors flex items-center gap-1">
-                                    Xem chi tiết đơn hàng
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                                </a>
+                                        <div class="min-w-0 flex-1">
+                                            <h4 class="line-clamp-1 text-sm font-black"><%# Eval("TenSP") %></h4>
+                                            <p class="mt-1 text-xs text-[var(--muted)]">Số lượng: <%# Eval("SoLuong") %> x <%# Eval("DonGia", "{0:N0}đ") %></p>
+                                        </div>
+                                    </div>
+                                </ItemTemplate>
+                            </asp:Repeater>
+                            <div class="flex justify-end pt-2">
+                                <a href="OrderDetail.aspx?id=<%# Eval("MaDH") %>" class="text-sm font-black text-[var(--primary-dark)] hover:underline">Xem chi tiết đơn hàng</a>
                             </div>
                         </div>
-                    </div>
+                    </article>
                 </ItemTemplate>
             </asp:Repeater>
 
             <asp:PlaceHolder ID="phNoOrders" runat="server" Visible="false">
-                <div class="text-center py-24 bg-white rounded-[40px] border border-gray-100 shadow-sm">
-                    <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
-                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                <div class="surface-panel py-20 text-center">
+                    <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-[var(--paper)] text-[var(--muted)]">
+                        <svg class="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-400">Bạn chưa có đơn hàng nào</h3>
-                    <a href="DanhMuc.aspx" class="mt-6 inline-block text-primary font-bold hover:underline">Khám phá sách ngay</a>
+                    <h2 class="mt-6 text-2xl font-bold">Bạn chưa có đơn hàng nào</h2>
+                    <p class="mt-2 text-[var(--muted)]">Khi đặt sách thành công, đơn hàng sẽ xuất hiện ở đây.</p>
+                    <a href="DanhMuc.aspx" class="btn-primary mt-7">Khám phá sách ngay</a>
                 </div>
             </asp:PlaceHolder>
         </div>
-    </div>
+    </section>
 </asp:Content>

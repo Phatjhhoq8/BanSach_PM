@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 using System.Web;
 
 public partial class Register : System.Web.UI.Page
@@ -17,15 +18,39 @@ public partial class Register : System.Web.UI.Page
         string password = txtPassword.Text.Trim();
         string confirm = txtConfirmPassword.Text.Trim();
 
+        if (string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            ShowError("Vui lòng nhập đầy đủ họ tên, email và mật khẩu.");
+            return;
+        }
+
+        if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+        {
+            ShowError("Email chưa hợp lệ.");
+            return;
+        }
+
+        if (!string.IsNullOrWhiteSpace(phone) && !Regex.IsMatch(phone, @"^[0-9+\-\s]{9,15}$"))
+        {
+            ShowError("Số điện thoại chưa hợp lệ.");
+            return;
+        }
+
+        if (password.Length < 6)
+        {
+            ShowError("Mật khẩu cần có ít nhất 6 ký tự.");
+            return;
+        }
+
         if (password != confirm)
         {
-            litError.Text = "<div class='mt-4 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-600 text-sm font-medium'>Mật khẩu xác nhận không khớp.</div>";
+            ShowError("Mật khẩu xác nhận không khớp.");
             return;
         }
 
         if (IsEmailExists(email))
         {
-            litError.Text = "<div class='mt-4 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-600 text-sm font-medium'>Email này đã được sử dụng.</div>";
+            ShowError("Email này đã được sử dụng.");
             return;
         }
 
@@ -35,13 +60,13 @@ public partial class Register : System.Web.UI.Page
         }
         else
         {
-            litError.Text = "<div class='mt-4 p-4 bg-red-50 border border-red-200 rounded-2xl text-red-600 text-sm font-medium'>Có lỗi xảy ra, vui lòng thử lại sau.</div>";
+            ShowError("Có lỗi xảy ra, vui lòng thử lại sau.");
         }
     }
 
     private bool IsEmailExists(string email)
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             string sql = "SELECT COUNT(1) FROM dbo.KhachHang WHERE Email = @Email";
@@ -57,10 +82,13 @@ public partial class Register : System.Web.UI.Page
 
     private bool CreateUser(string fullName, string email, string phone, string password)
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
-            string sql = "INSERT INTO dbo.KhachHang (HoTen, Email, SoDienThoai, MatKhau) VALUES (@Name, @Email, @Phone, @Pass)";
+            string sql = @"
+                INSERT INTO dbo.KhachHang (HoTen, Email, SoDienThoai, MatKhau) VALUES (@Name, @Email, @Phone, @Pass);
+                DECLARE @NewId INT = CAST(SCOPE_IDENTITY() AS INT);
+                INSERT INTO dbo.GioHang (MaKH) VALUES (@NewId);";
             using (SqlCommand cmd = new SqlCommand(sql, conn))
             {
                 cmd.Parameters.AddWithValue("@Name", fullName);
@@ -71,5 +99,10 @@ public partial class Register : System.Web.UI.Page
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
+    }
+
+    private void ShowError(string message)
+    {
+        litError.Text = "<div class='mt-4 rounded-3xl border border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700'>" + HttpUtility.HtmlEncode(message) + "</div>";
     }
 }

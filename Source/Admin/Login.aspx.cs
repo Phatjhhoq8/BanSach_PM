@@ -9,6 +9,17 @@ public partial class Admin_Login : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (!IsPostBack)
+        {
+            try
+            {
+                FahasaCatalogService.GetFeaturedProducts(1);
+            }
+            catch
+            {
+            }
+        }
+
         if (User.Identity.IsAuthenticated)
         {
             Response.Redirect("~/Admin/Default.aspx");
@@ -35,7 +46,7 @@ public partial class Admin_Login : System.Web.UI.Page
 
     private bool ValidateAdmin(string username, string password)
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             string sql = "SELECT COUNT(1) FROM dbo.AdminUser WHERE Username = @User AND Password = @Pass";

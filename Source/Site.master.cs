@@ -1,5 +1,6 @@
 using System;
 using System.Configuration;
+using System.Data.SqlClient;
 using System.Web.UI;
 
 public partial class SiteMaster : MasterPage
@@ -8,7 +9,19 @@ public partial class SiteMaster : MasterPage
     {
         if (!IsPostBack)
         {
+            EnsureCatalogReady();
             CheckLogin();
+        }
+    }
+
+    private void EnsureCatalogReady()
+    {
+        try
+        {
+            FahasaCatalogService.GetFeaturedProducts(1);
+        }
+        catch
+        {
         }
     }
 
@@ -27,24 +40,28 @@ public partial class SiteMaster : MasterPage
         {
             phGuest.Visible = true;
             phUser.Visible = false;
+            cartCount.InnerText = "0";
         }
     }
 
     private void UpdateCartCount(int userId)
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
-        using (System.Data.SqlClient.SqlConnection conn = new System.Data.SqlClient.SqlConnection(connString))
+        try
         {
-            string sql = "SELECT SUM(SoLuong) FROM dbo.ChiTietGioHang WHERE MaKH = @UID";
-            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@UID", userId);
-            conn.Open();
-            object result = cmd.ExecuteScalar();
-            string count = (result == DBNull.Value) ? "0" : Convert.ToInt32(result).ToString();
-            
-            // We need to use a Literal or Script to update the span id="cartCount"
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "UpdateCart", 
-                "document.getElementById('cartCount').innerText = '" + count + "';", true);
+            string connString = DbConfig.GetConnectionString();
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                string sql = "SELECT SUM(SoLuong) FROM dbo.ChiTietGioHang WHERE MaKH = @UID";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@UID", userId);
+                conn.Open();
+                object result = cmd.ExecuteScalar();
+                cartCount.InnerText = (result == DBNull.Value || result == null) ? "0" : Convert.ToInt32(result).ToString();
+            }
+        }
+        catch
+        {
+            cartCount.InnerText = "0";
         }
     }
 

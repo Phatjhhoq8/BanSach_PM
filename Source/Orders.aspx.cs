@@ -24,13 +24,18 @@ public partial class Orders : System.Web.UI.Page
     private void LoadOrders()
     {
         int userId = (int)Session["UserId"];
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
 
         using (SqlConnection conn = new SqlConnection(connString))
         {
             string sql = @"
                 SELECT dh.MaDH, dh.NgayDat, dh.TongTien, dh.TrangThai, 
-                       ct.MaSP, ct.SoLuong, ct.DonGia, sp.TenSP, sp.HinhAnh
+                       ct.MaSP, ct.SoLuong, ct.DonGia, sp.TenSP,
+                       CASE
+                           WHEN sp.HinhAnh IS NULL OR LTRIM(RTRIM(sp.HinhAnh)) = '' THEN 'https://placehold.co/400x550/f8f1e3/3b3028?text=Book'
+                           WHEN sp.HinhAnh LIKE 'http%' OR sp.HinhAnh LIKE 'img/%' OR sp.HinhAnh LIKE '/%' THEN sp.HinhAnh
+                           ELSE 'img/books/' + sp.HinhAnh
+                       END AS HinhAnh
                 FROM dbo.DonHang dh
                 JOIN dbo.ChiTietDonHang ct ON dh.MaDH = ct.MaDH
                 JOIN dbo.SanPham sp ON ct.MaSP = sp.MaSP

@@ -8,7 +8,7 @@ public partial class Admin_Orders : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (Request.QueryString["action"] == "update")
+        if (Request.HttpMethod == "POST" && Request.QueryString["action"] == "update")
         {
             UpdateStatus();
         }
@@ -21,7 +21,7 @@ public partial class Admin_Orders : System.Web.UI.Page
 
     private void LoadOrders()
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             string sql = @"
@@ -51,10 +51,15 @@ public partial class Admin_Orders : System.Web.UI.Page
 
     private void UpdateStatus()
     {
-        int id = int.Parse(Request.QueryString["id"]);
-        int status = int.Parse(Request.QueryString["status"]);
+        int id;
+        int status;
+        if (!int.TryParse(Request.QueryString["id"], out id) || !int.TryParse(Request.QueryString["status"], out status) || status < 0 || status > 4)
+        {
+            Response.Redirect("Orders.aspx");
+            return;
+        }
         
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             string sql = "UPDATE dbo.DonHang SET TrangThai = @Status WHERE MaDH = @Id";
@@ -70,6 +75,21 @@ public partial class Admin_Orders : System.Web.UI.Page
     protected void btnSearch_Click(object sender, EventArgs e)
     {
         LoadOrders();
+    }
+
+    protected void rptOrders_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    {
+        if (e.Item.ItemType != ListItemType.Item && e.Item.ItemType != ListItemType.AlternatingItem)
+        {
+            return;
+        }
+
+        DataRowView row = e.Item.DataItem as DataRowView;
+        DropDownList ddl = e.Item.FindControl("ddlUpdateStatus") as DropDownList;
+        if (row != null && ddl != null)
+        {
+            ddl.SelectedValue = row["TrangThai"].ToString();
+        }
     }
 
     protected string GetStatusText(object status)
