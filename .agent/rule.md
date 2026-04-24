@@ -14,6 +14,9 @@ Bạn là một Full-stack Senior Developer chuyên nghiệp. Nhiệm vụ của
   - Quản lý CSDL: SQL Server Management Studio (SSMS).
 
 ## 3. NGÔN NGỮ THIẾT KẾ & UI/UX (DESIGN GUIDELINES)
+* **Bắt buộc dùng Impeccable cho design:** Mọi yêu cầu liên quan đến UI/UX, redesign, polish, layout, typography, spacing, responsive, motion hoặc critique giao diện phải tham chiếu bộ skill tại `C:\Users\Admin\Desktop\BanSachDemo\.agent\impeccable\.agents\skills\impeccable\SKILL.md` và design context tại `C:\Users\Admin\Desktop\BanSachDemo\.agent\impeccable\DESIGN.md` trước khi đề xuất hoặc chỉnh code.
+* **Cách áp dụng Impeccable:** Xem các thay đổi storefront là register `brand`, các thay đổi admin/dashboard là register `product`. Áp dụng nguyên tắc chống giao diện generic/AI slop, ưu tiên phân cấp rõ, typography có chủ ý, spacing có nhịp, màu OKLCH, và tránh glassmorphism/gradient text/card grid lặp lại nếu không có lý do.
+* **Bám sản phẩm hiện có:** Impeccable là tiêu chuẩn thiết kế, không phải lý do phá cấu trúc Web Forms hiện tại. Khi chỉnh giao diện, giữ MasterPage, Code-Behind, server controls và dữ liệu động đang hoạt động.
 * **Màu chủ đạo:** Nâu Classic (Classic Brown) cho tổng thể, Đen Universe cho Footer.
 * **Trang chủ (Hero & Banner):** Lấy ý tưởng banner từ [cachep.vn]. Sử dụng Video Banner Hero từ các nguồn: [Link 1](https://www.youtube.com/watch?v=6Fp9KofWq9I) và [Link 2](https://www.youtube.com/watch?v=pGkPOcnEuSE).
 * **Cấu trúc web & luồng Sale:** Lấy cảm hứng từ [Fahasa.com](https://www.fahasa.com/).

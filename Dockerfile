@@ -9,7 +9,8 @@ RUN printf 'deb http://archive.debian.org/debian buster main\ndeb http://archive
 WORKDIR /app
 COPY . /app
 
-RUN chmod +x /app/docker/entrypoint.sh \
+RUN sed -i 's/\r$//' /app/docker/entrypoint.sh \
+    && chmod +x /app/docker/entrypoint.sh \
     && mkdir -p /app/Source/img/books \
     && chmod -R 775 /app/Source/img/books
 
