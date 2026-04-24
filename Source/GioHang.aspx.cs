@@ -23,12 +23,18 @@ public partial class GioHang : System.Web.UI.Page
     private void LoadCart()
     {
         int userId = (int)Session["UserId"];
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
 
         using (SqlConnection conn = new SqlConnection(connString))
         {
             string sql = @"
-                SELECT sp.MaSP, sp.TenSP, sp.TacGia, sp.HinhAnh, ct.SoLuong, 
+                SELECT sp.MaSP, sp.TenSP, sp.TacGia,
+                       CASE
+                           WHEN sp.HinhAnh IS NULL OR LTRIM(RTRIM(sp.HinhAnh)) = '' THEN 'https://placehold.co/400x550/f8f1e3/3b3028?text=Book'
+                           WHEN sp.HinhAnh LIKE 'http%' OR sp.HinhAnh LIKE 'img/%' OR sp.HinhAnh LIKE '/%' THEN sp.HinhAnh
+                           ELSE 'img/books/' + sp.HinhAnh
+                       END AS HinhAnh,
+                       ct.SoLuong,
                        (CASE WHEN sp.GiaKhuyenMai > 0 THEN sp.GiaKhuyenMai ELSE sp.Gia END) as DonGia,
                        ct.SoLuong * (CASE WHEN sp.GiaKhuyenMai > 0 THEN sp.GiaKhuyenMai ELSE sp.Gia END) as ThanhTien
                 FROM dbo.ChiTietGioHang ct
@@ -56,13 +62,17 @@ public partial class GioHang : System.Web.UI.Page
                 litCartCount.Text = count.ToString();
                 litSubtotal.Text = total.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) + "đ";
                 litTotal.Text = litSubtotal.Text;
-                
+
                 phEmptyCart.Visible = false;
+                rptCartItems.Visible = true;
             }
             else
             {
                 phEmptyCart.Visible = true;
                 rptCartItems.Visible = false;
+                litCartCount.Text = "0";
+                litSubtotal.Text = "0đ";
+                litTotal.Text = "0đ";
             }
         }
     }

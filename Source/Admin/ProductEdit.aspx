@@ -12,6 +12,7 @@
             </a>
             <h3 class="text-xl font-bold text-white">Thông tin chi tiết</h3>
         </div>
+        <asp:Literal ID="litError" runat="server"></asp:Literal>
 
         <div class="space-y-8">
             <!-- Basic Info Section -->

@@ -49,7 +49,7 @@ public partial class ChiTiet : System.Web.UI.Page
             };
         }
 
-        litMaSP.Text = product.MaSP.ToString();
+        hdnMaSP.Value = product.MaSP.ToString();
         litTenSP.Text = HttpUtility.HtmlEncode(product.TenSP);
         litTacGia.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.TacGia) ? "Đang cập nhật" : product.TacGia);
         litGia.Text = HttpUtility.HtmlEncode(product.GiaText);
@@ -70,11 +70,14 @@ public partial class ChiTiet : System.Web.UI.Page
         litSupplier.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.NhaCungCap) ? "Fahasa" : product.NhaCungCap);
         litPublisher.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.NhaXuatBan) ? "Đang cập nhật" : product.NhaXuatBan);
         litRating.Text = HttpUtility.HtmlEncode(product.DanhGia.HasValue && product.DanhGia.Value > 0 ? product.DanhGia.Value.ToString("0.0") + "/5" : "Chưa có đánh giá");
+        litStock.Text = product.SoLuongTon > 0 ? product.SoLuongTon + " cuốn có sẵn" : "Tạm hết hàng";
+        phAvailable.Visible = product.MaSP > 0 && product.SoLuongTon > 0;
+        phOutOfStock.Visible = !phAvailable.Visible;
 
         if (!string.IsNullOrWhiteSpace(product.DiscountText))
         {
-            discountBadge.Attributes["class"] = "bg-rose-500 text-white px-3 py-1 text-xs font-black rounded-lg";
-            oldPriceContainer.Attributes["class"] = "text-lg text-gray-300 line-through";
+            discountBadge.Attributes["class"] = "badge-sale";
+            oldPriceContainer.Attributes["class"] = "text-lg text-[var(--muted)] line-through";
         }
         else
         {

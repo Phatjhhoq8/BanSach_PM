@@ -6,16 +6,16 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
     <!-- Stats Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
         <div class="glass-card p-6 rounded-3xl">
             <div class="flex items-center justify-between mb-4">
                 <div class="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center text-blue-500">
                     <i data-lucide="dollar-sign" class="w-6 h-6"></i>
                 </div>
-                <span class="text-xs font-bold text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded-lg">+12.5%</span>
+                <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2 py-1 rounded-lg">Tháng này</span>
             </div>
             <h3 class="text-slate-400 text-sm font-medium">Doanh thu tháng</h3>
-            <p class="text-2xl font-bold text-white mt-1">45.280.000đ</p>
+            <p class="text-2xl font-bold text-white mt-1"><asp:Literal ID="litMonthlyRevenue" runat="server">0đ</asp:Literal></p>
         </div>
 
         <div class="glass-card p-6 rounded-3xl">
@@ -23,10 +23,10 @@
                 <div class="w-12 h-12 bg-purple-500/10 rounded-2xl flex items-center justify-center text-purple-500">
                     <i data-lucide="shopping-bag" class="w-6 h-6"></i>
                 </div>
-                <span class="text-xs font-bold text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded-lg">+8.2%</span>
+                <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-2 py-1 rounded-lg">Chờ xử lý</span>
             </div>
-            <h3 class="text-slate-400 text-sm font-medium">Đơn hàng mới</h3>
-            <p class="text-2xl font-bold text-white mt-1">128</p>
+            <h3 class="text-slate-400 text-sm font-medium">Đơn hàng chờ</h3>
+            <p class="text-2xl font-bold text-white mt-1"><asp:Literal ID="litPendingOrders" runat="server">0</asp:Literal></p>
         </div>
 
         <div class="glass-card p-6 rounded-3xl">
@@ -34,10 +34,10 @@
                 <div class="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center text-amber-500">
                     <i data-lucide="users" class="w-6 h-6"></i>
                 </div>
-                <span class="text-xs font-bold text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded-lg">+5.4%</span>
+                <span class="text-xs font-bold text-stone-300 bg-white/5 px-2 py-1 rounded-lg">Tổng</span>
             </div>
             <h3 class="text-slate-400 text-sm font-medium">Khách hàng</h3>
-            <p class="text-2xl font-bold text-white mt-1">1,240</p>
+            <p class="text-2xl font-bold text-white mt-1"><asp:Literal ID="litCustomers" runat="server">0</asp:Literal></p>
         </div>
 
         <div class="glass-card p-6 rounded-3xl">
@@ -48,7 +48,7 @@
                 <span class="text-xs font-bold text-rose-500 bg-rose-500/10 px-2 py-1 rounded-lg">Cần nhập</span>
             </div>
             <h3 class="text-slate-400 text-sm font-medium">Sản phẩm sắp hết</h3>
-            <p class="text-2xl font-bold text-white mt-1">12</p>
+            <p class="text-2xl font-bold text-white mt-1"><asp:Literal ID="litLowStock" runat="server">0</asp:Literal></p>
         </div>
     </div>
 

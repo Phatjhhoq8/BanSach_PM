@@ -1,5 +1,4 @@
 using System;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -19,7 +18,7 @@ public partial class Wishlist : System.Web.UI.Page
 
     private void EnsureWishlistTable()
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             SqlCommand cmd = new SqlCommand(@"
@@ -41,7 +40,7 @@ public partial class Wishlist : System.Web.UI.Page
 
     private void LoadWishlist()
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             SqlDataAdapter da = new SqlDataAdapter(@"

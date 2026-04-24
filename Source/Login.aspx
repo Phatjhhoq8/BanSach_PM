@@ -1,47 +1,31 @@
-<%@ Page Title="Đăng nhập - Nhà Sách Premium" Language="C#" MasterPageFile="Site.master" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
+<%@ Page Title="Đăng nhập - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
-    <div class="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-[40px] shadow-2xl border border-gray-100">
-            <div class="text-center">
-                <h2 class="text-3xl font-extrabold text-gray-900 font-heading">Chào mừng trở lại</h2>
-                <p class="mt-2 text-sm text-gray-600">Đăng nhập để tiếp tục mua sắm tại Premium Books</p>
+    <section class="container-page py-16 lg:py-24">
+        <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+            <div>
+                <p class="eyebrow">Tài khoản khách hàng</p>
+                <h1 class="mt-4 text-4xl font-bold sm:text-5xl">Đăng nhập để tiếp tục hành trình đọc.</h1>
+                <p class="mt-5 text-lg leading-8 text-[var(--ink-soft)]">Tài khoản giúp lưu giỏ hàng trong SQL Server, đặt hàng và theo dõi trạng thái đơn sách.</p>
             </div>
-            <div class="mt-8 space-y-6">
-                <div class="space-y-4">
+
+            <div class="surface-panel p-6 sm:p-8 lg:p-10">
+                <h2 class="text-3xl font-bold">Chào mừng trở lại</h2>
+                <p class="mt-2 text-sm text-[var(--muted)]">Đăng nhập bằng email đã đăng ký.</p>
+                <div class="mt-8 space-y-5">
                     <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700">Email của bạn</label>
-                        <asp:TextBox ID="txtEmail" runat="server" CssClass="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-primary focus:border-primary transition-all outline-none" placeholder="example@gmail.com"></asp:TextBox>
+                        <label class="mb-2 block text-sm font-extrabold text-[var(--ink-soft)]">Email</label>
+                        <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" placeholder="user@gmail.com"></asp:TextBox>
                     </div>
                     <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
-                        <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="mt-1 block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-primary focus:border-primary transition-all outline-none" placeholder="••••••••"></asp:TextBox>
+                        <label class="mb-2 block text-sm font-extrabold text-[var(--ink-soft)]">Mật khẩu</label>
+                        <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder="••••••••"></asp:TextBox>
                     </div>
-                </div>
-
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
-                        <label for="remember-me" class="ml-2 block text-sm text-gray-900">Ghi nhớ tôi</label>
-                    </div>
-                    <div class="text-sm">
-                        <a href="#" class="font-medium text-primary hover:text-secondary">Quên mật khẩu?</a>
-                    </div>
-                </div>
-
-                <div>
-                    <asp:Button ID="btnLogin" runat="server" Text="Đăng nhập" OnClick="btnLogin_Click" CssClass="group relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-bold rounded-2xl text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all active:scale-95" />
-                </div>
-                
-                <asp:Literal ID="litError" runat="server"></asp:Literal>
-
-                <div class="text-center pt-4">
-                    <p class="text-sm text-gray-600">
-                        Chưa có tài khoản? 
-                        <a href="Register.aspx" class="font-bold text-primary hover:text-secondary">Đăng ký ngay</a>
-                    </p>
+                    <asp:Button ID="btnLogin" runat="server" Text="Đăng nhập" OnClick="btnLogin_Click" CssClass="btn-primary w-full py-4" />
+                    <asp:Literal ID="litError" runat="server"></asp:Literal>
+                    <p class="pt-2 text-center text-sm text-[var(--ink-soft)]">Chưa có tài khoản? <a href="Register.aspx" class="font-black text-[var(--primary-dark)] hover:underline">Đăng ký ngay</a></p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </asp:Content>

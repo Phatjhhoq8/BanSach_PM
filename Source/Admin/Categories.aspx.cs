@@ -17,7 +17,7 @@ public partial class Admin_Categories : System.Web.UI.Page
 
     private void LoadCategories()
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             string sql = "SELECT MaDM, TenDM, TrangThai FROM dbo.DanhMuc ORDER BY MaDM DESC";
@@ -31,7 +31,7 @@ public partial class Admin_Categories : System.Web.UI.Page
 
     protected void btnSave_Click(object sender, EventArgs e)
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             string sql = "";
@@ -67,7 +67,7 @@ public partial class Admin_Categories : System.Web.UI.Page
 
     private void LoadCategoryToForm(int id)
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             string sql = "SELECT * FROM dbo.DanhMuc WHERE MaDM = @Id";
@@ -95,7 +95,7 @@ public partial class Admin_Categories : System.Web.UI.Page
 
     private void DeleteCategory(int id)
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             string sql = "UPDATE dbo.DanhMuc SET TrangThai = 0 WHERE MaDM = @Id";

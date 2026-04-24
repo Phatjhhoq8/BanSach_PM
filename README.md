@@ -1,6 +1,6 @@
 # Hướng dẫn Khởi chạy Hệ thống Nhà Sách Premium (BanSachDemo)
 
-Dự án này là hệ thống thương mại điện tử phục vụ mục đích bán sách cao cấp. Web sử dụng giao diện lấy cảm hứng thiết kế từ Stripe Press, Fahasa, và Nothing.tech (theo quy chuẩn tài liệu dự án).
+Dự án này là hệ thống thương mại điện tử phục vụ mục đích bán sách cho đồ án môn học. Giao diện mới đi theo hướng **nhà sách editorial hiện đại**: ấm, tinh tế, tập trung vào bìa sách và hành trình mua hàng rõ ràng.
 
 ## Môi trường & Công nghệ
 - **Nền tảng:** ASP.NET Web Forms (.NET Framework 4.5 C#)
@@ -15,6 +15,56 @@ Toàn bộ mã nguồn thực chạy mới nằm trong thư mục `Source/`. Cơ
 - `Source/Site.Master`: Giao diện bao quát (Header/Footer Tailwind CSS).
 - `Database_Schema.sql`: File chứa script khởi tạo CSDL với đầy đủ quy trình Lưu Giỏ Hàng thẳng vào Database (không dùng Session tạm).
 - `Source/App_Data/product-details.json`: Dữ liệu sách Fahasa đã được đưa sẵn vào repo để tự import khi chạy lần đầu.
+
+## Chức năng chính sau khi hoàn thiện
+- **Khách vãng lai:** xem trang chủ, danh mục, tìm kiếm/lọc sách, xem chi tiết sách.
+- **Khách hàng:** đăng ký, đăng nhập, cập nhật tài khoản, thêm giỏ hàng, kiểm tra tồn kho, áp dụng mã ưu đãi, đặt hàng COD, xem lịch sử và chi tiết đơn hàng.
+- **Quản trị viên:** đăng nhập admin, xem dashboard số liệu thật, quản lý sản phẩm, danh mục, đơn hàng, khách hàng và mã ưu đãi.
+- **Thiết kế:** dùng `Source/css/site.css` để chuẩn hóa token màu/spacing/component cho storefront editorial.
+
+## Tài khoản demo
+- Khách hàng: `user@gmail.com` / `123456`
+- Admin: `admin` / `123456`
+
+## Mã ưu đãi demo
+- `SALE10`: giảm 10%.
+- `FREESHIP`: giảm 30.000đ.
+
+## Chạy bằng Docker trên Ubuntu
+
+Dự án là ASP.NET Web Forms .NET Framework nên Docker trên Ubuntu chạy qua Mono/XSP4, kèm SQL Server Linux container.
+
+```bash
+docker compose up --build -d
+```
+
+Sau khi container khởi động, mở:
+
+```text
+http://localhost:8080
+```
+
+Các lệnh hữu ích:
+
+```bash
+docker compose ps
+docker compose logs -f web
+docker compose logs -f db
+docker compose down
+```
+
+Database được lưu ở Docker volume `mssql_data`, ảnh upload admin được lưu ở volume `book_uploads`. Nếu muốn chạy lại từ đầu với database sạch:
+
+```bash
+docker compose down -v
+docker compose up --build -d
+```
+
+Mật khẩu SQL Server mặc định trong `docker-compose.yml` là `YourStrong!Passw0rd`. Có thể đổi bằng biến môi trường:
+
+```bash
+MSSQL_SA_PASSWORD='MatKhauManhHon!123' docker compose up --build -d
+```
 
 ## Dữ liệu đi kèm repo
 - Repo đã chứa sẵn dữ liệu crawl tại `Source/App_Data/product-details.json`.

@@ -1,5 +1,4 @@
 using System;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -13,7 +12,7 @@ public partial class Admin_Analytics : System.Web.UI.Page
 
     private void LoadAnalytics()
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             conn.Open();

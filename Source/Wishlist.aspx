@@ -1,4 +1,4 @@
-<%@ Page Title="Danh sách yêu thích - Nhà Sách Premium" Language="C#" MasterPageFile="Site.master" AutoEventWireup="true" CodeFile="Wishlist.aspx.cs" Inherits="Wishlist" %>
+<%@ Page Title="Danh sách yêu thích - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Wishlist.aspx.cs" Inherits="Wishlist" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

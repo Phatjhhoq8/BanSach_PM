@@ -1,4 +1,4 @@
-<%@ Page Title="Chi tiết tin tức - Nhà Sách Premium" Language="C#" MasterPageFile="Site.master" AutoEventWireup="true" %>
+<%@ Page Title="Chi tiết tin tức - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <article class="bg-background py-16">

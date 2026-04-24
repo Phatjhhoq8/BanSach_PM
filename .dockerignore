@@ -1,0 +1,12 @@
+.git
+.agent
+tools
+*.msi
+*.ps1
+**/bin
+**/obj
+**/.vs
+**/*.user
+**/*.suo
+Source/App_Data/*.backup-*.json
+product-details-Phuoc

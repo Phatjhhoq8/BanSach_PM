@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Web;
 
 public partial class OrderDetail : System.Web.UI.Page
 {
@@ -10,7 +11,7 @@ public partial class OrderDetail : System.Web.UI.Page
     {
         if (Session["UserId"] == null)
         {
-            Response.Redirect("~/Login.aspx?ReturnUrl=OrderDetail.aspx?id=" + Request.QueryString["id"]);
+            Response.Redirect("~/Login.aspx?ReturnUrl=Orders.aspx");
             return;
         }
 
@@ -23,60 +24,60 @@ public partial class OrderDetail : System.Web.UI.Page
     private void LoadOrder()
     {
         int orderId;
-        if (!int.TryParse(Request.QueryString["id"], out orderId))
+        if (!int.TryParse(Request.QueryString["id"], out orderId) || orderId <= 0)
         {
-            ShowNotFound();
+            Response.Redirect("~/Orders.aspx");
             return;
         }
 
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        int userId = (int)Session["UserId"];
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
             conn.Open();
-            SqlCommand orderCmd = new SqlCommand(@"
+            SqlCommand cmd = new SqlCommand(@"
                 SELECT MaDH, NgayDat, TongTien, DiaChiGiaoHang, SoDienThoaiGiao, GhiChu, TrangThai, HinhThucThanhToan
                 FROM dbo.DonHang
-                WHERE MaDH = @MaDH AND MaKH = @MaKH", conn);
-            orderCmd.Parameters.AddWithValue("@MaDH", orderId);
-            orderCmd.Parameters.AddWithValue("@MaKH", (int)Session["UserId"]);
+                WHERE MaDH = @OrderId AND MaKH = @UserId", conn);
+            cmd.Parameters.AddWithValue("@OrderId", orderId);
+            cmd.Parameters.AddWithValue("@UserId", userId);
 
-            using (SqlDataReader reader = orderCmd.ExecuteReader())
+            using (SqlDataReader reader = cmd.ExecuteReader())
             {
                 if (!reader.Read())
                 {
-                    ShowNotFound();
+                    Response.Redirect("~/Orders.aspx");
                     return;
                 }
 
-                litOrderId.Text = reader["MaDH"].ToString();
-                litStatus.Text = GetStatusText(Convert.ToInt32(reader["TrangThai"]));
+                litOrderId.Text = orderId.ToString();
                 litDate.Text = Convert.ToDateTime(reader["NgayDat"]).ToString("dd/MM/yyyy HH:mm");
-                litAddress.Text = reader["DiaChiGiaoHang"] == DBNull.Value ? "Chưa có" : reader["DiaChiGiaoHang"].ToString();
-                litPhone.Text = reader["SoDienThoaiGiao"] == DBNull.Value ? "Chưa có" : reader["SoDienThoaiGiao"].ToString();
-                litPayment.Text = reader["HinhThucThanhToan"].ToString();
                 litTotal.Text = Convert.ToDecimal(reader["TongTien"]).ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) + "đ";
+                litPayment.Text = HttpUtility.HtmlEncode(reader["HinhThucThanhToan"].ToString());
+                litShippingInfo.Text = HttpUtility.HtmlEncode(reader["DiaChiGiaoHang"].ToString()) + "<br/>" + HttpUtility.HtmlEncode(reader["SoDienThoaiGiao"].ToString());
+
+                int status = Convert.ToInt32(reader["TrangThai"]);
+                litStatus.Text = GetStatusText(status);
+                statusPill.Attributes["class"] = "status-pill " + GetStatusClass(status);
             }
 
             SqlDataAdapter da = new SqlDataAdapter(@"
-                SELECT sp.TenSP, sp.HinhAnh, ctdh.SoLuong, ctdh.DonGia, ctdh.SoLuong * ctdh.DonGia AS ThanhTien
-                FROM dbo.ChiTietDonHang ctdh
-                JOIN dbo.SanPham sp ON sp.MaSP = ctdh.MaSP
-                WHERE ctdh.MaDH = @MaDH", conn);
-            da.SelectCommand.Parameters.AddWithValue("@MaDH", orderId);
-            DataTable dt = new DataTable();
-            da.Fill(dt);
-            rptItems.DataSource = dt;
+                SELECT ct.MaSP, sp.TenSP,
+                       CASE
+                           WHEN sp.HinhAnh IS NULL OR LTRIM(RTRIM(sp.HinhAnh)) = '' THEN 'https://placehold.co/400x550/f8f1e3/3b3028?text=Book'
+                           WHEN sp.HinhAnh LIKE 'http%' OR sp.HinhAnh LIKE 'img/%' OR sp.HinhAnh LIKE '/%' THEN sp.HinhAnh
+                           ELSE 'img/books/' + sp.HinhAnh
+                       END AS HinhAnh,
+                       ct.SoLuong, ct.DonGia, ct.SoLuong * ct.DonGia AS ThanhTien
+                FROM dbo.ChiTietDonHang ct
+                JOIN dbo.SanPham sp ON ct.MaSP = sp.MaSP
+                WHERE ct.MaDH = @OrderId", conn);
+            da.SelectCommand.Parameters.AddWithValue("@OrderId", orderId);
+            DataTable items = new DataTable();
+            da.Fill(items);
+            rptItems.DataSource = items;
             rptItems.DataBind();
         }
-
-        phContent.Visible = true;
-        phNotFound.Visible = false;
-    }
-
-    private void ShowNotFound()
-    {
-        phContent.Visible = false;
-        phNotFound.Visible = true;
     }
 
     private string GetStatusText(int status)
@@ -84,11 +85,24 @@ public partial class OrderDetail : System.Web.UI.Page
         switch (status)
         {
             case 0: return "Chờ xác nhận";
-            case 1: return "Đang đóng gói";
-            case 2: return "Đang giao";
+            case 1: return "Đang xử lý";
+            case 2: return "Đang giao hàng";
             case 3: return "Hoàn thành";
             case 4: return "Đã hủy";
             default: return "Không xác định";
+        }
+    }
+
+    private string GetStatusClass(int status)
+    {
+        switch (status)
+        {
+            case 0: return "bg-amber-100 text-amber-700";
+            case 1: return "bg-blue-100 text-blue-700";
+            case 2: return "bg-purple-100 text-purple-700";
+            case 3: return "bg-emerald-100 text-emerald-700";
+            case 4: return "bg-red-100 text-red-700";
+            default: return "bg-stone-100 text-stone-700";
         }
     }
 }

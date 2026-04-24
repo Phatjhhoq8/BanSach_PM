@@ -1,4 +1,4 @@
-<%@ Page Title="Hỗ trợ khách hàng - Nhà Sách Premium" Language="C#" MasterPageFile="Site.master" AutoEventWireup="true" %>
+<%@ Page Title="Hỗ trợ khách hàng - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <section class="bg-background py-16">

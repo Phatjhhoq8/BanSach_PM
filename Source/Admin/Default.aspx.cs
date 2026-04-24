@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Web.UI.WebControls;
 
 public partial class Admin_Default : System.Web.UI.Page
@@ -17,9 +18,15 @@ public partial class Admin_Default : System.Web.UI.Page
 
     private void LoadDashboardData()
     {
-        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
+        string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
+            conn.Open();
+            litMonthlyRevenue.Text = FormatCurrency(ExecuteDecimal(conn, "SELECT ISNULL(SUM(TongTien), 0) FROM dbo.DonHang WHERE MONTH(NgayDat) = MONTH(GETDATE()) AND YEAR(NgayDat) = YEAR(GETDATE()) AND TrangThai <> 4"));
+            litPendingOrders.Text = ExecuteInt(conn, "SELECT COUNT(1) FROM dbo.DonHang WHERE TrangThai IN (0, 1)").ToString();
+            litCustomers.Text = ExecuteInt(conn, "SELECT COUNT(1) FROM dbo.KhachHang").ToString();
+            litLowStock.Text = ExecuteInt(conn, "SELECT COUNT(1) FROM dbo.SanPham WHERE TrangThai = 1 AND SoLuongTon <= 5").ToString();
+
             // Recent Orders
             string sqlOrders = @"
                 SELECT TOP 5 dh.MaDH, kh.HoTen, dh.TongTien, dh.TrangThai 
@@ -32,18 +39,49 @@ public partial class Admin_Default : System.Web.UI.Page
             rptRecentOrders.DataSource = dtOrders;
             rptRecentOrders.DataBind();
 
-            // Top Products (Mock for now since we don't have enough real order data yet)
             string sqlProducts = @"
-                SELECT TOP 5 MaSP, TenSP, TacGia, HinhAnh, (MaSP % 50 + 10) as SoLuongBan 
-                FROM dbo.SanPham 
-                WHERE TrangThai = 1 
-                ORDER BY MaSP ASC";
+                SELECT TOP 5 sp.MaSP, sp.TenSP, sp.TacGia,
+                       CASE
+                           WHEN sp.HinhAnh IS NULL OR LTRIM(RTRIM(sp.HinhAnh)) = '' THEN 'https://placehold.co/400x550/f8f1e3/3b3028?text=Book'
+                           WHEN sp.HinhAnh LIKE 'http%' OR sp.HinhAnh LIKE '../%' OR sp.HinhAnh LIKE '/%' THEN sp.HinhAnh
+                           WHEN sp.HinhAnh LIKE 'img/%' THEN '../' + sp.HinhAnh
+                           ELSE '../img/books/' + sp.HinhAnh
+                       END AS HinhAnh,
+                       ISNULL(SUM(ct.SoLuong), 0) AS SoLuongBan
+                FROM dbo.SanPham sp
+                LEFT JOIN dbo.ChiTietDonHang ct ON sp.MaSP = ct.MaSP
+                WHERE sp.TrangThai = 1
+                GROUP BY sp.MaSP, sp.TenSP, sp.TacGia, sp.HinhAnh
+                ORDER BY SoLuongBan DESC, sp.MaSP DESC";
             SqlDataAdapter daProducts = new SqlDataAdapter(sqlProducts, conn);
             DataTable dtProducts = new DataTable();
             daProducts.Fill(dtProducts);
             rptTopProducts.DataSource = dtProducts;
             rptTopProducts.DataBind();
         }
+    }
+
+    private int ExecuteInt(SqlConnection conn, string sql)
+    {
+        using (SqlCommand cmd = new SqlCommand(sql, conn))
+        {
+            object value = cmd.ExecuteScalar();
+            return value == null || value == DBNull.Value ? 0 : Convert.ToInt32(value);
+        }
+    }
+
+    private decimal ExecuteDecimal(SqlConnection conn, string sql)
+    {
+        using (SqlCommand cmd = new SqlCommand(sql, conn))
+        {
+            object value = cmd.ExecuteScalar();
+            return value == null || value == DBNull.Value ? 0 : Convert.ToDecimal(value);
+        }
+    }
+
+    private string FormatCurrency(decimal value)
+    {
+        return value.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) + "đ";
     }
 
     protected string GetStatusText(object status)
