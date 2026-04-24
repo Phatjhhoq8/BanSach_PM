@@ -49,6 +49,7 @@ public partial class ChiTiet : System.Web.UI.Page
             };
         }
 
+        litMaSP.Text = product.MaSP.ToString();
         litTenSP.Text = HttpUtility.HtmlEncode(product.TenSP);
         litTacGia.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.TacGia) ? "Đang cập nhật" : product.TacGia);
         litGia.Text = HttpUtility.HtmlEncode(product.GiaText);
@@ -58,6 +59,13 @@ public partial class ChiTiet : System.Web.UI.Page
         litBreadcrumb.Text = HttpUtility.HtmlEncode(product.TenSP);
         litTitleCover.Text = HttpUtility.HtmlEncode(product.TenSP);
         litTitleCoverShine.Text = HttpUtility.HtmlEncode(product.TenSP);
+
+        // Canh chỉnh bìa sách: Nếu có ảnh thật (không phải placeholder), ẩn text overlay để tránh rối mắt
+        if (!string.IsNullOrWhiteSpace(product.HinhAnh) && !product.HinhAnh.Contains("placehold.co"))
+        {
+            litTitleCover.Text = "";
+            litTitleCoverShine.Text = "";
+        }
         litCoverType.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.LoaiBia) ? "Đang cập nhật" : product.LoaiBia);
         litSupplier.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.NhaCungCap) ? "Fahasa" : product.NhaCungCap);
         litPublisher.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.NhaXuatBan) ? "Đang cập nhật" : product.NhaXuatBan);

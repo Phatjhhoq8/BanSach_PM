@@ -26,26 +26,20 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col md:flex-row gap-8 bg-white">
         <!-- SIDEBAR BỘ LỌC (KIM DONG STRUCTURE) -->
         <div class="w-full md:w-[260px] flex-shrink-0 space-y-6">
-            <!-- Block 1 -->
+            <!-- Block 1: Categories -->
             <div class="border border-gray-200">
                 <div class="bg-primary text-white font-bold text-sm p-3 uppercase">Danh mục</div>
                 <ul class="p-3 space-y-2 text-[13px] font-medium text-gray-800">
-                    <li class="font-bold"><a href="#" class="hover:text-primary">TẤT CẢ SẢN PHẨM</a></li>
-                    <li><a href="#" class="hover:text-primary">LỊCH SỬ, TRUYỀN THỐNG</a></li>
-                    <li><a href="#" class="hover:text-primary">VĂN HỌC VIỆT NAM</a></li>
-                    <li><a href="#" class="hover:text-primary">VĂN HỌC NƯỚC NGOÀI</a></li>
-                    <li><a href="#" class="hover:text-primary">KIẾN THỨC, KHOA HỌC</a></li>
-                    <li><a href="#" class="hover:text-primary">TRUYỆN TRANH</a></li>
-                    <li><a href="#" class="hover:text-primary">MANGA - COMIC</a></li>
-                    <li><a href="#" class="hover:text-primary">WINGS BOOKS</a></li>
-                    <li><a href="#" class="hover:text-primary">TỦ SÁCH THANH NIÊN</a></li>
-                    <li><a href="#" class="hover:text-primary">DÀNH CHO CHA MẸ</a></li>
-                    <li class="pt-2 font-bold text-gray-500 border-t border-gray-100 mt-2">Độ tuổi</li>
-                    <li class="pl-2"><a href="#" class="hover:text-primary text-gray-600 font-normal">Nhà trẻ - mẫu giáo (0 - 6)</a></li>
-                    <li class="pl-2"><a href="#" class="hover:text-primary text-gray-600 font-normal">Nhi đồng (6 - 11)</a></li>
-                    <li class="pl-2"><a href="#" class="hover:text-primary text-gray-600 font-normal">Thiếu niên (11 - 15)</a></li>
-                    <li class="pl-2"><a href="#" class="hover:text-primary text-gray-600 font-normal">Tuổi mới lớn (15 - 18)</a></li>
-                    <li class="pl-2"><a href="#" class="hover:text-primary text-gray-600 font-normal">Tuổi trưởng thành (Trên 18 tuổi)</a></li>
+                    <li class='<%# string.IsNullOrEmpty(Request.QueryString["cat"]) ? "font-bold text-primary" : "" %>'>
+                        <a href="DanhMuc.aspx" class="hover:text-primary uppercase">TẤT CẢ SẢN PHẨM</a>
+                    </li>
+                    <asp:Repeater ID="rptCategories" runat="server">
+                        <ItemTemplate>
+                            <li class='<%# Request.QueryString["cat"] == Eval("MaDM").ToString() ? "font-bold text-primary" : "" %>'>
+                                <a href='DanhMuc.aspx?cat=<%# Eval("MaDM") %>' class="hover:text-primary uppercase"><%# Eval("TenDM") %></a>
+                            </li>
+                        </ItemTemplate>
+                    </asp:Repeater>
                 </ul>
             </div>
 
@@ -97,16 +91,22 @@
         <!-- Book Grid (Mainside) -->
         <div class="flex-1">
             <!-- Toolbar sorting -->
-            <div class="flex justify-between items-center mb-6 pb-2 border-b border-gray-200">
-                <h2 class="text-xl font-bold uppercase">Tất Cả Sản Phẩm</h2>
-                <div class="flex items-center gap-2 text-[13px]">
-                    <span class="text-gray-500">Sắp xếp:</span>
-                    <select class="border border-gray-300 rounded px-3 py-1.5 focus:ring-primary focus:border-primary outline-none">
-                        <option>Mặc định</option>
-                        <option>Giá tăng dần</option>
-                        <option>Giá giảm dần</option>
-                        <option>Tên A-Z</option>
-                    </select>
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 pb-2 border-b border-gray-200 gap-4">
+                <h2 class="text-xl font-bold uppercase"><asp:Literal ID="litCatTitle" runat="server">Tất Cả Sản Phẩm</asp:Literal></h2>
+                <div class="flex items-center gap-4">
+                    <div class="relative">
+                        <asp:TextBox ID="txtSearch" runat="server" CssClass="border border-gray-300 rounded-full px-4 py-1.5 text-xs outline-none focus:border-primary w-40 md:w-64" placeholder="Tìm trong danh mục..." AutoPostBack="true" OnTextChanged="btnSearch_Click"></asp:TextBox>
+                        <i data-lucide="search" class="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400"></i>
+                    </div>
+                    <div class="flex items-center gap-2 text-[13px]">
+                        <span class="text-gray-500">Sắp xếp:</span>
+                        <asp:DropDownList ID="ddlSort" runat="server" CssClass="border border-gray-300 rounded px-3 py-1.5 focus:ring-primary focus:border-primary outline-none" AutoPostBack="true" OnSelectedIndexChanged="btnSearch_Click">
+                            <asp:ListItem Value="new">Mới nhất</asp:ListItem>
+                            <asp:ListItem Value="price_asc">Giá tăng dần</asp:ListItem>
+                            <asp:ListItem Value="price_desc">Giá giảm dần</asp:ListItem>
+                            <asp:ListItem Value="name_asc">Tên A-Z</asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
                 </div>
             </div>
 

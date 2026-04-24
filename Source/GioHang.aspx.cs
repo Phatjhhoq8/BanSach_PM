@@ -1,10 +1,19 @@
 using System;
-using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
 
 public partial class GioHang : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        if (Session["UserId"] == null)
+        {
+            Response.Redirect("~/Login.aspx?ReturnUrl=GioHang.aspx");
+            return;
+        }
+
         if (!IsPostBack)
         {
             LoadCart();
@@ -13,36 +22,48 @@ public partial class GioHang : System.Web.UI.Page
 
     private void LoadCart()
     {
-        // Fake logic:
-        // var db = new BanSachDataContext();
-        // int maKH = 1; // get from Session
-        // var items = db.ChiTietGioHangs.Where(x => x.MaKH == maKH).Select(x => new { x.SanPham.TenSP, x.SanPham.HinhAnh, x.SoLuong, x.SanPham.Gia }).ToList();
+        int userId = (int)Session["UserId"];
+        string connString = ConfigurationManager.ConnectionStrings["BanSachConnectionString"].ConnectionString;
 
-        var danhSach = new List<CatalogProduct>
+        using (SqlConnection conn = new SqlConnection(connString))
         {
-            new CatalogProduct { MaSP = 1, TenSP = "Dế Mèn Phiêu Lưu Ký", Gia = 45000, HinhAnh = "demen.jpg" },
-            new CatalogProduct { MaSP = 4, TenSP = "Clean Code", Gia = 450000, HinhAnh = "cleancode.jpg" }
-        };
-
-        if(danhSach.Count > 0){
-            rptCart.DataSource = danhSach;
-            rptCart.DataBind();
+            string sql = @"
+                SELECT sp.MaSP, sp.TenSP, sp.TacGia, sp.HinhAnh, ct.SoLuong, 
+                       (CASE WHEN sp.GiaKhuyenMai > 0 THEN sp.GiaKhuyenMai ELSE sp.Gia END) as DonGia,
+                       ct.SoLuong * (CASE WHEN sp.GiaKhuyenMai > 0 THEN sp.GiaKhuyenMai ELSE sp.Gia END) as ThanhTien
+                FROM dbo.ChiTietGioHang ct
+                JOIN dbo.SanPham sp ON ct.MaSP = sp.MaSP
+                WHERE ct.MaKH = @UID";
             
-            decimal tong = 0;
-            foreach(var item in danhSach) tong += item.Gia;
-            lblSubTotal.Text = string.Format("{0:N0} đ", tong);
-            lblTotal.Text = string.Format("{0:N0} đ", tong);
-        } else {
-            lblCartEmpty.Visible = true;
-            btnCheckout.Enabled = false;
-        }
-    }
+            SqlDataAdapter da = new SqlDataAdapter(sql, conn);
+            da.SelectCommand.Parameters.AddWithValue("@UID", userId);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
 
-    protected void btnCheckout_Click(object sender, EventArgs e)
-    {
-        // Xử lý chuyển dữ liệu từ Giỏ Hàng -> Đơn Hàng trong DB
-        // foreach(item in Cart) insert into ChiTietDonHang 
-        // Sau đó hiển thị thông báo
-        Response.Write("<script>alert('Đặt hàng thành công! Mã đơn của bạn là DH001.');</script>");
+            if (dt.Rows.Count > 0)
+            {
+                rptCartItems.DataSource = dt;
+                rptCartItems.DataBind();
+                
+                decimal total = 0;
+                int count = 0;
+                foreach (DataRow row in dt.Rows)
+                {
+                    total += Convert.ToDecimal(row["ThanhTien"]);
+                    count += Convert.ToInt32(row["SoLuong"]);
+                }
+
+                litCartCount.Text = count.ToString();
+                litSubtotal.Text = total.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) + "đ";
+                litTotal.Text = litSubtotal.Text;
+                
+                phEmptyCart.Visible = false;
+            }
+            else
+            {
+                phEmptyCart.Visible = true;
+                rptCartItems.Visible = false;
+            }
+        }
     }
 }

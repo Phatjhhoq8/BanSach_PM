@@ -160,6 +160,30 @@ public static class FahasaCatalogService
         }
     }
 
+    public static List<CatalogProduct> GetProductsByCategory(int maDM, int take = 20)
+    {
+        EnsureInitialized();
+        using (SqlConnection connection = CreateOpenConnection())
+        {
+            string sql = @"
+                SELECT TOP (@Take) sp.MaSP, sp.Slug, sp.TenSP, sp.TacGia, sp.MoTa, sp.Gia, sp.GiaKhuyenMai, 
+                       sp.PhanTramGiam, sp.HinhAnh, sp.LoaiBia, sp.NhaXuatBan, sp.NhaCungCap, sp.DanhGia, sp.NguonUrl 
+                FROM dbo.SanPham sp 
+                WHERE sp.TrangThai = 1 AND sp.MaDM = @MaDM 
+                ORDER BY sp.MaSP DESC";
+
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                command.Parameters.AddWithValue("@Take", take);
+                command.Parameters.AddWithValue("@MaDM", maDM);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    return ReadProducts(reader);
+                }
+            }
+        }
+    }
+
     public static List<CatalogProduct> GetAllProducts()
     {
         EnsureInitialized();

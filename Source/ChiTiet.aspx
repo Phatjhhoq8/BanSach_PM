@@ -5,15 +5,10 @@
         :root {
             --book-primary: #1e293b;
             --bg-adaptive: #f8fafc;
-            --shine-x: 50%;
-            --shine-y: 50%;
         }
 
         .preview-stage {
             background: radial-gradient(circle at center, var(--bg-adaptive) 0%, #ffffff 100%);
-            perspective: 5000px; /* High perspective for natural proportions */
-            perspective-origin: 50% 50%;
-            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -21,171 +16,85 @@
             transition: background 1.5s ease;
         }
 
-        .book-container {
+        .book-view-container {
             position: relative;
-            transform-style: preserve-3d;
-            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.15));
+            width: 380px;
+            max-width: 100%;
+            transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            filter: drop-shadow(0 30px 50px rgba(0,0,0,0.2));
         }
 
-        .book-3d {
-            width: 320px;
-            height: 480px;
-            position: relative;
-            transform-style: preserve-3d;
-            transform: rotateY(-25deg) rotateX(10deg);
-            cursor: grab;
-            will-change: transform;
+        .book-view-container:hover {
+            transform: translateY(-15px) rotate(-2deg) scale(1.03);
+            filter: drop-shadow(0 40px 70px rgba(0,0,0,0.25));
         }
 
-        .book-face {
-            position: absolute;
-            background-color: #f3f0e8;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            top: 0;
-            left: 0;
-        }
-
-        /* Front Cover */
-        /* Front Cover */
-        .book-front {
-            width: 320px;
-            height: 480px;
-            transform: rotateY(0deg) translateZ(25px);
+        .book-main-image {
+            width: 100%;
+            height: 560px;
             background-size: cover;
-            border-radius: 2px;
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 40px;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 8px 16px 16px 8px; /* Classic book curve */
+            position: relative;
             overflow: hidden;
-            box-shadow: inset 0 0 15px rgba(0,0,0,0.1);
+            border-left: 2px solid rgba(0,0,0,0.1);
         }
 
-        /* Ambient light */
-        .book-front::before {
+        /* Spine shadow effect */
+        .book-main-image::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(to right, rgba(0,0,0,0.1), transparent 15%);
-            pointer-events: none;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 25px;
+            background: linear-gradient(to right, 
+                rgba(0,0,0,0.2) 0%, 
+                rgba(0,0,0,0.05) 40%, 
+                transparent 100%);
             z-index: 2;
         }
 
-        /* Moving light SOURCE reflection */
-        .book-front::after {
+        /* Highlight edge */
+        .book-main-image::after {
             content: '';
             position: absolute;
-            inset: -100%;
-            background: radial-gradient(
-                circle at var(--shine-x) var(--shine-y), 
-                rgba(255, 255, 255, 0.45) 0%, 
-                transparent 35%
-            );
-            pointer-events: none;
-            z-index: 10;
-            mix-blend-mode: soft-light;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: rgba(255,255,255,0.1);
+            z-index: 3;
         }
 
-        /* Cover Title Glitter Logic */
-        .cover-title-group {
-            position: relative;
-            z-index: 20;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            line-height: 1.1;
-        }
-        .cover-title-base {
-            font-family: 'Cormorant', serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: #a8947b; /* Elegant Gold-Bronze base */
-            opacity: 0.6;
-        }
-        .cover-title-shine {
+        .cover-overlay {
             position: absolute;
             inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            text-align: center;
+            z-index: 10;
+            background: rgba(0,0,0,0.02);
+        }
+
+        .cover-title-text {
             font-family: 'Cormorant', serif;
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
-            background: linear-gradient(135deg, #fff 0%, #d4af37 25%, #fff 50%, #d4af37 75%, #fff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            mask-image: radial-gradient(circle at var(--shine-x) var(--shine-y), #000 0%, transparent 25%);
-            -webkit-mask-image: radial-gradient(circle at var(--shine-x) var(--shine-y), #000 0%, transparent 25%);
-            mask-size: 200% 200%;
-            -webkit-mask-size: 200% 200%;
-            pointer-events: none;
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.8));
-            z-index: 21;
-        }
-
-        .book-back {
-            width: 320px;
-            height: 480px;
-            transform: rotateY(180deg) translateZ(25px);
-            background: #f3f0e8;
-            border-radius: 2px;
-        }
-
-        .book-spine {
-            width: 50px;
-            height: 480px;
-            left: 135px;
-            transform: rotateY(-90deg) translateZ(160px);
-            background: var(--book-primary);
-            background-image: linear-gradient(to right, rgba(0,0,0,0.15), transparent 15%, transparent 85%, rgba(0,0,0,0.15));
-        }
-
-        .book-right {
-            width: 50px; 
-            height: 480px;
-            left: 135px;
-            transform: rotateY(90deg) translateZ(160px);
-            background: #fff;
-            background-image: repeating-linear-gradient(90deg, #fff, #fff 2px, #e5e7eb 3px);
-        }
-
-        .book-top {
-            width: 320px;
-            height: 50px;
-            top: 215px;
-            transform: rotateX(90deg) translateZ(240px);
-            background: #fff;
-            background-image: repeating-linear-gradient(0deg, #fff, #fff 2px, #e5e7eb 3px);
-        }
-
-        .book-bottom {
-            width: 320px;
-            height: 50px;
-            top: 215px;
-            transform: rotateX(-90deg) translateZ(240px);
-            background: #fff;
-            background-image: repeating-linear-gradient(0deg, #fff, #fff 2px, #e5e7eb 3px);
-        }
-
-        .headband {
-            position: absolute;
-            height: 6px;
-            width: 50px;
-            left: 0;
-            top: 0;
-            background: repeating-linear-gradient(to right, #634d31, #634d31 2px, #d4c5b3 2px, #d4c5b3 4px);
-            transform: rotateX(90deg) translateZ(241px) rotateY(-90deg) translateX(-25px);
-        }
-
-        .metallic-text {
-            background: linear-gradient(135deg, var(--book-primary) 0%, #fff 50%, var(--book-primary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #1e293b;
+            text-shadow: 0 2px 4px rgba(255,255,255,0.8);
+            line-height: 1.2;
         }
 
         .glass-detail {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
     </style>
 </asp:Content>
@@ -203,35 +112,14 @@
 
         <div class="preview-stage mt-10" id="stage">
             <div class="flex flex-col lg:flex-row gap-10 lg:gap-20 items-center justify-center max-w-7xl mx-auto px-6 w-full">
-                <!-- Left Column: Interactive 3D Book -->
-                <div class="w-full lg:w-[45%] flex justify-center select-none py-10 lg:py-0">
-                    <div class="book-container shadow-inner" id="rotateContainer">
-                        <div class="book-3d" id="book3D">
-                            <!-- Front -->
-                            <div class="book-face book-front" id="bookFront" runat="server">
-                                <div class="cover-title-group">
-                                    <h4 class="cover-title-base"><asp:Literal ID="litTitleCover" runat="server"></asp:Literal></h4>
-                                    <div class="cover-title-shine"><asp:Literal ID="litTitleCoverShine" runat="server"></asp:Literal></div>
-                                </div>
-                                <div class="absolute inset-0 bg-gradient-to-tr from-black/5 to-transparent pointer-events-none z-10"></div>
+                <!-- Left Column: Premium Book Image -->
+                <div class="w-full lg:w-[45%] flex justify-center py-10 lg:py-0">
+                    <div class="book-view-container">
+                        <div class="book-main-image shadow-2xl" id="bookFront" runat="server">
+                            <div class="cover-overlay">
+                                <h4 class="cover-title-text"><asp:Literal ID="litTitleCover" runat="server"></asp:Literal></h4>
+                                <div class="hidden"><asp:Literal ID="litTitleCoverShine" runat="server"></asp:Literal></div>
                             </div>
-                            <!-- Back -->
-                            <div class="book-face book-back border-l border-black/5 flex flex-col items-center justify-center p-8 text-center bg-[#f3f0e8]">
-                                <div class="w-16 h-16 bg-black/5 rounded-full mb-4"></div>
-                                <div class="mt-auto text-[10px] text-gray-400 uppercase tracking-widest">Premium Quality</div>
-                            </div>
-                            <!-- Spine -->
-                            <div class="book-face book-spine flex items-center justify-center">
-                                <span class="text-[10px] text-white/40 font-bold uppercase rotate-90 whitespace-nowrap tracking-widest">Premium Books</span>
-                            </div>
-                            <!-- Right (Pages) -->
-                            <div class="book-face book-right"></div>
-                            <!-- Top (Pages) -->
-                            <div class="book-face book-top">
-                                <div class="headband"></div>
-                            </div>
-                            <!-- Bottom (Pages) -->
-                            <div class="book-face book-bottom"></div>
                         </div>
                     </div>
                 </div>
@@ -259,7 +147,7 @@
                                 <asp:Literal ID="litMoTa" runat="server"></asp:Literal>
                             </p>
 
-                            <button type="button" class="w-full bg-primary text-white py-5 rounded-2xl font-bold text-lg hover:bg-secondary transition-all shadow-xl shadow-primary/30 flex items-center justify-center gap-4 active:scale-95 group">
+                            <button type="button" onclick="addToCart(this)" data-id='<asp:Literal ID="litMaSP" runat="server"></asp:Literal>' class="w-full bg-primary text-white py-5 rounded-2xl font-bold text-lg hover:bg-secondary transition-all shadow-xl shadow-primary/30 flex items-center justify-center gap-4 active:scale-95 group">
                                 <svg class="w-6 h-6 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                                 Add to Collection
                             </button>
@@ -291,77 +179,38 @@
     </div>
 
     <script>
-        const book = document.getElementById('book3D');
-        const container = document.getElementById('rotateContainer');
-        const stage = document.getElementById('stage');
-        
-        let isDragging = false;
-        let startX, startY;
-        let currentRotateY = -25;
-        let currentRotateX = 10;
-
-        function updateReflection(ry, rx) {
-            // High-precision light mapping for fixed source effect
-            // We map the rotation to a radial gradient center point
-            let shineX = 50 - (ry * 0.8); 
-            let shineY = 50 + (rx * 1.2);
-            
-            document.documentElement.style.setProperty('--shine-x', `${shineX}%`);
-            document.documentElement.style.setProperty('--shine-y', `${shineY}%`);
-        }
-
         // Adaptive Color Logic
+        const stage = document.getElementById('stage');
         const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--book-primary').trim() || '#0284c7';
         stage.style.background = `radial-gradient(circle at center, ${primaryColor}15 0%, #ffffff 100%)`;
 
-        // Initialize reflection
-        updateReflection(currentRotateY, currentRotateX);
+        function addToCart(btn) {
+            const id = btn.getAttribute('data-id');
+            const originalText = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Đang thêm...';
 
-        container.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.pageX;
-            startY = e.pageY;
-            book.style.animation = 'none';
-            book.style.transition = 'none';
-        });
-
-        window.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const deltaX = e.pageX - startX;
-            const deltaY = e.pageY - startY;
-            const ry = currentRotateY + (deltaX * 0.4); // Slower for block stability
-            const rx = currentRotateX - (deltaY * 0.4);
-            book.style.transform = `rotateY(${ry}deg) rotateX(${rx}deg)`;
-            updateReflection(ry, rx);
-        });
-
-        window.addEventListener('mouseup', (e) => {
-            if (!isDragging) return;
-            isDragging = false;
-            const deltaX = e.pageX - startX;
-            const deltaY = e.pageY - startY;
-            currentRotateY += (deltaX * 0.4);
-            currentRotateX -= (deltaY * 0.4);
-            book.style.transition = 'transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)';
-        });
-
-        // Touch support
-        container.addEventListener('touchstart', (e) => {
-            isDragging = true;
-            startX = e.touches[0].pageX;
-            startY = e.touches[0].pageY;
-            book.style.animation = 'none';
-            book.style.transition = 'none';
-        });
-        window.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const deltaX = e.touches[0].pageX - startX;
-            const deltaY = e.touches[0].pageY - startY;
-            const ry = currentRotateY + (deltaX * 0.4);
-            const rx = currentRotateX - (deltaY * 0.4);
-            book.style.transform = `rotateY(${ry}deg) rotateX(${rx}deg)`;
-            updateReflection(ry, rx);
-        });
-        window.addEventListener('touchend', () => { isDragging = false; book.style.transition = 'transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1)'; });
+            fetch(`CartHandler.ashx?action=add&maSP=${id}`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        btn.classList.replace('bg-primary', 'bg-emerald-500');
+                        btn.innerHTML = '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Đã thêm vào bộ sưu tập!';
+                        document.getElementById('cartCount').innerText = data.cartCount;
+                        setTimeout(() => {
+                            btn.classList.replace('bg-emerald-500', 'bg-primary');
+                            btn.innerHTML = originalText;
+                            btn.disabled = false;
+                        }, 3000);
+                    } else if (data.code === 'auth_required') {
+                        window.location.href = `Login.aspx?ReturnUrl=${window.location.pathname}${window.location.search}`;
+                    } else {
+                        alert(data.message);
+                        btn.innerHTML = originalText;
+                        btn.disabled = false;
+                    }
+                });
+        }
     </script>
 </asp:Content>
