@@ -152,9 +152,9 @@ public partial class Admin_Orders : System.Web.UI.Page
         int s = Convert.ToInt32(status);
         switch (s)
         {
-            case 0: return "bg-amber-500/10 text-amber-500";
+            case 0: return "bg-blue-500/10 text-blue-500";
             case 1: return "bg-blue-500/10 text-blue-500";
-            case 2: return "bg-purple-500/10 text-purple-500";
+            case 2: return "bg-sky-500/10 text-sky-500";
             case 3: return "bg-emerald-500/10 text-emerald-500";
             case 4: return "bg-rose-500/10 text-rose-500";
             default: return "bg-slate-500/10 text-slate-500";

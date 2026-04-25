@@ -1,4 +1,4 @@
-<%@ Page Title="Danh sách yêu thích - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Wishlist.aspx.cs" Inherits="Wishlist" %>
+<%@ Page Title="Danh sách yêu thích - The Book Haven" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Wishlist.aspx.cs" Inherits="Wishlist" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -10,14 +10,14 @@
             <a href="DanhMuc.aspx" class="btn-secondary">Tiếp tục khám phá</a>
         </div>
         <asp:PlaceHolder ID="phEmpty" runat="server" Visible="false">
-            <div class="bg-white rounded-[32px] border border-amber-100 p-12 text-center text-zinc-600">Bạn chưa lưu sản phẩm yêu thích nào. Hãy quay lại danh mục và chọn sách muốn theo dõi.</div>
+            <div class="bg-white rounded-[32px] border border-blue-100 p-12 text-center text-zinc-600">Bạn chưa lưu sản phẩm yêu thích nào. Hãy quay lại danh mục và chọn sách muốn theo dõi.</div>
         </asp:PlaceHolder>
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
             <asp:Repeater ID="rptWishlist" runat="server">
                 <ItemTemplate>
-                    <article class="group bg-white rounded-3xl border border-amber-100 p-4 hover:shadow-xl transition-shadow">
+                    <article class="group bg-white rounded-3xl border border-blue-100 p-4 hover:shadow-xl transition-shadow">
                         <a href='ChiTiet.aspx?id=<%# Eval("MaSP") %>'>
-                            <img src='<%# Eval("HinhAnh") %>' alt='<%# Eval("TenSP") %>' class="w-full aspect-[3/4] object-contain rounded-2xl bg-amber-50" loading="lazy" />
+                            <img src='<%# Eval("HinhAnh") %>' alt='<%# Eval("TenSP") %>' class="w-full aspect-[3/4] object-contain rounded-2xl bg-blue-50" loading="lazy" />
                             <h2 class="mt-4 text-sm font-bold text-zinc-900 line-clamp-2 group-hover:text-primary transition-colors"><%# Eval("TenSP") %></h2>
                         </a>
                         <p class="mt-2 text-sm font-bold text-primary"><%# Eval("GiaHienThi", "{0:N0}đ") %></p>

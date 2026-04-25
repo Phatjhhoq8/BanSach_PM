@@ -1,4 +1,4 @@
-<%@ Page Title="Chỉnh sửa sản phẩm - BanSach Premium" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="ProductEdit.aspx.cs" Inherits="Admin_ProductEdit" %>
+<%@ Page Title="Chỉnh sửa sản phẩm - The Book Haven" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="ProductEdit.aspx.cs" Inherits="Admin_ProductEdit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="PageTitle" Runat="Server">
     <asp:Literal ID="litPageTitle" runat="server">Thêm sản phẩm mới</asp:Literal>
@@ -15,7 +15,6 @@
         <asp:Literal ID="litError" runat="server"></asp:Literal>
 
         <div class="space-y-8">
-            <!-- Basic Info Section -->
             <div class="glass-card rounded-[32px] p-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="md:col-span-2">
@@ -42,7 +41,6 @@
                 </div>
             </div>
 
-            <!-- Price & Inventory Section -->
             <div class="glass-card rounded-[32px] p-8">
                 <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">Giá & Kho hàng</h4>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -61,7 +59,6 @@
                 </div>
             </div>
 
-            <!-- Media Section -->
             <div class="glass-card rounded-[32px] p-8">
                 <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">Hình ảnh đại diện</h4>
                 <div class="flex items-start gap-8">
@@ -79,7 +76,6 @@
                 </div>
             </div>
 
-            <!-- Additional Details -->
             <div class="glass-card rounded-[32px] p-8">
                 <h4 class="text-sm font-bold text-slate-500 uppercase tracking-widest mb-6">Thông tin bổ sung</h4>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -111,7 +107,6 @@
                 </div>
             </div>
 
-            <!-- Actions -->
             <div class="flex items-center justify-end gap-4 py-10">
                 <a href="Products.aspx" class="px-8 py-4 text-slate-400 font-bold hover:text-white transition-all">Hủy bỏ</a>
                 <asp:Button ID="btnSave" runat="server" Text="Lưu thay đổi" OnClick="btnSave_Click" CssClass="px-10 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl shadow-xl shadow-blue-600/30 transition-all active:scale-95" />

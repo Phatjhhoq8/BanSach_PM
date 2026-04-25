@@ -60,7 +60,6 @@ public partial class ChiTiet : System.Web.UI.Page
         litTitleCover.Text = HttpUtility.HtmlEncode(product.TenSP);
         litTitleCoverShine.Text = HttpUtility.HtmlEncode(product.TenSP);
 
-        // Canh chỉnh bìa sách: Nếu có ảnh thật (không phải placeholder), ẩn text overlay để tránh rối mắt
         if (!string.IsNullOrWhiteSpace(product.HinhAnh) && !product.HinhAnh.Contains("placehold.co"))
         {
             litTitleCover.Text = "";

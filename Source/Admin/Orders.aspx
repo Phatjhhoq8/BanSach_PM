@@ -1,4 +1,4 @@
-<%@ Page Title="Quản lý đơn hàng - BanSach Premium" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="Orders.aspx.cs" Inherits="Admin_Orders" %>
+<%@ Page Title="Quản lý đơn hàng - The Book Haven" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="Orders.aspx.cs" Inherits="Admin_Orders" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="PageTitle" Runat="Server">
     Quản lý đơn hàng
@@ -70,7 +70,6 @@
     <script>
         function updateOrderStatus(id, status) {
             if (!confirm('Cập nhật trạng thái đơn hàng này?')) return;
-            // Typically use an AJAX handler or a hidden button to trigger postback
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = 'Orders.aspx?action=update&id=' + id + '&status=' + status;

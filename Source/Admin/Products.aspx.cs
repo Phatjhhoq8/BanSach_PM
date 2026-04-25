@@ -92,7 +92,6 @@ public partial class Admin_Products : System.Web.UI.Page
         string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
-            // Instead of hard delete, we could do soft delete by setting TrangThai = 0
             string sql = "UPDATE dbo.SanPham SET TrangThai = 0 WHERE MaSP = @Id";
             SqlCommand cmd = new SqlCommand(sql, conn);
             cmd.Parameters.AddWithValue("@Id", id);

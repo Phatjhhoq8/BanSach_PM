@@ -1,4 +1,4 @@
-<%@ Page Title="Đăng nhập - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
+<%@ Page Title="Đăng nhập - The Book Haven" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Login.aspx.cs" Inherits="Login" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <section class="container-page py-16 lg:py-24">

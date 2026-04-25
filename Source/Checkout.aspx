@@ -1,4 +1,4 @@
-<%@ Page Title="Thanh toán - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Checkout.aspx.cs" Inherits="Checkout" %>
+<%@ Page Title="Thanh toán - The Book Haven" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Checkout.aspx.cs" Inherits="Checkout" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <section class="container-page py-10 lg:py-16">
@@ -115,7 +115,7 @@
                     </div>
 
                     <asp:Button ID="btnOrder" runat="server" Text="Xác nhận đặt hàng" OnClick="btnOrder_Click" CssClass="btn-primary mt-8 w-full py-4 text-base" />
-                    <p class="mt-5 text-center text-xs leading-6 text-[var(--muted)]">Bằng cách đặt hàng, bạn đồng ý với điều khoản mua sách và chính sách xử lý đơn của Premium Books.</p>
+                    <p class="mt-5 text-center text-xs leading-6 text-[var(--muted)]">Bằng cách đặt hàng, bạn đồng ý với điều khoản mua sách và chính sách xử lý đơn của The Book Haven.</p>
                 </div>
             </aside>
         </div>

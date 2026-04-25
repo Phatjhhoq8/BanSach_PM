@@ -28,7 +28,20 @@ public static class DatabaseInitializer
                     return fallback;
                 }
 
-                return value.ToString();
+                string settingValue = value.ToString();
+                string legacyStoreName = "Premium " + "Books";
+                if (key == "StoreName" && settingValue == legacyStoreName)
+                {
+                    settingValue = "The Book Haven";
+                    using (SqlCommand update = new SqlCommand("UPDATE dbo.CaiDat SET [Value] = @Value WHERE [Key] = @Key", conn))
+                    {
+                        update.Parameters.AddWithValue("@Value", settingValue);
+                        update.Parameters.AddWithValue("@Key", key);
+                        update.ExecuteNonQuery();
+                    }
+                }
+
+                return settingValue;
             }
         }
     }

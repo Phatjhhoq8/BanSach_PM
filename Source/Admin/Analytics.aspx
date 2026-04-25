@@ -1,4 +1,4 @@
-<%@ Page Title="Analytics - BanSach Premium" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="Analytics.aspx.cs" Inherits="Admin_Analytics" %>
+<%@ Page Title="Analytics - The Book Haven" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="Analytics.aspx.cs" Inherits="Admin_Analytics" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="PageTitle" Runat="Server">Phân tích kinh doanh</asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">

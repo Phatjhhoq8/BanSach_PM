@@ -5,7 +5,7 @@
 <head runat="server">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - BanSach Premium</title>
+    <title>Admin Login - The Book Haven</title>
     <script>
         (function () {
             var savedTheme = null;
@@ -25,8 +25,8 @@
             --admin-bg-start: oklch(8% 0.018 278);
             --admin-bg-mid: oklch(10% 0.02 278);
             --admin-bg-end: oklch(7% 0.014 274);
-            --admin-glow-1: oklch(31% 0.13 286 / 0.22);
-            --admin-glow-2: oklch(30% 0.11 226 / 0.18);
+            --admin-glow-1: oklch(31% 0.13 250 / 0.24);
+            --admin-glow-2: oklch(30% 0.11 235 / 0.2);
             --admin-star: rgba(255,255,255,0.72);
             --admin-text: oklch(95% 0.018 272);
             --admin-text-soft: oklch(78% 0.03 274);
@@ -34,8 +34,8 @@
             --admin-panel-top: oklch(18% 0.035 282 / 0.8);
             --admin-panel-bottom: oklch(14% 0.028 278 / 0.84);
             --admin-input: oklch(12% 0.024 278 / 0.92);
-            --admin-accent: oklch(72% 0.19 286);
-            --admin-accent-2: oklch(79% 0.15 215);
+            --admin-accent: oklch(68% 0.18 250);
+            --admin-accent-2: oklch(72% 0.15 235);
             --admin-pill-text: oklch(8% 0.012 278);
         }
 
@@ -43,8 +43,8 @@
             --admin-bg-start: oklch(95% 0.012 268);
             --admin-bg-mid: oklch(98% 0.008 270);
             --admin-bg-end: oklch(93% 0.02 252);
-            --admin-glow-1: oklch(86% 0.06 286 / 0.34);
-            --admin-glow-2: oklch(88% 0.05 226 / 0.28);
+            --admin-glow-1: oklch(86% 0.06 250 / 0.34);
+            --admin-glow-2: oklch(88% 0.05 235 / 0.28);
             --admin-star: rgba(255,255,255,0.42);
             --admin-text: oklch(24% 0.03 272);
             --admin-text-soft: oklch(52% 0.026 270);
@@ -116,7 +116,7 @@
         </div>
 
         <div class="mb-10 text-center">
-            <div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl text-[var(--admin-pill-text)] shadow-xl" style="background:linear-gradient(135deg,var(--admin-accent),var(--admin-accent-2)); box-shadow:0 18px 38px oklch(27% 0.12 284 / 0.35);">
+            <div class="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl text-[var(--admin-pill-text)] shadow-xl" style="background:linear-gradient(135deg,var(--admin-accent),var(--admin-accent-2)); box-shadow:0 18px 38px oklch(27% 0.12 250 / 0.35);">
                 <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
             </div>
             <h1 class="text-3xl font-bold tracking-tight" style="color:var(--admin-text);">Admin Portal</h1>
@@ -127,11 +127,11 @@
             <div class="space-y-6">
                 <div>
                     <label class="mb-2 block text-sm font-medium" style="color:var(--admin-text);">Tên đăng nhập</label>
-                    <asp:TextBox ID="txtUsername" runat="server" CssClass="admin-input w-full rounded-xl px-4 py-4 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-fuchsia-400" placeholder="admin"></asp:TextBox>
+                    <asp:TextBox ID="txtUsername" runat="server" CssClass="admin-input w-full rounded-xl px-4 py-4 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-blue-400" placeholder="admin"></asp:TextBox>
                 </div>
                 <div>
                     <label class="mb-2 block text-sm font-medium" style="color:var(--admin-text);">Mật khẩu</label>
-                    <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="admin-input w-full rounded-xl px-4 py-4 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-fuchsia-400" placeholder="••••••••"></asp:TextBox>
+                    <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="admin-input w-full rounded-xl px-4 py-4 outline-none transition-all focus:border-transparent focus:ring-2 focus:ring-blue-400" placeholder="••••••••"></asp:TextBox>
                 </div>
                 <div class="flex items-center justify-between">
                     <label class="group flex cursor-pointer items-center gap-2">
@@ -139,14 +139,14 @@
                         <span class="text-sm transition-colors group-hover:opacity-100" style="color:var(--admin-text-soft);">Ghi nhớ đăng nhập</span>
                     </label>
                 </div>
-                <asp:Button ID="btnLogin" runat="server" Text="Đăng nhập ngay" OnClick="btnLogin_Click" CssClass="w-full rounded-xl py-4 font-bold transition-all active:scale-[0.98]" style="background:linear-gradient(135deg,var(--admin-accent),var(--admin-accent-2)); color:var(--admin-pill-text); box-shadow:0 18px 38px oklch(27% 0.12 284 / 0.35);" />
+                <asp:Button ID="btnLogin" runat="server" Text="Đăng nhập ngay" OnClick="btnLogin_Click" CssClass="w-full rounded-xl py-4 font-bold transition-all active:scale-[0.98]" style="background:linear-gradient(135deg,var(--admin-accent),var(--admin-accent-2)); color:var(--admin-pill-text); box-shadow:0 18px 38px oklch(27% 0.12 250 / 0.35);" />
 
                 <asp:Literal ID="litError" runat="server"></asp:Literal>
             </div>
         </form>
 
         <p class="mt-8 text-center text-sm" style="color:var(--admin-text-soft);">
-            &copy; 2026 BanSach Premium Publisher. All rights reserved.
+            &copy; 2026 The Book Haven. All rights reserved.
         </p>
     </div>
 

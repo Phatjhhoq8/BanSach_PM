@@ -1,4 +1,4 @@
-<%@ Page Title="Giỏ hàng - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="GioHang.aspx.cs" Inherits="GioHang" %>
+<%@ Page Title="Giỏ hàng - The Book Haven" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="GioHang.aspx.cs" Inherits="GioHang" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <section class="container-page py-10 lg:py-16">

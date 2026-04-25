@@ -384,7 +384,7 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM dbo.CaiDat WHERE [Key] = 'StoreName')
 BEGIN
-    INSERT INTO dbo.CaiDat ([Key], [Value], MoTa) VALUES ('StoreName', N'Premium Books', N'Tên cửa hàng hiển thị');
+    INSERT INTO dbo.CaiDat ([Key], [Value], MoTa) VALUES ('StoreName', N'The Book Haven', N'Tên cửa hàng hiển thị');
 END
 GO
 
@@ -416,7 +416,7 @@ IF NOT EXISTS (SELECT 1 FROM dbo.TinTuc)
 BEGIN
     INSERT INTO dbo.TinTuc (TieuDe, Slug, TomTat, NoiDung, ChuyenMuc, TrangThai)
     VALUES
-    (N'10 cuốn sách nên đọc khi bắt đầu xây thói quen đọc', N'10-cuon-sach-nen-doc', N'Danh sách cân bằng giữa tư duy, kỹ năng sống và văn học dễ tiếp cận.', N'Hãy bắt đầu bằng một câu hỏi rõ: bạn muốn giải trí, học kỹ năng, hiểu bản thân hay tìm kiến thức chuyên môn? Khi mua online, hãy xem mô tả, tác giả, nhà xuất bản, đánh giá và ảnh bìa. Premium Books sẽ tiếp tục cập nhật các danh sách gợi ý đọc sách theo chủ đề để người dùng khám phá nhanh hơn.', N'Top list', 1),
+    (N'10 cuốn sách nên đọc khi bắt đầu xây thói quen đọc', N'10-cuon-sach-nen-doc', N'Danh sách cân bằng giữa tư duy, kỹ năng sống và văn học dễ tiếp cận.', N'Hãy bắt đầu bằng một câu hỏi rõ: bạn muốn giải trí, học kỹ năng, hiểu bản thân hay tìm kiến thức chuyên môn? Khi mua online, hãy xem mô tả, tác giả, nhà xuất bản, đánh giá và ảnh bìa. The Book Haven sẽ tiếp tục cập nhật các danh sách gợi ý đọc sách theo chủ đề để người dùng khám phá nhanh hơn.', N'Top list', 1),
     (N'Cách chọn sách kỹ năng sống không bị lan man', N'chon-sach-ky-nang-song', N'Ưu tiên vấn đề bạn đang gặp, tác giả có nền tảng rõ và nội dung có bài tập thực hành.', N'Một cuốn sách kỹ năng tốt nên giải quyết đúng vấn đề hiện tại của bạn. Hãy đọc mục lục, phần giới thiệu và một vài đánh giá trước khi mua. Nội dung có ví dụ thực tế và bài tập áp dụng thường hữu ích hơn những lời khuyên chung chung.', N'Review', 1),
     (N'Bảo quản sách giấy trong mùa ẩm', N'bao-quan-sach-giay', N'Những thói quen nhỏ giúp sách giữ phom, không cong gáy và hạn chế ố giấy.', N'Đặt sách ở nơi khô thoáng, tránh ánh nắng trực tiếp và không ép sách sát tường ẩm. Có thể dùng túi hút ẩm trong kệ sách và vệ sinh bụi định kỳ để giữ giấy bền màu hơn.', N'Hướng dẫn', 1);
 END

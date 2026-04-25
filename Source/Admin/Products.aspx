@@ -1,4 +1,4 @@
-<%@ Page Title="Quản lý sản phẩm - BanSach Premium" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="Products.aspx.cs" Inherits="Admin_Products" %>
+<%@ Page Title="Quản lý sản phẩm - The Book Haven" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="Products.aspx.cs" Inherits="Admin_Products" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="PageTitle" Runat="Server">
     Quản lý sản phẩm
@@ -76,7 +76,6 @@
             </table>
         </div>
         
-        <!-- Pagination -->
         <div class="p-8 border-t border-white/5 flex items-center justify-between">
             <span class="text-sm text-slate-500"><asp:Literal ID="litProductSummary" runat="server">Đang tải sản phẩm...</asp:Literal></span>
             <a href="ProductEdit.aspx" class="text-sm font-bold text-adminaccent hover:underline">Thêm sách mới</a>

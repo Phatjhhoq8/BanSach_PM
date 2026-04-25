@@ -5,7 +5,7 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title><%= string.IsNullOrWhiteSpace(Page.Title) ? "Nhà Sách Premium" : Page.Title %></title>
+    <title><%= string.IsNullOrWhiteSpace(Page.Title) ? "The Book Haven" : Page.Title %></title>
     <script>
         tailwind.config = {
             theme: {
@@ -28,46 +28,46 @@
 </head>
 <body class="editorial-shell text-ink min-h-screen">
     <form id="form1" runat="server" class="min-h-screen flex flex-col">
-        <div class="border-b border-[var(--line)] bg-[oklch(10%_0.02_278_/_0.86)] text-[var(--ink)] text-xs backdrop-blur-md">
+        <div class="border-b border-blue-700 bg-blue-700 text-white text-xs">
             <div class="container-page flex min-h-10 items-center justify-between gap-4 py-2">
                 <p class="hidden sm:block font-semibold tracking-wide">Nhà sách trực tuyến lấy dữ liệu từ database</p>
                 <p class="font-semibold">Hotline: <asp:Literal ID="litTopHotline" runat="server">1900 123456</asp:Literal></p>
                 <div class="hidden md:flex items-center gap-5 opacity-90">
-                    <a href="DanhMuc.aspx" class="hover:opacity-75">Cửa hàng</a>
-                    <a href="Orders.aspx" class="hover:opacity-75">Tra cứu đơn</a>
+                    <a href="DanhMuc.aspx" class="hover:text-blue-100">Cửa hàng</a>
+                    <a href="Orders.aspx" class="hover:text-blue-100">Tra cứu đơn</a>
                 </div>
             </div>
         </div>
 
-        <header class="sticky top-0 z-50 border-b border-[var(--line)] bg-[oklch(10%_0.02_278_/_0.78)] backdrop-blur-xl">
+        <header class="sticky top-0 z-50 border-b border-blue-100 bg-white/95 shadow-sm shadow-blue-900/5 backdrop-blur-xl">
             <div class="container-page">
                 <div class="flex min-h-20 items-center justify-between gap-4">
-                    <a href="Default.aspx" class="group flex flex-col leading-none" aria-label="Về trang chủ Premium Books">
-                        <span class="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-[var(--ink)] group-hover:text-[var(--primary-dark)]"><asp:Literal ID="litHeaderStoreName" runat="server">Premium Books</asp:Literal></span>
+                    <a href="Default.aspx" class="group flex flex-col leading-none" aria-label="Về trang chủ The Book Haven">
+                        <span class="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-slate-950 group-hover:text-blue-700"><asp:Literal ID="litHeaderStoreName" runat="server">The Book Haven</asp:Literal></span>
                     </a>
 
-                    <nav class="hidden lg:flex items-center gap-8 text-sm font-extrabold text-[var(--ink-soft)]">
-                        <a href="Default.aspx" class="hover:text-[var(--primary-dark)]">Trang chủ</a>
+                    <nav class="hidden lg:flex items-center gap-8 text-sm font-extrabold text-slate-700">
+                        <a href="Default.aspx" class="hover:text-blue-700">Trang chủ</a>
                         <div class="relative group py-3 -my-3">
-                            <button type="button" class="flex items-center gap-2 hover:text-[var(--primary-dark)]" aria-label="Mở danh mục sách">
+                            <button type="button" class="flex items-center gap-2 hover:text-blue-700" aria-label="Mở danh mục sách">
                                 <span>Danh mục sách</span>
                                 <svg class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
                             <div class="absolute left-0 top-full h-4 w-full"></div>
-                            <div class="invisible absolute left-0 top-full z-20 mt-1 min-w-52 rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-2 opacity-0 shadow-[var(--shadow-md)] transition-all group-hover:visible group-hover:opacity-100">
-                                <a href="DanhMuc.aspx" class="block rounded-2xl px-4 py-3 hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]">Tất cả sách</a>
-                                <a href="DanhMuc.aspx?sort=new" class="block rounded-2xl px-4 py-3 hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]">Sách mới</a>
-                                <a href="DanhMuc.aspx?sort=price_asc" class="block rounded-2xl px-4 py-3 hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]">Giá tốt</a>
+                            <div class="invisible absolute left-0 top-full z-20 mt-1 min-w-52 rounded-3xl border border-blue-100 bg-white p-2 text-slate-700 opacity-0 shadow-xl shadow-blue-900/10 transition-all group-hover:visible group-hover:opacity-100">
+                                <a href="DanhMuc.aspx" class="block rounded-2xl px-4 py-3 hover:bg-blue-50 hover:text-blue-700">Tất cả sách</a>
+                                <a href="DanhMuc.aspx?sort=new" class="block rounded-2xl px-4 py-3 hover:bg-blue-50 hover:text-blue-700">Sách mới</a>
+                                <a href="DanhMuc.aspx?sort=price_asc" class="block rounded-2xl px-4 py-3 hover:bg-blue-50 hover:text-blue-700">Giá tốt</a>
                             </div>
                         </div>
-                        <a href="News.aspx" class="hover:text-[var(--primary-dark)]">Tin tức</a>
-                        <a href="FAQ.aspx" class="hover:text-[var(--primary-dark)]">FAQ</a>
+                        <a href="News.aspx" class="hover:text-blue-700">Tin tức</a>
+                        <a href="FAQ.aspx" class="hover:text-blue-700">FAQ</a>
                     </nav>
 
                     <div class="hidden md:flex flex-1 max-w-sm items-center justify-end">
                         <div class="relative w-full">
-                            <input id="siteSearch" type="search" class="form-control h-11 rounded-full pl-5 pr-12 text-sm" placeholder="Tìm tên sách, tác giả..." onkeydown="if(event.key==='Enter'){submitHeaderSearch('siteSearch'); return false;}" />
-                            <button type="button" onclick="submitHeaderSearch('siteSearch')" class="absolute right-1.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--accent)] hover:bg-[var(--primary-soft)]" aria-label="Tìm kiếm">
+                            <input id="siteSearch" type="search" class="h-11 w-full rounded-full border border-blue-100 bg-blue-50/60 pl-5 pr-12 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100" placeholder="Tìm tên sách, tác giả..." onkeydown="if(event.key==='Enter'){submitHeaderSearch('siteSearch'); return false;}" />
+                            <button type="button" onclick="submitHeaderSearch('siteSearch')" class="absolute right-1.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-blue-600 hover:bg-blue-100" aria-label="Tìm kiếm">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </button>
                         </div>
@@ -75,58 +75,58 @@
 
                     <div class="flex items-center gap-2 sm:gap-3">
                         <div class="relative hidden lg:block group">
-                            <button type="button" class="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface)] text-[var(--ink-soft)] hover:border-[var(--primary)] hover:text-[var(--primary-dark)]" aria-label="Tài khoản">
+                            <button type="button" class="flex h-11 w-11 items-center justify-center rounded-full border border-blue-100 bg-white text-slate-700 shadow-sm shadow-blue-900/5 hover:border-blue-300 hover:text-blue-700" aria-label="Tài khoản">
                                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                             </button>
-                            <div class="invisible absolute right-0 top-12 w-64 translate-y-2 rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-2 opacity-0 shadow-[var(--shadow-md)] transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
+                            <div class="invisible absolute right-0 top-12 w-64 translate-y-2 rounded-3xl border border-blue-100 bg-white p-2 text-slate-700 opacity-0 shadow-xl shadow-blue-900/10 transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
                                 <asp:PlaceHolder ID="phGuest" runat="server">
                                     <div class="px-4 py-3">
-                                        <p class="font-extrabold text-[var(--ink)]">Khách hàng</p>
-                                        <p class="mt-1 text-xs text-[var(--muted)]">Đăng nhập để lưu giỏ hàng và theo dõi đơn.</p>
+                                        <p class="font-extrabold text-slate-950">Khách hàng</p>
+                                        <p class="mt-1 text-xs text-slate-500">Đăng nhập để lưu giỏ hàng và theo dõi đơn.</p>
                                     </div>
-                                    <a href="Login.aspx" class="block rounded-2xl px-4 py-2 text-sm font-bold text-[var(--ink-soft)] hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]">Đăng nhập</a>
-                                    <a href="Register.aspx" class="block rounded-2xl px-4 py-2 text-sm font-bold text-[var(--ink-soft)] hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]">Tạo tài khoản</a>
+                                    <a href="Login.aspx" class="block rounded-2xl px-4 py-2 text-sm font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-700">Đăng nhập</a>
+                                    <a href="Register.aspx" class="block rounded-2xl px-4 py-2 text-sm font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-700">Tạo tài khoản</a>
                                 </asp:PlaceHolder>
                                 <asp:PlaceHolder ID="phUser" runat="server" Visible="false">
                                     <div class="px-4 py-3">
-                                        <p class="font-extrabold text-[var(--ink)]"><asp:Literal ID="litUserName" runat="server"></asp:Literal></p>
-                                        <p class="mt-1 truncate text-xs text-[var(--muted)]"><asp:Literal ID="litUserEmail" runat="server"></asp:Literal></p>
+                                        <p class="font-extrabold text-slate-950"><asp:Literal ID="litUserName" runat="server"></asp:Literal></p>
+                                        <p class="mt-1 truncate text-xs text-slate-500"><asp:Literal ID="litUserEmail" runat="server"></asp:Literal></p>
                                     </div>
-                                    <a href="Account.aspx" class="block rounded-2xl px-4 py-2 text-sm font-bold text-[var(--ink-soft)] hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]">Tài khoản cá nhân</a>
-                                    <a href="Orders.aspx" class="block rounded-2xl px-4 py-2 text-sm font-bold text-[var(--ink-soft)] hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]">Đơn hàng của tôi</a>
-                                    <a href="Wishlist.aspx" class="block rounded-2xl px-4 py-2 text-sm font-bold text-[var(--ink-soft)] hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]">Yêu thích</a>
+                                    <a href="Account.aspx" class="block rounded-2xl px-4 py-2 text-sm font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-700">Tài khoản cá nhân</a>
+                                    <a href="Orders.aspx" class="block rounded-2xl px-4 py-2 text-sm font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-700">Đơn hàng của tôi</a>
+                                    <a href="Wishlist.aspx" class="block rounded-2xl px-4 py-2 text-sm font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-700">Yêu thích</a>
                                     <asp:LinkButton ID="btnUserLogout" runat="server" OnClick="btnUserLogout_Click" CssClass="block w-full rounded-2xl px-4 py-2 text-left text-sm font-bold text-red-700 hover:bg-red-50">Đăng xuất</asp:LinkButton>
                                 </asp:PlaceHolder>
                             </div>
                         </div>
 
-                        <a href="GioHang.aspx" class="relative flex h-11 w-11 items-center justify-center rounded-full bg-[var(--primary)] text-[oklch(8%_0.01_278)] shadow-sm hover:bg-[var(--primary-dark)] hover:text-white" aria-label="Giỏ hàng">
+                        <a href="GioHang.aspx" class="relative flex h-11 w-11 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm shadow-blue-900/20 hover:bg-blue-700" aria-label="Giỏ hàng">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                            <span id="cartCount" runat="server" ClientIDMode="Static" class="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-[var(--paper)] bg-[var(--danger)] px-1 text-[0.65rem] font-black text-[oklch(98%_0.012_78)]">0</span>
+                            <span id="cartCount" runat="server" ClientIDMode="Static" class="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 px-1 text-[0.65rem] font-black text-white">0</span>
                         </a>
 
-                        <button type="button" onclick="toggleMobileMenu()" class="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface)] text-[var(--ink)] lg:hidden" aria-label="Mở menu">
+                        <button type="button" onclick="toggleMobileMenu()" class="flex h-11 w-11 items-center justify-center rounded-full border border-blue-100 bg-white text-slate-800 lg:hidden" aria-label="Mở menu">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                         </button>
                     </div>
                 </div>
 
-                <div id="mobileMenu" class="hidden border-t border-[var(--line)] py-4 lg:hidden">
+                <div id="mobileMenu" class="hidden border-t border-blue-100 py-4 lg:hidden">
                     <div class="space-y-3">
-                        <input id="mobileSearch" type="search" class="form-control rounded-full" placeholder="Tìm sách..." onkeydown="if(event.key==='Enter'){submitHeaderSearch('mobileSearch'); return false;}" />
+                        <input id="mobileSearch" type="search" class="h-11 w-full rounded-full border border-blue-100 bg-blue-50/60 px-5 text-sm font-semibold text-slate-800 placeholder:text-slate-500 outline-none focus:border-blue-400 focus:bg-white focus:ring-4 focus:ring-blue-100" placeholder="Tìm sách..." onkeydown="if(event.key==='Enter'){submitHeaderSearch('mobileSearch'); return false;}" />
                         <div class="grid grid-cols-2 gap-2 text-sm font-extrabold">
-                            <a href="Default.aspx" class="rounded-2xl bg-[var(--surface)] px-4 py-3">Trang chủ</a>
-                            <a href="News.aspx" class="rounded-2xl bg-[var(--surface)] px-4 py-3">Tin tức</a>
-                            <a href="FAQ.aspx" class="rounded-2xl bg-[var(--surface)] px-4 py-3">FAQ</a>
-                            <a href="Login.aspx" class="rounded-2xl bg-[var(--surface)] px-4 py-3">Đăng nhập</a>
-                            <a href="Orders.aspx" class="rounded-2xl bg-[var(--surface)] px-4 py-3">Đơn hàng</a>
+                            <a href="Default.aspx" class="rounded-2xl bg-blue-50 px-4 py-3 text-slate-700">Trang chủ</a>
+                            <a href="News.aspx" class="rounded-2xl bg-blue-50 px-4 py-3 text-slate-700">Tin tức</a>
+                            <a href="FAQ.aspx" class="rounded-2xl bg-blue-50 px-4 py-3 text-slate-700">FAQ</a>
+                            <a href="Login.aspx" class="rounded-2xl bg-blue-50 px-4 py-3 text-slate-700">Đăng nhập</a>
+                            <a href="Orders.aspx" class="rounded-2xl bg-blue-50 px-4 py-3 text-slate-700">Đơn hàng</a>
                         </div>
-                        <div class="rounded-[28px] border border-[var(--line)] bg-[var(--surface)] p-3">
-                            <p class="px-2 text-xs font-black uppercase tracking-[0.14em] text-[var(--muted)]">Danh mục sách</p>
+                        <div class="rounded-[28px] border border-blue-100 bg-white p-3 text-slate-700">
+                            <p class="px-2 text-xs font-black uppercase tracking-[0.14em] text-slate-500">Danh mục sách</p>
                             <div class="mt-3 grid gap-2 text-sm font-extrabold">
-                                <a href="DanhMuc.aspx" class="rounded-2xl bg-[var(--paper-soft)] px-4 py-3">Tất cả sách</a>
-                                <a href="DanhMuc.aspx?sort=new" class="rounded-2xl bg-[var(--paper-soft)] px-4 py-3">Sách mới</a>
-                                <a href="DanhMuc.aspx?sort=price_asc" class="rounded-2xl bg-[var(--paper-soft)] px-4 py-3">Giá tốt</a>
+                                <a href="DanhMuc.aspx" class="rounded-2xl bg-blue-50 px-4 py-3">Tất cả sách</a>
+                                <a href="DanhMuc.aspx?sort=new" class="rounded-2xl bg-blue-50 px-4 py-3">Sách mới</a>
+                                <a href="DanhMuc.aspx?sort=price_asc" class="rounded-2xl bg-blue-50 px-4 py-3">Giá tốt</a>
                             </div>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
             <div class="container-page py-12 lg:py-16">
                 <div class="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_1fr]">
                     <div>
-                        <h2 class="font-heading text-2xl font-bold text-[var(--ink)]"><asp:Literal ID="litFooterStoreName" runat="server">Premium Books</asp:Literal></h2>
+                        <h2 class="font-heading text-2xl font-bold text-[var(--ink)]"><asp:Literal ID="litFooterStoreName" runat="server">The Book Haven</asp:Literal></h2>
                     </div>
                     <div>
                         <h3 class="text-xs font-black uppercase tracking-[0.12em] text-[var(--accent)]">Dịch vụ</h3>
@@ -172,7 +172,7 @@
                     </div>
                 </div>
                 <div class="mt-10 flex flex-col justify-between gap-4 border-t border-[oklch(98%_0.012_78_/_0.12)] pt-6 text-xs text-[var(--muted)] md:flex-row">
-                    <p>&copy; 2026 Premium Books. Website đồ án môn học bán sách trực tuyến.</p>
+                    <p>&copy; 2026 The Book Haven. Website đồ án môn học bán sách trực tuyến.</p>
                 </div>
             </div>
         </footer>

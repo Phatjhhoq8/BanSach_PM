@@ -1,4 +1,4 @@
-<%@ Page Title="Quản lý FAQ - BanSach Premium" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="Faq.aspx.cs" Inherits="Admin_Faq" %>
+<%@ Page Title="Quản lý FAQ - The Book Haven" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="Faq.aspx.cs" Inherits="Admin_Faq" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="PageTitle" Runat="Server">Quản lý FAQ / CSKH</asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">

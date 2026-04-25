@@ -31,7 +31,6 @@ public partial class Login : System.Web.UI.Page
 
         if (ValidateUser(email, password))
         {
-            // Redirect back to return url if exists
             string returnUrl = Request.QueryString["ReturnUrl"];
             if (IsSafeReturnUrl(returnUrl))
             {

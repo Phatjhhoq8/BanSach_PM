@@ -1,10 +1,10 @@
-<%@ Page Title="Đăng ký - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Register.aspx.cs" Inherits="Register" %>
+<%@ Page Title="Đăng ký - The Book Haven" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Register.aspx.cs" Inherits="Register" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <section class="container-page py-16 lg:py-24">
         <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
             <div>
-                <p class="eyebrow">Thành viên Premium Books</p>
+                <p class="eyebrow">Thành viên The Book Haven</p>
                 <h1 class="mt-4 text-4xl font-bold sm:text-5xl">Tạo tài khoản để đặt sách và theo dõi đơn hàng.</h1>
                 <p class="mt-5 text-lg leading-8 text-[var(--ink-soft)]">Đồ án hỗ trợ đầy đủ vai trò khách hàng: đăng ký, đăng nhập, giỏ hàng, checkout và lịch sử đơn.</p>
             </div>

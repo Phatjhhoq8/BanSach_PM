@@ -50,7 +50,7 @@ public partial class SiteMaster : MasterPage
     {
         try
         {
-            string storeName = DatabaseInitializer.GetSetting("StoreName", "Premium Books");
+            string storeName = DatabaseInitializer.GetSetting("StoreName", "The Book Haven");
             string hotline = DatabaseInitializer.GetSetting("Hotline", "1900 123456");
             string email = DatabaseInitializer.GetSetting("SupportEmail", "cskh@premiumbooks.vn");
             string address = DatabaseInitializer.GetSetting("StoreAddress", "123, DNC");

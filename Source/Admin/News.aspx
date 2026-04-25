@@ -1,4 +1,4 @@
-<%@ Page Title="Quản lý tin tức - BanSach Premium" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="News.aspx.cs" Inherits="Admin_News" %>
+<%@ Page Title="Quản lý tin tức - The Book Haven" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="News.aspx.cs" Inherits="Admin_News" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="PageTitle" Runat="Server">Quản lý tin tức</asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">

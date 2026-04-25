@@ -7,10 +7,10 @@
     --ink-soft: oklch(84% 0.025 272);
     --muted: oklch(72% 0.03 275);
     --line: oklch(34% 0.05 282);
-    --primary: oklch(71% 0.19 285);
-    --primary-dark: oklch(63% 0.16 250);
-    --primary-soft: oklch(28% 0.07 284);
-    --accent: oklch(80% 0.15 215);
+    --primary: oklch(68% 0.18 250);
+    --primary-dark: oklch(55% 0.17 255);
+    --primary-soft: oklch(28% 0.08 250);
+    --accent: oklch(72% 0.15 235);
     --danger: oklch(54% 0.16 24);
     --success: oklch(52% 0.13 145);
     --focus: oklch(76% 0.16 255);
@@ -67,9 +67,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 .editorial-shell {
     background:
-        radial-gradient(circle at 15% 20%, oklch(30% 0.12 285 / 0.22), transparent 22%),
-        radial-gradient(circle at 82% 14%, oklch(32% 0.11 230 / 0.18), transparent 20%),
-        radial-gradient(circle at 68% 72%, oklch(28% 0.1 305 / 0.16), transparent 24%),
+        radial-gradient(circle at 15% 20%, oklch(30% 0.12 250 / 0.24), transparent 22%),
+        radial-gradient(circle at 82% 14%, oklch(32% 0.11 235 / 0.2), transparent 20%),
+        radial-gradient(circle at 68% 72%, oklch(28% 0.1 255 / 0.16), transparent 24%),
         linear-gradient(180deg, oklch(9% 0.02 276), oklch(11% 0.02 275) 48%, oklch(8% 0.016 272));
     position: relative;
 }
@@ -198,7 +198,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 .content-shell .eyebrow {
-    color: oklch(48% 0.11 45);
+    color: var(--primary-dark);
 }
 
 .content-shell .badge-sale {
@@ -274,12 +274,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     justify-content: center;
     min-height: 2.875rem;
     padding: 0.75rem 1.25rem;
-    box-shadow: 0 16px 34px oklch(26% 0.12 282 / 0.45);
+    box-shadow: 0 16px 34px oklch(26% 0.12 250 / 0.45);
 }
 
 .btn-primary:hover {
     background: var(--primary-dark);
-    box-shadow: 0 18px 38px oklch(30% 0.13 245 / 0.52);
+    box-shadow: 0 18px 38px oklch(30% 0.13 250 / 0.52);
     transform: translateY(-1px);
 }
 
@@ -300,7 +300,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .btn-secondary:hover {
     border-color: var(--primary);
     color: var(--primary-dark);
-    background: oklch(22% 0.04 282 / 0.9);
+    background: oklch(22% 0.04 250 / 0.9);
 }
 
 .form-control {
@@ -399,9 +399,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 .galaxy-glass {
-    background: linear-gradient(180deg, oklch(19% 0.032 284 / 0.72), oklch(13% 0.024 278 / 0.78));
+    background: linear-gradient(180deg, oklch(19% 0.032 250 / 0.72), oklch(13% 0.024 278 / 0.78));
     backdrop-filter: blur(18px);
-    border: 1px solid oklch(36% 0.06 284 / 0.72);
+    border: 1px solid oklch(36% 0.06 250 / 0.72);
     box-shadow: var(--shadow-sm);
 }
 

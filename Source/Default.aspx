@@ -1,4 +1,4 @@
-<%@ Page Title="Trang chủ - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="_Default" %>
+<%@ Page Title="Trang chủ - The Book Haven" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Default.aspx.cs" Inherits="_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
 </asp:Content>
@@ -12,7 +12,7 @@
         <div class="absolute inset-0 z-10 opacity-70" style="background-image:radial-gradient(circle at 12% 18%, rgba(255,255,255,0.82) 0 1px, transparent 1.3px),radial-gradient(circle at 71% 24%, rgba(255,255,255,0.74) 0 1px, transparent 1.35px),radial-gradient(circle at 36% 74%, rgba(255,255,255,0.6) 0 1.15px, transparent 1.45px),radial-gradient(circle at 86% 62%, rgba(255,255,255,0.68) 0 0.95px, transparent 1.2px),radial-gradient(circle at 56% 10%, rgba(255,255,255,0.72) 0 0.9px, transparent 1.2px);"></div>
         <div class="container-page relative z-20 flex h-full items-center">
             <div class="max-w-2xl text-[oklch(99%_0.004_78)]">
-                <p class="text-xs font-black uppercase tracking-[0.22em] text-[var(--accent)]">Premium Books</p>
+                <p class="text-xs font-black uppercase tracking-[0.22em] text-[var(--accent)]">The Book Haven</p>
                 <h1 class="mt-5 font-heading text-4xl font-bold leading-tight text-[oklch(99%_0.004_78)] sm:text-5xl lg:text-6xl"><asp:Literal ID="litHeroCaption" runat="server"></asp:Literal></h1>
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row">
                     <a href="DanhMuc.aspx" class="inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--primary)] px-7 py-3 text-sm font-black text-[oklch(8%_0.01_278)] shadow-[0_18px_42px_oklch(28%_0.13_284_/_0.45)] hover:bg-[var(--accent)]">Khám phá sách</a>

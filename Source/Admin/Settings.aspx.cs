@@ -12,7 +12,7 @@ public partial class Admin_Settings : System.Web.UI.Page
 
     private void LoadSettings()
     {
-        txtStoreName.Text = DatabaseInitializer.GetSetting("StoreName", "Premium Books");
+        txtStoreName.Text = DatabaseInitializer.GetSetting("StoreName", "The Book Haven");
         txtHotline.Text = DatabaseInitializer.GetSetting("Hotline", "1900 123456");
         txtEmail.Text = DatabaseInitializer.GetSetting("SupportEmail", "cskh@premiumbooks.vn");
         txtAddress.Text = DatabaseInitializer.GetSetting("StoreAddress", "123, DNC");

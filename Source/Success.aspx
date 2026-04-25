@@ -1,4 +1,4 @@
-<%@ Page Title="Đặt hàng thành công - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Success.aspx.cs" Inherits="Success" %>
+<%@ Page Title="Đặt hàng thành công - The Book Haven" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="Success.aspx.cs" Inherits="Success" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <section class="container-page py-16 lg:py-24">

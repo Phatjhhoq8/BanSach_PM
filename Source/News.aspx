@@ -1,4 +1,4 @@
-<%@ Page Title="Tin tức sách - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="News.aspx.cs" Inherits="News" %>
+<%@ Page Title="Tin tức sách - The Book Haven" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="News.aspx.cs" Inherits="News" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <section class="bg-background py-16">
@@ -13,7 +13,7 @@
             <asp:Repeater ID="rptNews" runat="server">
                 <HeaderTemplate><div class="grid md:grid-cols-3 gap-6"></HeaderTemplate>
                 <ItemTemplate>
-                    <a href='NewsDetail.aspx?id=<%# Eval("MaTin") %>' class="group bg-white rounded-[32px] border border-amber-100 p-7 shadow-sm hover:shadow-xl transition-shadow">
+                    <a href='NewsDetail.aspx?id=<%# Eval("MaTin") %>' class="group bg-white rounded-[32px] border border-blue-100 p-7 shadow-sm hover:shadow-xl transition-shadow">
                         <p class="text-xs font-bold text-primary uppercase tracking-widest"><%# Server.HtmlEncode(Eval("ChuyenMuc").ToString()) %></p>
                         <h2 class="mt-4 font-heading text-2xl font-bold text-zinc-950 group-hover:text-primary transition-colors"><%# Server.HtmlEncode(Eval("TieuDe").ToString()) %></h2>
                         <p class="mt-4 text-sm text-zinc-600 leading-relaxed"><%# Server.HtmlEncode(Eval("TomTat").ToString()) %></p>
@@ -22,7 +22,7 @@
                 <FooterTemplate></div></FooterTemplate>
             </asp:Repeater>
             <asp:PlaceHolder ID="phEmpty" runat="server" Visible="false">
-                <div class="rounded-[32px] border border-amber-100 bg-white p-8 text-zinc-600">Chưa có bài viết nào đang hiển thị.</div>
+                <div class="rounded-[32px] border border-blue-100 bg-white p-8 text-zinc-600">Chưa có bài viết nào đang hiển thị.</div>
             </asp:PlaceHolder>
         </div>
     </section>

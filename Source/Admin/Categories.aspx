@@ -1,4 +1,4 @@
-<%@ Page Title="Quản lý danh mục - BanSach Premium" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="Categories.aspx.cs" Inherits="Admin_Categories" %>
+<%@ Page Title="Quản lý danh mục - The Book Haven" Language="C#" MasterPageFile="Admin.master" AutoEventWireup="true" CodeFile="Categories.aspx.cs" Inherits="Admin_Categories" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="PageTitle" Runat="Server">
     Quản lý danh mục
@@ -6,7 +6,6 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Category Form -->
         <div class="lg:col-span-1">
             <div class="glass-card rounded-[32px] p-8 sticky top-24">
                 <h3 class="text-lg font-bold text-white mb-6">
@@ -30,7 +29,6 @@
             </div>
         </div>
 
-        <!-- Category List -->
         <div class="lg:col-span-2">
             <div class="glass-card rounded-[32px] overflow-hidden">
                 <table class="w-full text-left">

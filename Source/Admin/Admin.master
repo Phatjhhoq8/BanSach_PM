@@ -5,7 +5,7 @@
 <head runat="server">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title><%= string.IsNullOrWhiteSpace(Page.Title) ? "Admin Dashboard" : Page.Title %> - Premium Books</title>
+    <title><%= string.IsNullOrWhiteSpace(Page.Title) ? "Admin Dashboard" : Page.Title %> - The Book Haven</title>
     <script>
         (function () {
             var savedTheme = null;
@@ -25,8 +25,8 @@
                         adminbg: 'oklch(10% 0.02 278)',
                         adminpanel: 'oklch(16% 0.032 282)',
                         adminline: 'oklch(34% 0.055 284)',
-                        adminaccent: 'oklch(72% 0.19 286)',
-                        adminaccent2: 'oklch(79% 0.15 215)'
+                        adminaccent: 'oklch(68% 0.18 250)',
+                        adminaccent2: 'oklch(72% 0.15 235)'
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif']
@@ -43,8 +43,8 @@
             --admin-bg-start: oklch(8% 0.018 278);
             --admin-bg-mid: oklch(10% 0.02 278);
             --admin-bg-end: oklch(7% 0.014 274);
-            --admin-glow-1: oklch(31% 0.13 286 / 0.22);
-            --admin-glow-2: oklch(30% 0.11 226 / 0.18);
+            --admin-glow-1: oklch(31% 0.13 250 / 0.24);
+            --admin-glow-2: oklch(30% 0.11 235 / 0.2);
             --admin-star: rgba(255,255,255,0.72);
             --admin-text: oklch(95% 0.018 272);
             --admin-text-soft: oklch(84% 0.025 272);
@@ -64,8 +64,8 @@
             --admin-bg-start: oklch(95% 0.012 268);
             --admin-bg-mid: oklch(98% 0.008 270);
             --admin-bg-end: oklch(93% 0.02 252);
-            --admin-glow-1: oklch(86% 0.06 286 / 0.34);
-            --admin-glow-2: oklch(88% 0.05 226 / 0.28);
+            --admin-glow-1: oklch(86% 0.06 250 / 0.34);
+            --admin-glow-2: oklch(88% 0.05 235 / 0.28);
             --admin-star: rgba(255,255,255,0.42);
             --admin-text: oklch(24% 0.03 272);
             --admin-text-soft: oklch(36% 0.03 272);
@@ -108,10 +108,10 @@
         }
         .nav-item { color: var(--admin-text-soft); transition: background-color 180ms cubic-bezier(0.16, 1, 0.3, 1), color 180ms cubic-bezier(0.16, 1, 0.3, 1), border-color 180ms cubic-bezier(0.16, 1, 0.3, 1); }
         .nav-item:hover { background: var(--admin-hover); color: var(--admin-text); }
-        .nav-item.active { background: linear-gradient(90deg, oklch(72% 0.19 286), oklch(79% 0.15 215)); color: var(--admin-pill-text); box-shadow: 0 14px 28px oklch(27% 0.12 284 / 0.38); }
+        .nav-item.active { background: linear-gradient(90deg, oklch(68% 0.18 250), oklch(72% 0.15 235)); color: var(--admin-pill-text); box-shadow: 0 14px 28px oklch(27% 0.12 250 / 0.38); }
         .glass-card, .admin-card { background: linear-gradient(180deg, var(--admin-panel-top), var(--admin-panel-bottom)); border: 1px solid var(--admin-border); box-shadow: var(--admin-shadow); backdrop-filter: blur(18px); }
         .admin-input { background: var(--admin-input); border: 1px solid var(--admin-border); color: var(--admin-text); }
-        .admin-input:focus { border-color: oklch(72% 0.19 286); outline: 3px solid oklch(72% 0.19 286 / 0.22); }
+        .admin-input:focus { border-color: oklch(68% 0.18 250); outline: 3px solid oklch(68% 0.18 250 / 0.22); }
         html[data-theme='light'] .text-white { color: var(--admin-text) !important; }
         html[data-theme='light'] .text-slate-300,
         html[data-theme='light'] .text-slate-400,
@@ -161,7 +161,7 @@
                             <i data-lucide="book-open" class="h-5 w-5"></i>
                         </div>
                         <div>
-                            <p class="text-lg font-black text-white tracking-tight">Premium Admin</p>
+                            <p class="text-lg font-black text-white tracking-tight">The Book Haven Admin</p>
                             <p class="text-xs font-bold uppercase tracking-[0.12em] text-cyan-200/70">Galaxy Control Room</p>
                         </div>
                     </a>
@@ -217,7 +217,7 @@
                         <div class="flex h-9 w-9 items-center justify-center rounded-full bg-adminaccent text-sm font-black text-adminbg">A</div>
                         <div class="min-w-0 flex-1">
                             <p class="truncate text-sm font-black text-white">Administrator</p>
-                            <p class="truncate text-xs text-cyan-200/70">admin@premium.com</p>
+                            <p class="truncate text-xs text-cyan-200/70">admin@thebookhaven.com</p>
                         </div>
                         <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click" CssClass="text-cyan-200/70 hover:text-red-400">
                             <i data-lucide="log-out" class="h-4 w-4"></i>
