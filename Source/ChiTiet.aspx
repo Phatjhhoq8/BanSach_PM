@@ -3,17 +3,27 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
     <style>
         .detail-cover {
-            background: linear-gradient(150deg, var(--paper-soft), oklch(88% 0.034 74));
+            background: oklch(100% 0 0);
             border: 1px solid var(--line);
             border-radius: 2rem;
             min-height: 32rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .detail-cover-frame {
+            align-items: center;
+            background: oklch(100% 0 0);
+            border-radius: 1rem;
+            display: inline-flex;
+            justify-content: center;
+            max-width: 100%;
+            padding: 1rem;
         }
 
         .book-main-image {
             background-position: center;
             background-repeat: no-repeat;
             background-size: contain;
-            filter: drop-shadow(0 30px 48px oklch(24% 0.028 58 / 0.24));
             height: min(72vw, 32rem);
             max-height: 34rem;
             width: min(74vw, 23rem);
@@ -34,8 +44,10 @@
 
         <div class="mt-8 grid gap-10 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
             <div class="detail-cover flex items-center justify-center p-8">
-                <div class="book-main-image" id="bookFront" runat="server">
-                    <div class="sr-only"><asp:Literal ID="litTitleCover" runat="server"></asp:Literal><asp:Literal ID="litTitleCoverShine" runat="server"></asp:Literal></div>
+                <div class="detail-cover-frame">
+                    <div class="book-main-image" id="bookFront" runat="server">
+                        <div class="sr-only"><asp:Literal ID="litTitleCover" runat="server"></asp:Literal><asp:Literal ID="litTitleCoverShine" runat="server"></asp:Literal></div>
+                    </div>
                 </div>
             </div>
 

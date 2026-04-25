@@ -22,7 +22,7 @@ public partial class Admin_Default : System.Web.UI.Page
         using (SqlConnection conn = new SqlConnection(connString))
         {
             conn.Open();
-            litMonthlyRevenue.Text = FormatCurrency(ExecuteDecimal(conn, "SELECT ISNULL(SUM(TongTien), 0) FROM dbo.DonHang WHERE MONTH(NgayDat) = MONTH(GETDATE()) AND YEAR(NgayDat) = YEAR(GETDATE()) AND TrangThai <> 4"));
+            litMonthlyRevenue.Text = FormatCurrency(ExecuteDecimal(conn, "SELECT ISNULL(SUM(TongTien), 0) FROM dbo.DonHang WHERE MONTH(NgayDat) = MONTH(GETDATE()) AND YEAR(NgayDat) = YEAR(GETDATE()) AND TrangThai = 3"));
             litPendingOrders.Text = ExecuteInt(conn, "SELECT COUNT(1) FROM dbo.DonHang WHERE TrangThai IN (0, 1)").ToString();
             litCustomers.Text = ExecuteInt(conn, "SELECT COUNT(1) FROM dbo.KhachHang").ToString();
             litLowStock.Text = ExecuteInt(conn, "SELECT COUNT(1) FROM dbo.SanPham WHERE TrangThai = 1 AND SoLuongTon <= 5").ToString();
@@ -47,9 +47,10 @@ public partial class Admin_Default : System.Web.UI.Page
                            WHEN sp.HinhAnh LIKE 'img/%' THEN '../' + sp.HinhAnh
                            ELSE '../img/books/' + sp.HinhAnh
                        END AS HinhAnh,
-                       ISNULL(SUM(ct.SoLuong), 0) AS SoLuongBan
+                       ISNULL(SUM(CASE WHEN dh.TrangThai = 3 THEN ct.SoLuong ELSE 0 END), 0) AS SoLuongBan
                 FROM dbo.SanPham sp
                 LEFT JOIN dbo.ChiTietDonHang ct ON sp.MaSP = ct.MaSP
+                LEFT JOIN dbo.DonHang dh ON dh.MaDH = ct.MaDH
                 WHERE sp.TrangThai = 1
                 GROUP BY sp.MaSP, sp.TenSP, sp.TacGia, sp.HinhAnh
                 ORDER BY SoLuongBan DESC, sp.MaSP DESC";

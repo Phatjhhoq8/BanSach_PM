@@ -7,7 +7,7 @@
                 <p class="text-primary font-bold uppercase tracking-[0.24em] text-sm mb-3">Tài khoản</p>
                 <h1 class="font-heading text-4xl font-bold text-zinc-950">Danh sách yêu thích</h1>
             </div>
-            <a href="DanhMuc.aspx" class="text-primary font-bold hover:text-amber-800 transition-colors">Tiếp tục khám phá</a>
+            <a href="DanhMuc.aspx" class="btn-secondary">Tiếp tục khám phá</a>
         </div>
         <asp:PlaceHolder ID="phEmpty" runat="server" Visible="false">
             <div class="bg-white rounded-[32px] border border-amber-100 p-12 text-center text-zinc-600">Bạn chưa lưu sản phẩm yêu thích nào. Hãy quay lại danh mục và chọn sách muốn theo dõi.</div>

@@ -10,15 +10,6 @@
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        primary: 'oklch(48% 0.11 45)',
-                        secondary: 'oklch(36% 0.08 44)',
-                        accent: 'oklch(65% 0.13 62)',
-                        background: 'oklch(97.5% 0.014 78)',
-                        paper: 'oklch(97.5% 0.014 78)',
-                        ink: 'oklch(24% 0.028 58)',
-                        muted: 'oklch(56% 0.026 64)'
-                    },
                     fontFamily: {
                         heading: ['Be Vietnam Pro', 'Inter', 'Segoe UI', 'system-ui', 'sans-serif'],
                         sans: ['Nunito Sans', 'Segoe UI', 'system-ui', 'sans-serif']
@@ -37,7 +28,7 @@
 </head>
 <body class="editorial-shell text-ink min-h-screen">
     <form id="form1" runat="server" class="min-h-screen flex flex-col">
-        <div class="bg-[var(--primary-dark)] text-[oklch(98%_0.012_78)] text-xs">
+        <div class="border-b border-[var(--line)] bg-[oklch(10%_0.02_278_/_0.86)] text-[var(--ink)] text-xs backdrop-blur-md">
             <div class="container-page flex min-h-10 items-center justify-between gap-4 py-2">
                 <p class="hidden sm:block font-semibold tracking-wide">Nhà sách trực tuyến lấy dữ liệu từ database</p>
                 <p class="font-semibold">Hotline: <asp:Literal ID="litTopHotline" runat="server">1900 123456</asp:Literal></p>
@@ -48,19 +39,27 @@
             </div>
         </div>
 
-        <header class="sticky top-0 z-50 border-b border-[var(--line)] bg-[oklch(97.5%_0.014_78_/_0.94)] backdrop-blur-md">
+        <header class="sticky top-0 z-50 border-b border-[var(--line)] bg-[oklch(10%_0.02_278_/_0.78)] backdrop-blur-xl">
             <div class="container-page">
                 <div class="flex min-h-20 items-center justify-between gap-4">
                     <a href="Default.aspx" class="group flex flex-col leading-none" aria-label="Về trang chủ Premium Books">
                         <span class="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-[var(--ink)] group-hover:text-[var(--primary-dark)]"><asp:Literal ID="litHeaderStoreName" runat="server">Premium Books</asp:Literal></span>
-                        <span class="mt-1 text-[0.65rem] font-black uppercase tracking-[0.28em] text-[var(--muted)]">Editorial Bookstore</span>
                     </a>
 
                     <nav class="hidden lg:flex items-center gap-8 text-sm font-extrabold text-[var(--ink-soft)]">
                         <a href="Default.aspx" class="hover:text-[var(--primary-dark)]">Trang chủ</a>
-                        <a href="DanhMuc.aspx" class="hover:text-[var(--primary-dark)]">Tất cả sách</a>
-                        <a href="DanhMuc.aspx?sort=new" class="hover:text-[var(--primary-dark)]">Sách mới</a>
-                        <a href="DanhMuc.aspx?sort=price_asc" class="hover:text-[var(--primary-dark)]">Giá tốt</a>
+                        <div class="relative group py-3 -my-3">
+                            <button type="button" class="flex items-center gap-2 hover:text-[var(--primary-dark)]" aria-label="Mở danh mục sách">
+                                <span>Danh mục sách</span>
+                                <svg class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="absolute left-0 top-full h-4 w-full"></div>
+                            <div class="invisible absolute left-0 top-full z-20 mt-1 min-w-52 rounded-3xl border border-[var(--line)] bg-[var(--surface)] p-2 opacity-0 shadow-[var(--shadow-md)] transition-all group-hover:visible group-hover:opacity-100">
+                                <a href="DanhMuc.aspx" class="block rounded-2xl px-4 py-3 hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]">Tất cả sách</a>
+                                <a href="DanhMuc.aspx?sort=new" class="block rounded-2xl px-4 py-3 hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]">Sách mới</a>
+                                <a href="DanhMuc.aspx?sort=price_asc" class="block rounded-2xl px-4 py-3 hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]">Giá tốt</a>
+                            </div>
+                        </div>
                         <a href="News.aspx" class="hover:text-[var(--primary-dark)]">Tin tức</a>
                         <a href="FAQ.aspx" class="hover:text-[var(--primary-dark)]">FAQ</a>
                     </nav>
@@ -68,7 +67,7 @@
                     <div class="hidden md:flex flex-1 max-w-sm items-center justify-end">
                         <div class="relative w-full">
                             <input id="siteSearch" type="search" class="form-control h-11 rounded-full pl-5 pr-12 text-sm" placeholder="Tìm tên sách, tác giả..." onkeydown="if(event.key==='Enter'){submitHeaderSearch('siteSearch'); return false;}" />
-                            <button type="button" onclick="submitHeaderSearch('siteSearch')" class="absolute right-1.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--primary-dark)] hover:bg-[var(--primary-soft)]" aria-label="Tìm kiếm">
+                            <button type="button" onclick="submitHeaderSearch('siteSearch')" class="absolute right-1.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[var(--accent)] hover:bg-[var(--primary-soft)]" aria-label="Tìm kiếm">
                                 <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                             </button>
                         </div>
@@ -101,7 +100,7 @@
                             </div>
                         </div>
 
-                        <a href="GioHang.aspx" class="relative flex h-11 w-11 items-center justify-center rounded-full bg-[var(--primary)] text-[oklch(98%_0.012_78)] shadow-sm hover:bg-[var(--primary-dark)]" aria-label="Giỏ hàng">
+                        <a href="GioHang.aspx" class="relative flex h-11 w-11 items-center justify-center rounded-full bg-[var(--primary)] text-[oklch(8%_0.01_278)] shadow-sm hover:bg-[var(--primary-dark)] hover:text-white" aria-label="Giỏ hàng">
                             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                             <span id="cartCount" runat="server" ClientIDMode="Static" class="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full border-2 border-[var(--paper)] bg-[var(--danger)] px-1 text-[0.65rem] font-black text-[oklch(98%_0.012_78)]">0</span>
                         </a>
@@ -117,58 +116,63 @@
                         <input id="mobileSearch" type="search" class="form-control rounded-full" placeholder="Tìm sách..." onkeydown="if(event.key==='Enter'){submitHeaderSearch('mobileSearch'); return false;}" />
                         <div class="grid grid-cols-2 gap-2 text-sm font-extrabold">
                             <a href="Default.aspx" class="rounded-2xl bg-[var(--surface)] px-4 py-3">Trang chủ</a>
-                            <a href="DanhMuc.aspx" class="rounded-2xl bg-[var(--surface)] px-4 py-3">Tất cả sách</a>
                             <a href="News.aspx" class="rounded-2xl bg-[var(--surface)] px-4 py-3">Tin tức</a>
                             <a href="FAQ.aspx" class="rounded-2xl bg-[var(--surface)] px-4 py-3">FAQ</a>
                             <a href="Login.aspx" class="rounded-2xl bg-[var(--surface)] px-4 py-3">Đăng nhập</a>
                             <a href="Orders.aspx" class="rounded-2xl bg-[var(--surface)] px-4 py-3">Đơn hàng</a>
+                        </div>
+                        <div class="rounded-[28px] border border-[var(--line)] bg-[var(--surface)] p-3">
+                            <p class="px-2 text-xs font-black uppercase tracking-[0.14em] text-[var(--muted)]">Danh mục sách</p>
+                            <div class="mt-3 grid gap-2 text-sm font-extrabold">
+                                <a href="DanhMuc.aspx" class="rounded-2xl bg-[var(--paper-soft)] px-4 py-3">Tất cả sách</a>
+                                <a href="DanhMuc.aspx?sort=new" class="rounded-2xl bg-[var(--paper-soft)] px-4 py-3">Sách mới</a>
+                                <a href="DanhMuc.aspx?sort=price_asc" class="rounded-2xl bg-[var(--paper-soft)] px-4 py-3">Giá tốt</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </header>
 
-        <main class="flex-grow">
+        <main class="content-shell flex-grow">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
         </main>
 
-        <footer class="mt-auto border-t border-[var(--line)] bg-[var(--primary-dark)] text-[oklch(96%_0.016_78)]">
+        <footer class="mt-auto border-t border-[var(--line)] bg-[linear-gradient(180deg,oklch(12%_0.024_278),oklch(8%_0.02_275))] text-[var(--ink)]">
             <div class="container-page py-12 lg:py-16">
                 <div class="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_1fr]">
                     <div>
-                        <h2 class="font-heading text-2xl font-bold text-[oklch(98%_0.012_78)]"><asp:Literal ID="litFooterStoreName" runat="server">Premium Books</asp:Literal></h2>
-                        <p class="mt-4 max-w-sm text-sm leading-7 text-[oklch(86%_0.025_78)]">Nhà sách editorial hiện đại, chọn lọc những đầu sách đáng đọc và giúp trải nghiệm mua sách trực tuyến rõ ràng hơn.</p>
+                        <h2 class="font-heading text-2xl font-bold text-[var(--ink)]"><asp:Literal ID="litFooterStoreName" runat="server">Premium Books</asp:Literal></h2>
                     </div>
                     <div>
-                        <h3 class="text-xs font-black uppercase tracking-[0.12em] text-[oklch(92%_0.026_78)]">Dịch vụ</h3>
-                        <ul class="mt-4 space-y-3 text-sm text-[oklch(86%_0.025_78)]">
-                            <li><a href="About.aspx" class="hover:text-[oklch(98%_0.012_78)]">Giới thiệu</a></li>
-                            <li><a href="News.aspx" class="hover:text-[oklch(98%_0.012_78)]">Tin tức</a></li>
-                            <li><a href="FAQ.aspx" class="hover:text-[oklch(98%_0.012_78)]">Chính sách hỗ trợ</a></li>
+                        <h3 class="text-xs font-black uppercase tracking-[0.12em] text-[var(--accent)]">Dịch vụ</h3>
+                        <ul class="mt-4 space-y-3 text-sm text-[var(--ink-soft)]">
+                            <li><a href="About.aspx" class="hover:text-[var(--ink)]">Giới thiệu</a></li>
+                            <li><a href="News.aspx" class="hover:text-[var(--ink)]">Tin tức</a></li>
+                            <li><a href="FAQ.aspx" class="hover:text-[var(--ink)]">Chính sách hỗ trợ</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="text-xs font-black uppercase tracking-[0.12em] text-[oklch(92%_0.026_78)]">Hỗ trợ</h3>
-                        <ul class="mt-4 space-y-3 text-sm text-[oklch(86%_0.025_78)]">
-                            <li><a href="GioHang.aspx" class="hover:text-[oklch(98%_0.012_78)]">Giỏ hàng</a></li>
-                            <li><a href="Orders.aspx" class="hover:text-[oklch(98%_0.012_78)]">Theo dõi đơn</a></li>
-                            <li><a href="Account.aspx" class="hover:text-[oklch(98%_0.012_78)]">Tài khoản</a></li>
-                            <li><a href="Wishlist.aspx" class="hover:text-[oklch(98%_0.012_78)]">Yêu thích</a></li>
+                        <h3 class="text-xs font-black uppercase tracking-[0.12em] text-[var(--accent)]">Hỗ trợ</h3>
+                        <ul class="mt-4 space-y-3 text-sm text-[var(--ink-soft)]">
+                            <li><a href="GioHang.aspx" class="hover:text-[var(--ink)]">Giỏ hàng</a></li>
+                            <li><a href="Orders.aspx" class="hover:text-[var(--ink)]">Theo dõi đơn</a></li>
+                            <li><a href="Account.aspx" class="hover:text-[var(--ink)]">Tài khoản</a></li>
+                            <li><a href="Wishlist.aspx" class="hover:text-[var(--ink)]">Yêu thích</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="text-xs font-black uppercase tracking-[0.12em] text-[oklch(92%_0.026_78)]">Liên hệ</h3>
-                        <div class="mt-4 space-y-3 text-sm leading-7 text-[oklch(86%_0.025_78)]">
+                        <h3 class="text-xs font-black uppercase tracking-[0.12em] text-[var(--accent)]">Liên hệ</h3>
+                        <div class="mt-4 space-y-3 text-sm leading-7 text-[var(--ink-soft)]">
                             <p><asp:Literal ID="litFooterAddress" runat="server">55 Quang Trung, Hai Bà Trưng, Hà Nội</asp:Literal></p>
                             <p><asp:Literal ID="litFooterEmail" runat="server">cskh@premiumbooks.vn</asp:Literal></p>
                             <p><asp:Literal ID="litFooterHotline" runat="server">1900 123456</asp:Literal></p>
                         </div>
                     </div>
                 </div>
-                <div class="mt-10 flex flex-col justify-between gap-4 border-t border-[oklch(98%_0.012_78_/_0.14)] pt-6 text-xs text-[oklch(82%_0.023_78)] md:flex-row">
+                <div class="mt-10 flex flex-col justify-between gap-4 border-t border-[oklch(98%_0.012_78_/_0.12)] pt-6 text-xs text-[var(--muted)] md:flex-row">
                     <p>&copy; 2026 Premium Books. Website đồ án môn học bán sách trực tuyến.</p>
-                    <p>Thiết kế editorial ấm, tinh tế, tập trung vào bìa sách.</p>
                 </div>
             </div>
         </footer>

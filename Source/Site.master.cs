@@ -53,7 +53,7 @@ public partial class SiteMaster : MasterPage
             string storeName = DatabaseInitializer.GetSetting("StoreName", "Premium Books");
             string hotline = DatabaseInitializer.GetSetting("Hotline", "1900 123456");
             string email = DatabaseInitializer.GetSetting("SupportEmail", "cskh@premiumbooks.vn");
-            string address = DatabaseInitializer.GetSetting("StoreAddress", "55 Quang Trung, Hai Bà Trưng, Hà Nội");
+            string address = DatabaseInitializer.GetSetting("StoreAddress", "123, DNC");
 
             litHeaderStoreName.Text = HttpUtility.HtmlEncode(storeName);
             litFooterStoreName.Text = HttpUtility.HtmlEncode(storeName);

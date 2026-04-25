@@ -402,7 +402,7 @@ GO
 
 IF NOT EXISTS (SELECT 1 FROM dbo.CaiDat WHERE [Key] = 'StoreAddress')
 BEGIN
-    INSERT INTO dbo.CaiDat ([Key], [Value], MoTa) VALUES ('StoreAddress', N'12 Nguyễn Văn Bình, Quận 1, TP.HCM', N'Địa chỉ cửa hàng');
+    INSERT INTO dbo.CaiDat ([Key], [Value], MoTa) VALUES ('StoreAddress', N'123, DNC', N'Địa chỉ cửa hàng');
 END
 GO
 

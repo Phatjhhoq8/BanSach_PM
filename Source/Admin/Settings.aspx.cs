@@ -15,7 +15,7 @@ public partial class Admin_Settings : System.Web.UI.Page
         txtStoreName.Text = DatabaseInitializer.GetSetting("StoreName", "Premium Books");
         txtHotline.Text = DatabaseInitializer.GetSetting("Hotline", "1900 123456");
         txtEmail.Text = DatabaseInitializer.GetSetting("SupportEmail", "cskh@premiumbooks.vn");
-        txtAddress.Text = DatabaseInitializer.GetSetting("StoreAddress", "");
+        txtAddress.Text = DatabaseInitializer.GetSetting("StoreAddress", "123, DNC");
         txtShippingFee.Text = DatabaseInitializer.GetDecimalSetting("ShippingFee", 30000m).ToString("N0", CultureInfo.GetCultureInfo("vi-VN"));
     }
 

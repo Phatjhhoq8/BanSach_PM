@@ -4,32 +4,28 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-    <section class="relative mt-4 h-[65vh] min-h-[450px] w-full overflow-hidden bg-[var(--surface)]">
+    <section class="relative mt-4 h-[65vh] min-h-[450px] w-full overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-md)]">
         <video autoplay loop muted playsinline class="absolute left-1/2 top-1/2 z-0 min-h-full min-w-full max-w-none -translate-x-1/2 -translate-y-1/2 object-cover">
             <source src="videos/cartoon.mp4" type="video/mp4" />
         </video>
-        <div class="absolute inset-0 z-10 bg-[linear-gradient(90deg,oklch(10%_0.01_50_/_0.58),oklch(10%_0.01_50_/_0.22)_48%,transparent)]"></div>
+        <div class="absolute inset-0 z-10 bg-[radial-gradient(circle_at_18%_28%,oklch(34%_0.14_286_/_0.34),transparent_22%),radial-gradient(circle_at_82%_20%,oklch(32%_0.12_230_/_0.28),transparent_24%),linear-gradient(90deg,oklch(6%_0.01_278_/_0.88),oklch(8%_0.014_278_/_0.54)_46%,oklch(6%_0.012_278_/_0.24))]"></div>
+        <div class="absolute inset-0 z-10 opacity-70" style="background-image:radial-gradient(circle at 12% 18%, rgba(255,255,255,0.82) 0 1px, transparent 1.3px),radial-gradient(circle at 71% 24%, rgba(255,255,255,0.74) 0 1px, transparent 1.35px),radial-gradient(circle at 36% 74%, rgba(255,255,255,0.6) 0 1.15px, transparent 1.45px),radial-gradient(circle at 86% 62%, rgba(255,255,255,0.68) 0 0.95px, transparent 1.2px),radial-gradient(circle at 56% 10%, rgba(255,255,255,0.72) 0 0.9px, transparent 1.2px);"></div>
         <div class="container-page relative z-20 flex h-full items-center">
             <div class="max-w-2xl text-[oklch(99%_0.004_78)]">
-                <p class="text-xs font-black uppercase tracking-[0.22em] text-[oklch(92%_0.08_72)]">Premium Books</p>
-                <h1 class="mt-5 font-heading text-4xl font-bold leading-tight text-[oklch(99%_0.004_78)] sm:text-5xl lg:text-6xl">Mở một trang sách, bắt đầu một hành trình mới.</h1>
-                <p class="mt-5 max-w-xl text-base leading-8 text-[oklch(93%_0.012_78)] sm:text-lg">Khám phá những đầu sách chọn lọc, mua nhanh, theo dõi đơn hàng rõ ràng và quản trị đầy đủ cho hệ thống bán sách trực tuyến.</p>
+                <p class="text-xs font-black uppercase tracking-[0.22em] text-[var(--accent)]">Premium Books</p>
+                <h1 class="mt-5 font-heading text-4xl font-bold leading-tight text-[oklch(99%_0.004_78)] sm:text-5xl lg:text-6xl"><asp:Literal ID="litHeroCaption" runat="server"></asp:Literal></h1>
                 <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                    <a href="DanhMuc.aspx" class="inline-flex min-h-12 items-center justify-center rounded-full bg-[oklch(99%_0.004_78)] px-7 py-3 text-sm font-black text-[var(--primary-dark)] shadow-[0_18px_42px_oklch(10%_0.01_50_/_0.24)] hover:bg-[oklch(94%_0.02_78)]">Khám phá sách</a>
-                    <a href="DanhMuc.aspx?sort=new" class="inline-flex min-h-12 items-center justify-center rounded-full border border-[oklch(99%_0.004_78_/_0.7)] px-7 py-3 text-sm font-black text-[oklch(99%_0.004_78)] hover:bg-[oklch(99%_0.004_78_/_0.12)]">Xem sách mới</a>
+                    <a href="DanhMuc.aspx" class="inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--primary)] px-7 py-3 text-sm font-black text-[oklch(8%_0.01_278)] shadow-[0_18px_42px_oklch(28%_0.13_284_/_0.45)] hover:bg-[var(--accent)]">Khám phá sách</a>
+                    <a href="DanhMuc.aspx?sort=new" class="inline-flex min-h-12 items-center justify-center rounded-full border border-[oklch(100%_0_0_/_0.35)] bg-[oklch(16%_0.028_278_/_0.42)] px-7 py-3 text-sm font-black text-[oklch(99%_0.004_78)] hover:bg-[oklch(100%_0_0_/_0.12)]">Xem sách mới</a>
                 </div>
-                <div class="mt-9 grid max-w-lg grid-cols-3 gap-4 text-sm">
+                <div class="mt-9 grid max-w-sm grid-cols-2 gap-4 text-sm">
                     <div>
                         <p class="font-heading text-2xl font-bold text-[oklch(99%_0.004_78)]">20+</p>
-                        <p class="mt-1 text-[oklch(88%_0.018_78)]">đầu sách gợi ý</p>
+                        <p class="mt-1 text-[oklch(84%_0.02_272)]">đầu sách gợi ý</p>
                     </div>
                     <div>
                         <p class="font-heading text-2xl font-bold text-[oklch(99%_0.004_78)]">COD</p>
-                        <p class="mt-1 text-[oklch(88%_0.018_78)]">thanh toán khi nhận</p>
-                    </div>
-                    <div>
-                        <p class="font-heading text-2xl font-bold text-[oklch(99%_0.004_78)]">Admin</p>
-                        <p class="mt-1 text-[oklch(88%_0.018_78)]">quản lý đầy đủ</p>
+                        <p class="mt-1 text-[oklch(84%_0.02_272)]">thanh toán khi nhận</p>
                     </div>
                 </div>
             </div>

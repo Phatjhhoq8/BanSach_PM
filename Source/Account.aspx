@@ -21,9 +21,9 @@
                     </div>
                 </div>
                 <nav class="mt-6 space-y-2 text-sm font-black">
-                    <a href="Account.aspx" class="flex rounded-2xl bg-[var(--primary-soft)] px-4 py-3 text-[var(--primary-dark)]">Hồ sơ cá nhân</a>
-                    <a href="Orders.aspx" class="flex rounded-2xl px-4 py-3 text-[var(--ink-soft)] hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]">Đơn hàng của tôi</a>
-                    <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click" CssClass="flex w-full rounded-2xl px-4 py-3 text-left text-red-700 hover:bg-red-50">Đăng xuất</asp:LinkButton>
+                    <a href="Account.aspx" class="account-nav-link account-nav-link-active rounded-2xl px-4 py-3">Hồ sơ cá nhân</a>
+                    <a href="Orders.aspx" class="account-nav-link rounded-2xl px-4 py-3">Đơn hàng của tôi</a>
+                    <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click" CssClass="account-nav-link account-nav-danger w-full rounded-2xl px-4 py-3 text-left">Đăng xuất</asp:LinkButton>
                 </nav>
             </aside>
 

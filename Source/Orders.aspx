@@ -46,7 +46,7 @@
                                 </ItemTemplate>
                             </asp:Repeater>
                             <div class="flex justify-end pt-2">
-                                <a href="OrderDetail.aspx?id=<%# Eval("MaDH") %>" class="text-sm font-black text-[var(--primary-dark)] hover:underline">Xem chi tiết đơn hàng</a>
+                                <a href="OrderDetail.aspx?id=<%# Eval("MaDH") %>" class="account-inline-link">Xem chi tiết đơn hàng</a>
                             </div>
                         </div>
                     </article>

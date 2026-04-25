@@ -6,7 +6,6 @@
             <div>
                 <p class="eyebrow">Tài khoản khách hàng</p>
                 <h1 class="mt-4 text-4xl font-bold sm:text-5xl">Đăng nhập để tiếp tục hành trình đọc.</h1>
-                <p class="mt-5 text-lg leading-8 text-[var(--ink-soft)]">Tài khoản giúp lưu giỏ hàng trong SQL Server, đặt hàng và theo dõi trạng thái đơn sách.</p>
             </div>
 
             <div class="surface-panel p-6 sm:p-8 lg:p-10">

@@ -1,26 +1,26 @@
 :root {
-    --paper: oklch(97.5% 0.014 78);
-    --paper-soft: oklch(94.5% 0.022 78);
-    --surface: oklch(99% 0.008 78);
-    --surface-raised: oklch(98% 0.012 78);
-    --ink: oklch(24% 0.028 58);
-    --ink-soft: oklch(42% 0.032 58);
-    --muted: oklch(56% 0.026 64);
-    --line: oklch(88% 0.025 76);
-    --primary: oklch(48% 0.11 45);
-    --primary-dark: oklch(36% 0.08 44);
-    --primary-soft: oklch(91% 0.055 58);
-    --accent: oklch(65% 0.13 62);
+    --paper: oklch(18% 0.03 276);
+    --paper-soft: oklch(22% 0.04 280);
+    --surface: oklch(11% 0.02 275);
+    --surface-raised: oklch(15% 0.03 280);
+    --ink: oklch(95% 0.02 270);
+    --ink-soft: oklch(84% 0.025 272);
+    --muted: oklch(72% 0.03 275);
+    --line: oklch(34% 0.05 282);
+    --primary: oklch(71% 0.19 285);
+    --primary-dark: oklch(63% 0.16 250);
+    --primary-soft: oklch(28% 0.07 284);
+    --accent: oklch(80% 0.15 215);
     --danger: oklch(54% 0.16 24);
     --success: oklch(52% 0.13 145);
-    --focus: oklch(64% 0.12 58);
+    --focus: oklch(76% 0.16 255);
     --radius-sm: 0.75rem;
     --radius-md: 1rem;
     --radius-lg: 1.5rem;
     --radius-xl: 2rem;
-    --shadow-sm: 0 8px 22px oklch(24% 0.028 58 / 0.06);
-    --shadow-md: 0 18px 48px oklch(24% 0.028 58 / 0.10);
-    --shadow-book: 0 18px 34px oklch(24% 0.028 58 / 0.18);
+    --shadow-sm: 0 10px 28px oklch(4% 0.01 280 / 0.42);
+    --shadow-md: 0 24px 60px oklch(2% 0.01 280 / 0.56);
+    --shadow-book: 0 18px 34px oklch(3% 0.01 280 / 0.45);
 }
 
 html {
@@ -57,16 +57,180 @@ input, textarea, select {
 }
 
 input::placeholder, textarea::placeholder {
-    color: oklch(58% 0.026 64);
+    color: oklch(68% 0.03 276);
 }
 
 a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
-    outline: 3px solid oklch(64% 0.12 58 / 0.34);
+    outline: 3px solid oklch(76% 0.16 255 / 0.38);
     outline-offset: 3px;
 }
 
 .editorial-shell {
+    background:
+        radial-gradient(circle at 15% 20%, oklch(30% 0.12 285 / 0.22), transparent 22%),
+        radial-gradient(circle at 82% 14%, oklch(32% 0.11 230 / 0.18), transparent 20%),
+        radial-gradient(circle at 68% 72%, oklch(28% 0.1 305 / 0.16), transparent 24%),
+        linear-gradient(180deg, oklch(9% 0.02 276), oklch(11% 0.02 275) 48%, oklch(8% 0.016 272));
+    position: relative;
+}
+
+.editorial-shell::before {
+    background-image:
+        radial-gradient(circle at 12% 18%, oklch(100% 0 0 / 0.8) 0 1.1px, transparent 1.4px),
+        radial-gradient(circle at 70% 26%, oklch(100% 0 0 / 0.6) 0 1px, transparent 1.3px),
+        radial-gradient(circle at 34% 78%, oklch(100% 0 0 / 0.65) 0 1.2px, transparent 1.45px),
+        radial-gradient(circle at 86% 58%, oklch(100% 0 0 / 0.55) 0 0.95px, transparent 1.25px),
+        radial-gradient(circle at 52% 8%, oklch(100% 0 0 / 0.7) 0 1.05px, transparent 1.35px),
+        radial-gradient(circle at 22% 48%, oklch(100% 0 0 / 0.45) 0 0.8px, transparent 1.1px);
+    content: "";
+    inset: 0;
+    opacity: 0.75;
+    pointer-events: none;
+    position: fixed;
+    z-index: -2;
+}
+
+.editorial-shell::after {
+    background: linear-gradient(180deg, transparent, oklch(7% 0.014 275 / 0.36));
+    content: "";
+    inset: 0;
+    pointer-events: none;
+    position: fixed;
+    z-index: -1;
+}
+
+.content-shell {
+    --paper: oklch(97.5% 0.014 78);
+    --paper-soft: oklch(94.5% 0.022 78);
+    --surface: oklch(99% 0.008 78);
+    --surface-raised: oklch(98% 0.012 78);
+    --ink: oklch(24% 0.028 58);
+    --ink-soft: oklch(42% 0.032 58);
+    --muted: oklch(56% 0.026 64);
+    --line: oklch(88% 0.025 76);
+    background: oklch(100% 0 0 / 0.98);
+    color: var(--ink);
+}
+
+.content-shell .surface-panel {
     background: var(--surface);
+    backdrop-filter: none;
+    box-shadow: 0 8px 22px oklch(24% 0.028 58 / 0.06);
+}
+
+.content-shell .btn-secondary {
+    background: var(--surface);
+    color: var(--ink);
+}
+
+.content-shell .account-nav-link {
+    align-items: center;
+    border: 1px solid transparent;
+    color: var(--ink-soft);
+    display: flex;
+    min-height: 3rem;
+}
+
+.content-shell .account-nav-link:hover {
+    background: var(--paper-soft);
+    color: var(--primary-dark);
+}
+
+.content-shell .account-nav-link-active {
+    background: var(--paper-soft);
+    border-color: var(--line);
+    color: var(--primary-dark);
+}
+
+.content-shell .account-nav-danger {
+    color: oklch(54% 0.16 24);
+}
+
+.content-shell .account-nav-danger:hover {
+    background: oklch(96% 0.02 24);
+    color: oklch(46% 0.16 24);
+}
+
+.content-shell .account-inline-link {
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    display: inline-flex;
+    font-size: 0.875rem;
+    font-weight: 800;
+    justify-content: center;
+    min-height: 2.5rem;
+    padding: 0.625rem 1rem;
+}
+
+.content-shell .account-inline-link:hover {
+    background: var(--paper-soft);
+    border-color: var(--primary);
+    color: var(--primary-dark);
+}
+
+.content-shell .form-control {
+    background: oklch(98% 0.011 78);
+    color: var(--ink);
+}
+
+.content-shell .book-card .text-\[var\(--ink\)\],
+.content-shell .book-card .text-\[var\(--ink-soft\)\],
+.content-shell .book-card .text-\[var\(--muted\)\],
+.content-shell .price-text,
+.content-shell .eyebrow,
+.content-shell h1,
+.content-shell h2,
+.content-shell h3,
+.content-shell h4,
+.content-shell h5,
+.content-shell h6,
+.content-shell p,
+.content-shell label,
+.content-shell span,
+.content-shell a,
+.content-shell button {
+    color: inherit;
+}
+
+.content-shell .price-text {
+    color: oklch(36% 0.08 44);
+}
+
+.content-shell .eyebrow {
+    color: oklch(48% 0.11 45);
+}
+
+.content-shell .badge-sale {
+    color: oklch(98% 0.012 78);
+}
+
+.content-shell .text-\[var\(--ink\)\] {
+    color: var(--ink);
+}
+
+.content-shell .text-\[var\(--ink-soft\)\] {
+    color: var(--ink-soft);
+}
+
+.content-shell .text-\[var\(--muted\)\] {
+    color: var(--muted);
+}
+
+.content-shell .bg-\[var\(--surface\)\] {
+    background: var(--surface);
+}
+
+.content-shell .bg-\[var\(--paper\)\] {
+    background: var(--paper);
+}
+
+.content-shell .bg-\[var\(--paper-soft\)\] {
+    background: var(--paper-soft);
+}
+
+.content-shell .border-\[var\(--line\)\] {
+    border-color: var(--line);
 }
 
 .container-page {
@@ -92,10 +256,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 .surface-panel {
-    background: var(--surface);
+    background: linear-gradient(180deg, oklch(18% 0.03 280 / 0.78), oklch(14% 0.024 278 / 0.82));
     border: 1px solid var(--line);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(18px);
 }
 
 .btn-primary {
@@ -109,17 +274,18 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     justify-content: center;
     min-height: 2.875rem;
     padding: 0.75rem 1.25rem;
-    box-shadow: 0 14px 28px oklch(48% 0.11 45 / 0.22);
+    box-shadow: 0 16px 34px oklch(26% 0.12 282 / 0.45);
 }
 
 .btn-primary:hover {
     background: var(--primary-dark);
+    box-shadow: 0 18px 38px oklch(30% 0.13 245 / 0.52);
     transform: translateY(-1px);
 }
 
 .btn-secondary {
     align-items: center;
-    background: var(--surface);
+    background: oklch(17% 0.028 278 / 0.82);
     border: 1px solid var(--line);
     border-radius: 999px;
     color: var(--ink);
@@ -134,10 +300,11 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .btn-secondary:hover {
     border-color: var(--primary);
     color: var(--primary-dark);
+    background: oklch(22% 0.04 282 / 0.9);
 }
 
 .form-control {
-    background: oklch(98% 0.011 78);
+    background: oklch(14% 0.022 278 / 0.9);
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
     min-height: 2.875rem;
@@ -147,7 +314,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 
 .form-control:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 4px oklch(64% 0.12 58 / 0.18);
+    box-shadow: 0 0 0 4px oklch(76% 0.16 255 / 0.18);
     outline: none;
 }
 
@@ -168,7 +335,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .book-cover {
     align-items: center;
     background: oklch(100% 0 0);
-    border: 0;
+    border: 1px solid oklch(100% 0 0 / 0.08);
     border-radius: 0.75rem;
     display: flex;
     justify-content: center;
@@ -195,7 +362,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 
 .price-text {
-    color: var(--primary-dark);
+    color: var(--accent);
     font-weight: 900;
 }
 
@@ -229,6 +396,13 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
     font-size: 0.75rem;
     font-weight: 900;
     padding: 0.35rem 0.75rem;
+}
+
+.galaxy-glass {
+    background: linear-gradient(180deg, oklch(19% 0.032 284 / 0.72), oklch(13% 0.024 278 / 0.78));
+    backdrop-filter: blur(18px);
+    border: 1px solid oklch(36% 0.06 284 / 0.72);
+    box-shadow: var(--shadow-sm);
 }
 
 @media (prefers-reduced-motion: reduce) {

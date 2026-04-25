@@ -286,7 +286,7 @@ ORDER BY dm.TenDM";
         string value = maDM == null ? string.Empty : maDM.ToString();
         if (!string.IsNullOrEmpty(activeCat) && activeCat == value)
         {
-            return "flex rounded-2xl bg-[var(--primary-soft)] px-4 py-3 text-[var(--primary-dark)]";
+            return "flex rounded-2xl border border-[var(--primary)] bg-white px-4 py-3 text-[var(--primary-dark)] shadow-sm";
         }
 
         return "flex rounded-2xl px-4 py-3 text-[var(--ink-soft)] hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]";
@@ -297,7 +297,7 @@ ORDER BY dm.TenDM";
         string active = Request.QueryString["price"] ?? string.Empty;
         if (active == value)
         {
-            return "flex rounded-2xl bg-[var(--primary-soft)] px-4 py-3 text-[var(--primary-dark)]";
+            return "flex rounded-2xl border border-[var(--primary)] bg-white px-4 py-3 text-[var(--primary-dark)] shadow-sm";
         }
 
         return "flex rounded-2xl px-4 py-3 text-[var(--ink-soft)] hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]";

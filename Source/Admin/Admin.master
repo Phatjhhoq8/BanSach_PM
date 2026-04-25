@@ -7,14 +7,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title><%= string.IsNullOrWhiteSpace(Page.Title) ? "Admin Dashboard" : Page.Title %> - Premium Books</title>
     <script>
+        (function () {
+            var savedTheme = null;
+            try {
+                savedTheme = localStorage.getItem('admin-theme');
+            } catch (e) {
+            }
+
+            var theme = savedTheme === 'light' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        adminbg: 'oklch(17% 0.02 62)',
-                        adminpanel: 'oklch(22% 0.024 62)',
-                        adminline: 'oklch(32% 0.025 62)',
-                        adminaccent: 'oklch(64% 0.13 62)'
+                        adminbg: 'oklch(10% 0.02 278)',
+                        adminpanel: 'oklch(16% 0.032 282)',
+                        adminline: 'oklch(34% 0.055 284)',
+                        adminaccent: 'oklch(72% 0.19 286)',
+                        adminaccent2: 'oklch(79% 0.15 215)'
                     },
                     fontFamily: {
                         sans: ['Inter', 'system-ui', 'sans-serif']
@@ -27,14 +39,112 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: 'Inter', system-ui, sans-serif; background: oklch(17% 0.02 62); color: oklch(96% 0.01 72); }
-        .sidebar { background: oklch(20% 0.022 62); border-right: 1px solid oklch(31% 0.025 62); }
-        .nav-item { color: oklch(78% 0.018 70); transition: background-color 180ms cubic-bezier(0.16, 1, 0.3, 1), color 180ms cubic-bezier(0.16, 1, 0.3, 1); }
-        .nav-item:hover { background: oklch(27% 0.026 62); color: oklch(98% 0.01 72); }
-        .nav-item.active { background: oklch(64% 0.13 62); color: oklch(17% 0.02 62); }
-        .glass-card, .admin-card { background: oklch(22% 0.024 62); border: 1px solid oklch(31% 0.025 62); box-shadow: 0 18px 48px oklch(10% 0.01 62 / 0.24); }
-        .admin-input { background: oklch(18% 0.02 62); border: 1px solid oklch(34% 0.026 62); color: oklch(96% 0.01 72); }
-        .admin-input:focus { border-color: oklch(64% 0.13 62); outline: 3px solid oklch(64% 0.13 62 / 0.22); }
+        :root {
+            --admin-bg-start: oklch(8% 0.018 278);
+            --admin-bg-mid: oklch(10% 0.02 278);
+            --admin-bg-end: oklch(7% 0.014 274);
+            --admin-glow-1: oklch(31% 0.13 286 / 0.22);
+            --admin-glow-2: oklch(30% 0.11 226 / 0.18);
+            --admin-star: rgba(255,255,255,0.72);
+            --admin-text: oklch(95% 0.018 272);
+            --admin-text-soft: oklch(84% 0.025 272);
+            --admin-text-muted: oklch(70% 0.03 274);
+            --admin-panel-top: oklch(18% 0.035 282 / 0.8);
+            --admin-panel-bottom: oklch(14% 0.028 278 / 0.84);
+            --admin-sidebar-top: oklch(13% 0.03 280 / 0.94);
+            --admin-sidebar-bottom: oklch(9% 0.02 276 / 0.96);
+            --admin-border: oklch(34% 0.055 284 / 0.72);
+            --admin-input: oklch(12% 0.024 278 / 0.92);
+            --admin-hover: oklch(21% 0.05 282 / 0.9);
+            --admin-shadow: 0 18px 48px oklch(2% 0.01 278 / 0.42);
+            --admin-pill-text: oklch(8% 0.012 278);
+        }
+
+        html[data-theme='light'] {
+            --admin-bg-start: oklch(95% 0.012 268);
+            --admin-bg-mid: oklch(98% 0.008 270);
+            --admin-bg-end: oklch(93% 0.02 252);
+            --admin-glow-1: oklch(86% 0.06 286 / 0.34);
+            --admin-glow-2: oklch(88% 0.05 226 / 0.28);
+            --admin-star: rgba(255,255,255,0.42);
+            --admin-text: oklch(24% 0.03 272);
+            --admin-text-soft: oklch(36% 0.03 272);
+            --admin-text-muted: oklch(52% 0.026 270);
+            --admin-panel-top: oklch(100% 0 0 / 0.82);
+            --admin-panel-bottom: oklch(97% 0.01 270 / 0.9);
+            --admin-sidebar-top: oklch(94% 0.014 270 / 0.92);
+            --admin-sidebar-bottom: oklch(90% 0.02 266 / 0.96);
+            --admin-border: oklch(80% 0.02 270 / 0.9);
+            --admin-input: oklch(100% 0 0 / 0.96);
+            --admin-hover: oklch(90% 0.03 282 / 0.95);
+            --admin-shadow: 0 18px 40px oklch(32% 0.03 272 / 0.12);
+            --admin-pill-text: oklch(18% 0.025 272);
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 12% 18%, var(--admin-glow-1), transparent 20%),
+                radial-gradient(circle at 85% 12%, var(--admin-glow-2), transparent 22%),
+                linear-gradient(180deg, var(--admin-bg-start), var(--admin-bg-mid) 48%, var(--admin-bg-end));
+            color: var(--admin-text);
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        body::before {
+            background-image:
+                radial-gradient(circle at 12% 18%, var(--admin-star) 0 1.05px, transparent 1.35px),
+                radial-gradient(circle at 72% 26%, color-mix(in srgb, var(--admin-star) 82%, transparent) 0 0.95px, transparent 1.25px),
+                radial-gradient(circle at 34% 78%, color-mix(in srgb, var(--admin-star) 70%, transparent) 0 1.15px, transparent 1.45px),
+                radial-gradient(circle at 86% 62%, color-mix(in srgb, var(--admin-star) 64%, transparent) 0 0.85px, transparent 1.15px);
+            content: '';
+            inset: 0;
+            pointer-events: none;
+            position: fixed;
+            z-index: -1;
+        }
+        .sidebar {
+            background: linear-gradient(180deg, var(--admin-sidebar-top), var(--admin-sidebar-bottom));
+            border-right: 1px solid var(--admin-border);
+            backdrop-filter: blur(18px);
+        }
+        .nav-item { color: var(--admin-text-soft); transition: background-color 180ms cubic-bezier(0.16, 1, 0.3, 1), color 180ms cubic-bezier(0.16, 1, 0.3, 1), border-color 180ms cubic-bezier(0.16, 1, 0.3, 1); }
+        .nav-item:hover { background: var(--admin-hover); color: var(--admin-text); }
+        .nav-item.active { background: linear-gradient(90deg, oklch(72% 0.19 286), oklch(79% 0.15 215)); color: var(--admin-pill-text); box-shadow: 0 14px 28px oklch(27% 0.12 284 / 0.38); }
+        .glass-card, .admin-card { background: linear-gradient(180deg, var(--admin-panel-top), var(--admin-panel-bottom)); border: 1px solid var(--admin-border); box-shadow: var(--admin-shadow); backdrop-filter: blur(18px); }
+        .admin-input { background: var(--admin-input); border: 1px solid var(--admin-border); color: var(--admin-text); }
+        .admin-input:focus { border-color: oklch(72% 0.19 286); outline: 3px solid oklch(72% 0.19 286 / 0.22); }
+        html[data-theme='light'] .text-white { color: var(--admin-text) !important; }
+        html[data-theme='light'] .text-slate-300,
+        html[data-theme='light'] .text-slate-400,
+        html[data-theme='light'] .text-slate-500,
+        html[data-theme='light'] .text-stone-300,
+        html[data-theme='light'] .text-stone-400,
+        html[data-theme='light'] .text-cyan-100\/80,
+        html[data-theme='light'] .text-cyan-200\/70 { color: var(--admin-text-muted) !important; }
+        html[data-theme='light'] .bg-slate-800,
+        html[data-theme='light'] .bg-slate-900\/50,
+        html[data-theme='light'] .bg-adminpanel\/80,
+        html[data-theme='light'] .bg-adminbg\/70,
+        html[data-theme='light'] .bg-white\/5 { background-color: oklch(100% 0 0 / 0.88) !important; }
+        html[data-theme='light'] .border-slate-700,
+        html[data-theme='light'] .border-adminline\/60,
+        html[data-theme='light'] .border-adminline\/80,
+        html[data-theme='light'] .border-adminline { border-color: var(--admin-border) !important; }
+        html[data-theme='light'] .divide-white\/5 > :not([hidden]) ~ :not([hidden]) { border-color: oklch(82% 0.02 270 / 0.8) !important; }
+        html[data-theme='light'] .hover\:bg-white\/5:hover { background-color: oklch(94% 0.02 270 / 0.9) !important; }
+        html[data-theme='light'] .hover\:text-white:hover { color: var(--admin-text) !important; }
+        .theme-toggle {
+            align-items: center;
+            background: linear-gradient(180deg, var(--admin-panel-top), var(--admin-panel-bottom));
+            border: 1px solid var(--admin-border);
+            border-radius: 999px;
+            color: var(--admin-text-soft);
+            display: inline-flex;
+            gap: 0.625rem;
+            padding: 0.65rem 1rem;
+        }
+        .theme-toggle:hover {
+            color: var(--admin-text);
+        }
         @media (max-width: 1023px) {
             .sidebar { position: static; width: 100%; height: auto; }
         }
@@ -51,8 +161,8 @@
                             <i data-lucide="book-open" class="h-5 w-5"></i>
                         </div>
                         <div>
-                            <p class="text-lg font-black tracking-tight text-white">Premium Admin</p>
-                            <p class="text-xs font-bold uppercase tracking-[0.12em] text-stone-400">Bookstore CMS</p>
+                            <p class="text-lg font-black text-white tracking-tight">Premium Admin</p>
+                            <p class="text-xs font-bold uppercase tracking-[0.12em] text-cyan-200/70">Galaxy Control Room</p>
                         </div>
                     </a>
                 </div>
@@ -103,13 +213,13 @@
                 </nav>
 
                 <div class="border-t border-adminline p-4">
-                    <div class="flex items-center gap-3 rounded-2xl bg-adminbg/70 px-4 py-3">
+                    <div class="flex items-center gap-3 rounded-2xl border border-adminline/60 bg-adminbg/70 px-4 py-3 backdrop-blur-md">
                         <div class="flex h-9 w-9 items-center justify-center rounded-full bg-adminaccent text-sm font-black text-adminbg">A</div>
                         <div class="min-w-0 flex-1">
                             <p class="truncate text-sm font-black text-white">Administrator</p>
-                            <p class="truncate text-xs text-stone-400">admin@premium.com</p>
+                            <p class="truncate text-xs text-cyan-200/70">admin@premium.com</p>
                         </div>
-                        <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click" CssClass="text-stone-400 hover:text-red-400">
+                        <asp:LinkButton ID="btnLogout" runat="server" OnClick="btnLogout_Click" CssClass="text-cyan-200/70 hover:text-red-400">
                             <i data-lucide="log-out" class="h-4 w-4"></i>
                         </asp:LinkButton>
                     </div>
@@ -117,12 +227,18 @@
             </aside>
 
             <main class="min-w-0 flex-1 lg:ml-72 lg:h-screen lg:overflow-y-auto">
-                <header class="sticky top-0 z-40 flex min-h-16 items-center justify-between border-b border-adminline bg-adminbg/90 px-5 backdrop-blur-md lg:px-8">
+                <header class="sticky top-0 z-40 flex min-h-16 items-center justify-between border-b border-adminline/80 bg-adminbg/70 px-5 backdrop-blur-xl lg:px-8">
                     <h1 class="text-lg font-black text-white"><asp:ContentPlaceHolder id="PageTitle" runat="server">Dashboard Overview</asp:ContentPlaceHolder></h1>
-                    <a href="../Default.aspx" target="_blank" class="flex items-center gap-2 rounded-2xl bg-adminpanel px-4 py-2 text-sm font-bold text-stone-300 hover:text-white">
-                        <i data-lucide="external-link" class="h-4 w-4"></i>
-                        Xem website
-                    </a>
+                    <div class="flex items-center gap-3">
+                        <button type="button" class="theme-toggle text-sm font-bold" onclick="toggleAdminTheme()" aria-label="Chuyển chế độ sáng tối">
+                            <i data-lucide="moon-star" class="h-4 w-4" data-theme-icon></i>
+                            <span id="themeToggleLabel">Dark mode</span>
+                        </button>
+                        <a href="../Default.aspx" target="_blank" class="flex items-center gap-2 rounded-2xl border border-adminline/60 bg-adminpanel/80 px-4 py-2 text-sm font-bold text-cyan-100/80 hover:text-white">
+                            <i data-lucide="external-link" class="h-4 w-4"></i>
+                            Xem website
+                        </a>
+                    </div>
                 </header>
 
                 <div class="p-5 lg:p-8">
@@ -134,7 +250,34 @@
     </form>
 
     <script>
+        function applyAdminThemeUi(theme) {
+            var label = document.getElementById('themeToggleLabel');
+            var icon = document.querySelector('[data-theme-icon]');
+            if (label) {
+                label.textContent = theme === 'light' ? 'Light mode' : 'Dark mode';
+            }
+
+            if (icon) {
+                icon.setAttribute('data-lucide', theme === 'light' ? 'sun-medium' : 'moon-star');
+                if (window.lucide) {
+                    lucide.createIcons();
+                }
+            }
+        }
+
+        function toggleAdminTheme() {
+            var currentTheme = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+            var nextTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', nextTheme);
+            try {
+                localStorage.setItem('admin-theme', nextTheme);
+            } catch (e) {
+            }
+            applyAdminThemeUi(nextTheme);
+        }
+
         lucide.createIcons();
+        applyAdminThemeUi(document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
         const currentPath = window.location.pathname.split('/').pop() || 'Default.aspx';
         document.querySelectorAll('.nav-item').forEach(item => {
             if (item.getAttribute('href') === currentPath) item.classList.add('active');

@@ -21,7 +21,7 @@ public partial class Admin_Customers : System.Web.UI.Page
             string sql = @"
                 SELECT kh.MaKH, kh.HoTen, kh.Email, kh.SoDienThoai, kh.NgayDangKy,
                        COUNT(dh.MaDH) AS SoDon,
-                       ISNULL(SUM(CASE WHEN dh.TrangThai <> 4 THEN dh.TongTien ELSE 0 END), 0) AS TongChiTieu
+                       ISNULL(SUM(CASE WHEN dh.TrangThai = 3 THEN dh.TongTien ELSE 0 END), 0) AS TongChiTieu
                 FROM dbo.KhachHang kh
                 LEFT JOIN dbo.DonHang dh ON kh.MaKH = dh.MaKH
                 WHERE 1=1";

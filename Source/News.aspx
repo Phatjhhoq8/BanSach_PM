@@ -8,7 +8,7 @@
                     <p class="text-primary font-bold uppercase tracking-[0.24em] text-sm mb-4">Blog / Tin tức</p>
                     <h1 class="font-heading text-4xl md:text-5xl font-bold text-zinc-950">Gợi ý đọc sách và câu chuyện xuất bản</h1>
                 </div>
-                <a href="DanhMuc.aspx" class="text-primary font-bold hover:text-amber-800 transition-colors">Mua sách ngay</a>
+                <a href="DanhMuc.aspx" class="btn-secondary self-start md:self-auto">Mua sách ngay</a>
             </div>
             <asp:Repeater ID="rptNews" runat="server">
                 <HeaderTemplate><div class="grid md:grid-cols-3 gap-6"></HeaderTemplate>

@@ -1,10 +1,31 @@
 <%@ Page Title="Danh mục sách - Nhà Sách Premium" Language="C#" MasterPageFile="Site.Master" AutoEventWireup="true" CodeFile="DanhMuc.aspx.cs" Inherits="DanhMuc" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" Runat="Server">
+    <style>
+        .catalog-hero {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .catalog-hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, oklch(100% 0 0 / 0.88), oklch(100% 0 0 / 0.72) 42%, oklch(100% 0 0 / 0.35));
+        }
+
+        .catalog-hero > * {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
-    <section class="border-b border-[var(--line)] bg-[var(--surface)]">
+    <section class="catalog-hero border-b border-[var(--line)] bg-[var(--surface)]">
+        <video autoplay loop muted playsinline class="absolute inset-0 h-full w-full object-cover">
+            <source src="videos/book.mp4" type="video/mp4" />
+        </video>
         <div class="container-page py-12 lg:py-16">
             <p class="eyebrow">Bộ sưu tập</p>
             <div class="mt-4 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
@@ -25,7 +46,7 @@
                 <details class="surface-panel p-5" open>
                     <summary class="cursor-pointer list-none text-sm font-black uppercase tracking-[0.12em] text-[var(--primary-dark)]">Danh mục</summary>
                     <ul class="mt-5 space-y-2 text-sm font-bold">
-                        <li><a href="DanhMuc.aspx" class='<%= IsAllCategoryActive() ? "flex rounded-2xl bg-[var(--primary-soft)] px-4 py-3 text-[var(--primary-dark)]" : "flex rounded-2xl px-4 py-3 text-[var(--ink-soft)] hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]" %>'>Tất cả sản phẩm</a></li>
+                        <li><a href="DanhMuc.aspx" class='<%= IsAllCategoryActive() ? "flex rounded-2xl border border-[var(--primary)] bg-white px-4 py-3 text-[var(--primary-dark)] shadow-sm" : "flex rounded-2xl px-4 py-3 text-[var(--ink-soft)] hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]" %>'>Tất cả sản phẩm</a></li>
                         <asp:Repeater ID="rptCategories" runat="server">
                             <ItemTemplate>
                                 <li><a href='DanhMuc.aspx?cat=<%# Eval("MaDM") %>' class='<%# GetCategoryLinkClass(Eval("MaDM")) %>'><%# Eval("TenDM") %></a></li>
