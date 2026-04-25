@@ -5,7 +5,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
     <section class="relative mt-4 h-[65vh] min-h-[450px] w-full overflow-hidden rounded-[2rem] border border-[var(--line)] bg-[var(--surface)] shadow-[var(--shadow-md)]">
-        <video autoplay loop muted playsinline class="absolute left-1/2 top-1/2 z-0 min-h-full min-w-full max-w-none -translate-x-1/2 -translate-y-1/2 object-cover">
+        <video autoplay loop muted playsinline poster="img/banner/section_banner_1.jpg" data-motion-video class="absolute left-1/2 top-1/2 z-0 min-h-full min-w-full max-w-none -translate-x-1/2 -translate-y-1/2 object-cover">
             <source src="videos/cartoon.mp4" type="video/mp4" />
         </video>
         <div class="absolute inset-0 z-10 bg-[radial-gradient(circle_at_18%_28%,oklch(34%_0.14_286_/_0.34),transparent_22%),radial-gradient(circle_at_82%_20%,oklch(32%_0.12_230_/_0.28),transparent_24%),linear-gradient(90deg,oklch(6%_0.01_278_/_0.88),oklch(8%_0.014_278_/_0.54)_46%,oklch(6%_0.012_278_/_0.24))]"></div>
@@ -46,7 +46,7 @@
                 <ItemTemplate>
                     <article class="book-card group">
                         <a href='ChiTiet.aspx?id=<%# Eval("MaSP") %>' class="book-cover aspect-[3/4]">
-                            <img src='<%# Eval("DisplayImageUrl") %>' onerror="this.src='https://placehold.co/400x550/f8f1e3/3b3028?text=Book';" alt='<%# Eval("TenSP") %>' class="h-full w-full" />
+                            <img src='<%# Eval("DisplayImageUrl") %>' onerror="this.src='https://placehold.co/400x550/f8f1e3/3b3028?text=Book';" alt='<%# Eval("TenSP") %>' class="h-full w-full" loading="lazy" />
                             <span class='<%# string.IsNullOrEmpty(Eval("DiscountText") as string) ? "hidden" : "badge-sale absolute right-3 top-3" %>'><%# Eval("DiscountText") %></span>
                         </a>
                         <div class="mt-4 flex flex-1 flex-col">
@@ -57,8 +57,8 @@
                                 <span class='<%# string.IsNullOrEmpty(Eval("GiaGocText") as string) ? "hidden" : "text-xs text-[var(--muted)] line-through" %>'><%# Eval("GiaGocText") %></span>
                             </div>
                             <div class="mt-4 flex gap-2">
-                                <button type="button" onclick="addToCart(<%# Eval("MaSP") %>, this)" class="flex-1 rounded-full border border-[var(--line)] px-3 py-2 text-xs font-black text-[var(--primary-dark)] hover:border-[var(--primary)] hover:bg-[var(--primary-soft)]">Thêm vào giỏ</button>
-                                <button type="button" onclick="toggleWishlist(<%# Eval("MaSP") %>, this)" class="rounded-full border border-[var(--line)] px-3 py-2 text-xs font-black text-rose-600 hover:border-rose-300 hover:bg-rose-50">♡</button>
+                                <button type="button" onclick="addToCart(<%# Eval("MaSP") %>, this)" class="product-card-action touch-target flex-1 rounded-full border border-[var(--line)] px-4 py-2 text-xs font-black hover:border-[var(--primary)] hover:bg-[var(--primary-soft)]">Thêm vào giỏ</button>
+                                <button type="button" onclick="toggleWishlist(<%# Eval("MaSP") %>, this)" class="wishlist-action touch-target rounded-full border border-[var(--line)] px-4 py-2 text-sm font-black hover:border-rose-300 hover:bg-rose-50" aria-label='<%# Eval("WishlistButtonLabel") %>' aria-pressed='<%# Eval("WishlistPressed") %>'><%# Eval("WishlistSymbol") %></button>
                             </div>
                         </div>
                     </article>
@@ -116,10 +116,12 @@
                                 btn.disabled = false;
                             }
                         }, 1200);
+                        AppUX.showToast(data.message || 'Đã thêm sách vào giỏ hàng.', 'success');
                     } else if (data.code === 'auth_required') {
-                        window.location.href = 'Login.aspx?ReturnUrl=' + encodeURIComponent('Default.aspx');
+                        AppUX.showToast('Đăng nhập để thêm sách vào giỏ hàng.', 'info');
+                        setTimeout(() => { window.location.href = 'Login.aspx?ReturnUrl=' + encodeURIComponent('Default.aspx'); }, 500);
                     } else {
-                        alert(data.message || 'Không thể thêm sách vào giỏ hàng.');
+                        AppUX.showToast(data.message || 'Không thể thêm sách vào giỏ hàng.', 'error');
                         if (btn) {
                             btn.innerText = originalText;
                             btn.disabled = false;
@@ -127,7 +129,7 @@
                     }
                 })
                 .catch(() => {
-                    alert('Đã xảy ra lỗi mạng khi thêm vào giỏ hàng.');
+                    AppUX.showToast('Đã xảy ra lỗi mạng khi thêm vào giỏ hàng.', 'error');
                     if (btn) {
                         btn.innerText = originalText;
                         btn.disabled = false;
@@ -146,15 +148,19 @@
                 .then(data => {
                     if (data.success) {
                         btn.innerText = data.code === 'added' ? '♥' : '♡';
+                        btn.setAttribute('aria-pressed', data.code === 'added' ? 'true' : 'false');
+                        btn.setAttribute('aria-label', data.code === 'added' ? 'Bỏ khỏi yêu thích' : 'Thêm vào yêu thích');
+                        AppUX.showToast(data.message || 'Đã cập nhật danh sách yêu thích.', 'success');
                     } else if (data.code === 'auth_required') {
-                        window.location.href = 'Login.aspx?ReturnUrl=' + encodeURIComponent('Default.aspx');
+                        AppUX.showToast('Đăng nhập để lưu sách yêu thích.', 'info');
+                        setTimeout(() => { window.location.href = 'Login.aspx?ReturnUrl=' + encodeURIComponent('Default.aspx'); }, 500);
                     } else {
-                        alert(data.message || 'Không thể xử lý yêu thích.');
+                        AppUX.showToast(data.message || 'Không thể xử lý yêu thích.', 'error');
                         btn.innerText = originalText;
                     }
                     btn.disabled = false;
                 })
-                .catch(() => { alert('Đã xảy ra lỗi mạng.'); btn.innerText = originalText; btn.disabled = false; });
+                .catch(() => { AppUX.showToast('Đã xảy ra lỗi mạng.', 'error'); btn.innerText = originalText; btn.disabled = false; });
         }
     </script>
 </asp:Content>

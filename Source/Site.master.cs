@@ -34,6 +34,8 @@ public partial class SiteMaster : MasterPage
             int userId = (int)Session["UserId"];
             phGuest.Visible = false;
             phUser.Visible = true;
+            phMobileGuest.Visible = false;
+            phMobileUser.Visible = true;
             litUserName.Text = Session["UserName"] == null ? string.Empty : Session["UserName"].ToString();
             litUserEmail.Text = Session["UserEmail"] == null ? string.Empty : Session["UserEmail"].ToString();
             UpdateCartCount(userId);
@@ -42,6 +44,8 @@ public partial class SiteMaster : MasterPage
         {
             phGuest.Visible = true;
             phUser.Visible = false;
+            phMobileGuest.Visible = true;
+            phMobileUser.Visible = false;
             cartCount.InnerText = "0";
         }
     }
@@ -61,10 +65,22 @@ public partial class SiteMaster : MasterPage
             litFooterHotline.Text = HttpUtility.HtmlEncode(hotline);
             litFooterEmail.Text = HttpUtility.HtmlEncode(email);
             litFooterAddress.Text = HttpUtility.HtmlEncode(address);
+            footerEmailLink.HRef = "mailto:" + email;
+            footerHotlineLink.HRef = "tel:" + NormalizePhone(hotline);
         }
         catch
         {
         }
+    }
+
+    private string NormalizePhone(string value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return string.Empty;
+        }
+
+        return System.Text.RegularExpressions.Regex.Replace(value, @"[^0-9+]", string.Empty);
     }
 
     private void UpdateCartCount(int userId)

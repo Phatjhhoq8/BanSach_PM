@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Web;
 
 public partial class ChiTiet : System.Web.UI.Page
 {
+    protected int ProductStock { get; set; }
+
     protected void Page_Load(object sender, EventArgs e)
     {
         if (!IsPostBack)
@@ -70,8 +74,15 @@ public partial class ChiTiet : System.Web.UI.Page
         litPublisher.Text = HttpUtility.HtmlEncode(string.IsNullOrWhiteSpace(product.NhaXuatBan) ? "Đang cập nhật" : product.NhaXuatBan);
         litRating.Text = HttpUtility.HtmlEncode(product.DanhGia.HasValue && product.DanhGia.Value > 0 ? product.DanhGia.Value.ToString("0.0") + "/5" : "Chưa có đánh giá");
         litStock.Text = product.SoLuongTon > 0 ? product.SoLuongTon + " cuốn có sẵn" : "Tạm hết hàng";
+        ProductStock = Math.Max(1, product.SoLuongTon);
+        litStockHint.Text = product.SoLuongTon > 0 && product.SoLuongTon <= 5 ? "Chỉ còn " + product.SoLuongTon + " cuốn, nên đặt sớm để giữ sách." : "Bạn có thể điều chỉnh số lượng trước khi thêm vào giỏ.";
         phAvailable.Visible = product.MaSP > 0 && product.SoLuongTon > 0;
         phOutOfStock.Visible = !phAvailable.Visible;
+
+        bool isWishlisted = IsWishlisted(product.MaSP);
+        btnWishlist.InnerText = isWishlisted ? "♥" : "♡";
+        btnWishlist.Attributes["aria-pressed"] = isWishlisted ? "true" : "false";
+        btnWishlist.Attributes["aria-label"] = isWishlisted ? "Bỏ khỏi yêu thích" : "Thêm vào yêu thích";
 
         if (!string.IsNullOrWhiteSpace(product.DiscountText))
         {
@@ -85,5 +96,51 @@ public partial class ChiTiet : System.Web.UI.Page
         }
 
         bookFront.Style["background-image"] = "url('" + product.DisplayImageUrl + "')";
+        LoadRelatedProducts(product.MaSP);
+    }
+
+    private bool IsWishlisted(int productId)
+    {
+        if (productId <= 0 || Session["UserId"] == null)
+        {
+            return false;
+        }
+
+        try
+        {
+            using (SqlConnection conn = new SqlConnection(DbConfig.GetConnectionString()))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT COUNT(1) FROM dbo.YeuThich WHERE MaKH = @MaKH AND MaSP = @MaSP", conn);
+                cmd.Parameters.AddWithValue("@MaKH", (int)Session["UserId"]);
+                cmd.Parameters.AddWithValue("@MaSP", productId);
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+            }
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private void LoadRelatedProducts(int currentProductId)
+    {
+        try
+        {
+            List<CatalogProduct> products = FahasaCatalogService.GetFeaturedProducts(6);
+            products = products.FindAll(p => p.MaSP != currentProductId);
+            if (products.Count > 5)
+            {
+                products = products.GetRange(0, 5);
+            }
+
+            rptRelated.DataSource = products;
+            rptRelated.DataBind();
+            phRelated.Visible = products.Count > 0;
+        }
+        catch
+        {
+            phRelated.Visible = false;
+        }
     }
 }

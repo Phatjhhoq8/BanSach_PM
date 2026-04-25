@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 
 public partial class _Default : System.Web.UI.Page
 {
@@ -32,6 +33,7 @@ public partial class _Default : System.Web.UI.Page
         try
         {
             List<CatalogProduct> danhSach = FahasaCatalogService.GetFeaturedProducts(20);
+            MarkWishlistState(danhSach);
             if (danhSach.Count > 0)
             {
                 rptSachNoiBat.DataSource = danhSach;
@@ -44,5 +46,39 @@ public partial class _Default : System.Web.UI.Page
         }
 
         LabelNoData.Visible = true;
+    }
+
+    private void MarkWishlistState(List<CatalogProduct> products)
+    {
+        if (products == null || products.Count == 0 || Session["UserId"] == null)
+        {
+            return;
+        }
+
+        try
+        {
+            HashSet<int> wished = new HashSet<int>();
+            using (SqlConnection conn = new SqlConnection(DbConfig.GetConnectionString()))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT MaSP FROM dbo.YeuThich WHERE MaKH = @MaKH", conn);
+                cmd.Parameters.AddWithValue("@MaKH", (int)Session["UserId"]);
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        wished.Add(Convert.ToInt32(reader["MaSP"]));
+                    }
+                }
+            }
+
+            foreach (CatalogProduct product in products)
+            {
+                product.IsWishlisted = wished.Contains(product.MaSP);
+            }
+        }
+        catch
+        {
+        }
     }
 }

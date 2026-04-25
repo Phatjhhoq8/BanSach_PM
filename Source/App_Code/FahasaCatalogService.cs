@@ -33,6 +33,7 @@ public class CatalogProduct
     public decimal? DanhGia { get; set; }
     public string NguonUrl { get; set; }
     public List<string> GalleryImages { get; set; }
+    public bool IsWishlisted { get; set; }
 
     public decimal GiaHienThi
     {
@@ -101,6 +102,26 @@ public class CatalogProduct
 
             return "img/books/" + HinhAnh;
         }
+    }
+
+    public string WishlistSymbol
+    {
+        get { return IsWishlisted ? "♥" : "♡"; }
+    }
+
+    public string WishlistButtonLabel
+    {
+        get { return IsWishlisted ? "Bỏ khỏi yêu thích" : "Thêm vào yêu thích"; }
+    }
+
+    public string WishlistPressed
+    {
+        get { return IsWishlisted ? "true" : "false"; }
+    }
+
+    public string StockText
+    {
+        get { return SoLuongTon > 0 ? "Còn hàng" : "Tạm hết"; }
     }
 }
 

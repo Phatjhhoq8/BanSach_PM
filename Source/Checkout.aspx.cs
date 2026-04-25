@@ -29,11 +29,22 @@ public partial class Checkout : System.Web.UI.Page
             return;
         }
 
+        ConfigureInputHints();
+
         if (!IsPostBack)
         {
             LoadUserInfo();
             LoadOrderSummary(false);
         }
+    }
+
+    private void ConfigureInputHints()
+    {
+        txtFullName.Attributes["autocomplete"] = "name";
+        txtPhone.Attributes["inputmode"] = "tel";
+        txtPhone.Attributes["autocomplete"] = "tel";
+        txtEmail.Attributes["autocomplete"] = "email";
+        txtAddress.Attributes["autocomplete"] = "street-address";
     }
 
     private void LoadUserInfo()

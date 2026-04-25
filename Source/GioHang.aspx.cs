@@ -63,13 +63,15 @@ public partial class GioHang : System.Web.UI.Page
                 litSubtotal.Text = total.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) + "đ";
                 litTotal.Text = litSubtotal.Text;
 
-                phEmptyCart.Visible = false;
+                emptyCartState.Attributes["class"] = "surface-panel py-20 text-center hidden";
                 rptCartItems.Visible = true;
+                cartSummaryAside.Visible = true;
             }
             else
             {
-                phEmptyCart.Visible = true;
+                emptyCartState.Attributes["class"] = "surface-panel py-20 text-center";
                 rptCartItems.Visible = false;
+                cartSummaryAside.Visible = false;
                 litCartCount.Text = "0";
                 litSubtotal.Text = "0đ";
                 litTotal.Text = "0đ";

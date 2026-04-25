@@ -68,6 +68,7 @@ public partial class OrderDetail : System.Web.UI.Page
                 int status = Convert.ToInt32(reader["TrangThai"]);
                 litStatus.Text = GetStatusText(status);
                 statusPill.Attributes["class"] = "status-pill " + GetStatusClass(status);
+                litTimeline.Text = BuildTimeline(status);
             }
 
             SqlDataAdapter da = new SqlDataAdapter(@"
@@ -118,5 +119,26 @@ public partial class OrderDetail : System.Web.UI.Page
     private string FormatCurrency(decimal value)
     {
         return value.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) + "đ";
+    }
+
+    private string BuildTimeline(int status)
+    {
+        string[] labels = { "Chờ xác nhận", "Đang xử lý", "Đang giao", "Hoàn tất" };
+        if (status == 4)
+        {
+            return "<div class='rounded-2xl bg-red-50 px-4 py-3 text-sm font-black text-red-700'>Đơn hàng đã hủy</div>";
+        }
+
+        int current = Math.Max(0, Math.Min(status, labels.Length - 1));
+        string html = "<ol class='space-y-3'>";
+        for (int i = 0; i < labels.Length; i++)
+        {
+            bool active = i <= current;
+            string dot = active ? "bg-[var(--primary)]" : "bg-[var(--line)]";
+            string text = active ? "text-[var(--ink)]" : "text-[var(--muted)]";
+            html += "<li class='flex items-center gap-3'><span class='h-3 w-3 rounded-full " + dot + "'></span><span class='font-black " + text + "'>" + labels[i] + "</span></li>";
+        }
+
+        return html + "</ol>";
     }
 }

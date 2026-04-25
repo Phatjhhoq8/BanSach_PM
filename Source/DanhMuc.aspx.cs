@@ -69,10 +69,12 @@ ORDER BY dm.TenDM";
         CurrentPage = GetCurrentPage();
         int categoryId;
         bool hasCategory = int.TryParse(cat, out categoryId);
+        string categoryName = string.Empty;
 
         if (hasCategory)
         {
-            litTitle.Text = GetCategoryName(categoryId);
+            categoryName = GetCategoryName(categoryId);
+            litTitle.Text = categoryName;
         }
         else if (!string.IsNullOrWhiteSpace(search))
         {
@@ -133,7 +135,7 @@ ORDER BY dm.TenDM";
 
             string sql = @"
                 SELECT sp.MaSP, sp.Slug, sp.TenSP, sp.TacGia, sp.MoTa, sp.Gia, sp.GiaKhuyenMai,
-                       sp.PhanTramGiam, sp.HinhAnh, sp.LoaiBia, sp.NhaXuatBan, sp.NhaCungCap, sp.DanhGia, sp.NguonUrl"
+                       sp.PhanTramGiam, sp.SoLuongTon, sp.HinhAnh, sp.LoaiBia, sp.NhaXuatBan, sp.NhaCungCap, sp.DanhGia, sp.NguonUrl"
                 + whereSql + orderSql + " OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
 
             SqlCommand cmd = CloneCommand(countCmd);
@@ -156,9 +158,12 @@ ORDER BY dm.TenDM";
                     Gia = Convert.ToDecimal(row["Gia"]),
                     GiaKhuyenMai = row["GiaKhuyenMai"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(row["GiaKhuyenMai"]),
                     PhanTramGiam = row["PhanTramGiam"] == DBNull.Value ? (int?)null : Convert.ToInt32(row["PhanTramGiam"]),
+                    SoLuongTon = row["SoLuongTon"] == DBNull.Value ? 0 : Convert.ToInt32(row["SoLuongTon"]),
                     HinhAnh = SafeString(row["HinhAnh"])
                 });
             }
+
+            MarkWishlistState(products);
 
             BindPagination();
 
@@ -172,6 +177,8 @@ ORDER BY dm.TenDM";
                 int to = Math.Min(CurrentPage * PageSize, totalItems);
                 litResultSummary.Text = "Hiển thị " + from + "-" + to + " / " + totalItems + " sách phù hợp";
             }
+
+            litActiveFilters.Text = BuildActiveFiltersHtml(categoryName, price, sort, search);
 
             if (products.Count > 0)
             {
@@ -237,6 +244,22 @@ ORDER BY dm.TenDM";
     {
         int pageNumber = Convert.ToInt32(page);
         return BuildFilterUrl(pageNumber);
+    }
+
+    protected string GetAllProductsUrl()
+    {
+        return BuildUrl(string.Empty, Request.QueryString["price"], ddlSort.SelectedValue, txtSearch.Text.Trim(), 1);
+    }
+
+    protected string GetCategoryUrl(object maDM)
+    {
+        string value = maDM == null ? string.Empty : maDM.ToString();
+        return BuildUrl(value, Request.QueryString["price"], ddlSort.SelectedValue, txtSearch.Text.Trim(), 1);
+    }
+
+    protected string GetPriceUrl(string value)
+    {
+        return BuildUrl(Request.QueryString["cat"], value, ddlSort.SelectedValue, txtSearch.Text.Trim(), 1);
     }
 
     protected string GetPageLinkClass(object page)
@@ -355,11 +378,16 @@ ORDER BY dm.TenDM";
 
     private string BuildFilterUrl(int page)
     {
+        return BuildUrl(Request.QueryString["cat"], Request.QueryString["price"], ddlSort.SelectedValue, txtSearch.Text.Trim(), page);
+    }
+
+    private string BuildUrl(string cat, string price, string sort, string q, int page)
+    {
         List<string> parts = new List<string>();
-        AddQueryPart(parts, "cat", Request.QueryString["cat"]);
-        AddQueryPart(parts, "price", Request.QueryString["price"]);
-        AddQueryPart(parts, "sort", ddlSort.SelectedValue == "new" ? string.Empty : ddlSort.SelectedValue);
-        AddQueryPart(parts, "q", txtSearch.Text.Trim());
+        AddQueryPart(parts, "cat", cat);
+        AddQueryPart(parts, "price", price);
+        AddQueryPart(parts, "sort", sort == "new" ? string.Empty : sort);
+        AddQueryPart(parts, "q", q);
         if (page > 1)
         {
             AddQueryPart(parts, "p", page.ToString());
@@ -376,5 +404,100 @@ ORDER BY dm.TenDM";
         }
 
         parts.Add(HttpUtility.UrlEncode(key) + "=" + HttpUtility.UrlEncode(value));
+    }
+
+    private string BuildActiveFiltersHtml(string categoryName, string price, string sort, string search)
+    {
+        List<string> chips = new List<string>();
+        if (!string.IsNullOrWhiteSpace(categoryName) && !string.IsNullOrWhiteSpace(Request.QueryString["cat"]))
+        {
+            chips.Add(RenderChip("Danh mục: " + categoryName));
+        }
+
+        if (!string.IsNullOrWhiteSpace(price))
+        {
+            chips.Add(RenderChip("Giá: " + GetPriceLabel(price)));
+        }
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            chips.Add(RenderChip("Từ khóa: " + search));
+        }
+
+        if (!string.IsNullOrWhiteSpace(sort) && sort != "new")
+        {
+            chips.Add(RenderChip("Sắp xếp: " + GetSortLabel(sort)));
+        }
+
+        if (chips.Count == 0)
+        {
+            return string.Empty;
+        }
+
+        return "<div class='mb-8 flex flex-wrap items-center gap-2'>" +
+            string.Join(string.Empty, chips.ToArray()) +
+            "<a href='DanhMuc.aspx' class='ux-filter-chip hover:border-[var(--primary)] hover:text-[var(--primary-dark)]'>Xóa lọc</a></div>";
+    }
+
+    private string RenderChip(string text)
+    {
+        return "<span class='ux-filter-chip'>" + HttpUtility.HtmlEncode(text) + "</span>";
+    }
+
+    private string GetPriceLabel(string price)
+    {
+        switch (price)
+        {
+            case "under100": return "Dưới 100.000đ";
+            case "100-200": return "100.000đ - 200.000đ";
+            case "200-500": return "200.000đ - 500.000đ";
+            case "over500": return "Trên 500.000đ";
+            default: return "Tất cả mức giá";
+        }
+    }
+
+    private string GetSortLabel(string sort)
+    {
+        switch (sort)
+        {
+            case "price_asc": return "Giá tăng dần";
+            case "price_desc": return "Giá giảm dần";
+            case "name_asc": return "Tên A-Z";
+            default: return "Mới nhất";
+        }
+    }
+
+    private void MarkWishlistState(List<CatalogProduct> products)
+    {
+        if (products == null || products.Count == 0 || Session["UserId"] == null)
+        {
+            return;
+        }
+
+        try
+        {
+            HashSet<int> wished = new HashSet<int>();
+            using (SqlConnection conn = new SqlConnection(DbConfig.GetConnectionString()))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT MaSP FROM dbo.YeuThich WHERE MaKH = @MaKH", conn);
+                cmd.Parameters.AddWithValue("@MaKH", (int)Session["UserId"]);
+                conn.Open();
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        wished.Add(Convert.ToInt32(reader["MaSP"]));
+                    }
+                }
+            }
+
+            foreach (CatalogProduct product in products)
+            {
+                product.IsWishlisted = wished.Contains(product.MaSP);
+            }
+        }
+        catch
+        {
+        }
     }
 }

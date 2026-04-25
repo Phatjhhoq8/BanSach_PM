@@ -18,7 +18,7 @@ public partial class News : System.Web.UI.Page
         using (SqlConnection conn = new SqlConnection(DbConfig.GetConnectionString()))
         {
             SqlDataAdapter da = new SqlDataAdapter(@"
-                SELECT MaTin, TieuDe, TomTat, ChuyenMuc
+                SELECT MaTin, TieuDe, TomTat, ChuyenMuc, NgayDang
                 FROM dbo.TinTuc
                 WHERE TrangThai = 1
                 ORDER BY NgayDang DESC, MaTin DESC", conn);

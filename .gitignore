@@ -1,0 +1,53 @@
+# Local IDE and OS files
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.DS_Store
+Thumbs.db
+
+# Build outputs
+bin/
+obj/
+Debug/
+Release/
+_compiled/
+Source/bin/
+Source/obj/
+Source/_compiled/
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+*.cache
+
+# Local agent/tooling payloads
+.agent/
+
+# Node/Python local dependencies and caches
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+
+# Local database/runtime files
+*.mdf
+*.ldf
+*.bak
+
+# Generated repair tools and installers
+tools/*.exe
+*.msi
+
+# Generated/demo media not used by the app
+demo-final.webm
+
+# App_Data generated backups
+Source/App_Data/*.backup-*.json
+Source/App_Data/*.pre-encoding-fix-*.json
+Source/App_Data/*.fixed-for-sql-*.json

@@ -18,6 +18,14 @@ public partial class Account : System.Web.UI.Page
         {
             LoadUserData();
         }
+
+        txtFullName.Attributes["autocomplete"] = "name";
+        txtPhone.Attributes["inputmode"] = "tel";
+        txtPhone.Attributes["autocomplete"] = "tel";
+        txtAddress.Attributes["autocomplete"] = "street-address";
+        txtCurrentPassword.Attributes["autocomplete"] = "current-password";
+        txtNewPassword.Attributes["autocomplete"] = "new-password";
+        txtConfirmNewPassword.Attributes["autocomplete"] = "new-password";
     }
 
     private void LoadUserData()
@@ -88,6 +96,56 @@ public partial class Account : System.Web.UI.Page
     {
         Session.Clear();
         Response.Redirect("~/Default.aspx");
+    }
+
+    protected void btnChangePassword_Click(object sender, EventArgs e)
+    {
+        string current = txtCurrentPassword.Text.Trim();
+        string next = txtNewPassword.Text.Trim();
+        string confirm = txtConfirmNewPassword.Text.Trim();
+
+        if (string.IsNullOrWhiteSpace(current) || string.IsNullOrWhiteSpace(next))
+        {
+            ShowMessage("Vui lòng nhập mật khẩu hiện tại và mật khẩu mới.", false);
+            return;
+        }
+
+        if (next.Length < 6)
+        {
+            ShowMessage("Mật khẩu mới cần có ít nhất 6 ký tự.", false);
+            return;
+        }
+
+        if (next != confirm)
+        {
+            ShowMessage("Mật khẩu xác nhận không khớp.", false);
+            return;
+        }
+
+        int userId = (int)Session["UserId"];
+        string connString = DbConfig.GetConnectionString();
+        using (SqlConnection conn = new SqlConnection(connString))
+        {
+            conn.Open();
+            SqlCommand read = new SqlCommand("SELECT MatKhau FROM dbo.KhachHang WHERE MaKH = @Id", conn);
+            read.Parameters.AddWithValue("@Id", userId);
+            object stored = read.ExecuteScalar();
+            if (stored == null || stored == DBNull.Value || !SecurityHelper.VerifyPassword(current, stored.ToString()))
+            {
+                ShowMessage("Mật khẩu hiện tại không chính xác.", false);
+                return;
+            }
+
+            SqlCommand update = new SqlCommand("UPDATE dbo.KhachHang SET MatKhau = @Password WHERE MaKH = @Id", conn);
+            update.Parameters.AddWithValue("@Password", SecurityHelper.HashPassword(next));
+            update.Parameters.AddWithValue("@Id", userId);
+            update.ExecuteNonQuery();
+        }
+
+        txtCurrentPassword.Text = string.Empty;
+        txtNewPassword.Text = string.Empty;
+        txtConfirmNewPassword.Text = string.Empty;
+        ShowMessage("Đã đổi mật khẩu thành công.", true);
     }
 
     private void ShowMessage(string message, bool success)

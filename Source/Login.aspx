@@ -18,13 +18,26 @@
                     </div>
                     <div>
                         <label class="mb-2 block text-sm font-extrabold text-[var(--ink-soft)]">Mật khẩu</label>
-                        <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control" placeholder="••••••••"></asp:TextBox>
+                        <div class="relative">
+                            <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" CssClass="form-control pr-24" placeholder="••••••••"></asp:TextBox>
+                            <button type="button" onclick="togglePassword('<%= txtPassword.ClientID %>', this)" class="absolute right-3 top-1/2 -translate-y-1/2 rounded-full px-3 py-1 text-xs font-black text-[var(--primary-dark)] hover:bg-[var(--paper-soft)]">Hiện</button>
+                        </div>
                     </div>
                     <asp:Button ID="btnLogin" runat="server" Text="Đăng nhập" OnClick="btnLogin_Click" CssClass="btn-primary w-full py-4" />
                     <asp:Literal ID="litError" runat="server"></asp:Literal>
-                    <p class="pt-2 text-center text-sm text-[var(--ink-soft)]">Chưa có tài khoản? <a href="Register.aspx" class="font-black text-[var(--primary-dark)] hover:underline">Đăng ký ngay</a></p>
+                    <p class="text-center text-xs leading-6 text-[var(--muted)]">Nếu bạn đang thêm giỏ hàng hoặc thanh toán, hệ thống sẽ đưa bạn quay lại đúng bước sau khi đăng nhập.</p>
+                    <p class="pt-2 text-center text-sm text-[var(--ink-soft)]">Chưa có tài khoản? <a id="lnkRegister" runat="server" href="Register.aspx" class="font-black text-[var(--primary-dark)] hover:underline">Đăng ký ngay</a></p>
                 </div>
             </div>
         </div>
     </section>
+    <script>
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const visible = input.type === 'text';
+            input.type = visible ? 'password' : 'text';
+            btn.innerText = visible ? 'Hiện' : 'Ẩn';
+        }
+    </script>
 </asp:Content>

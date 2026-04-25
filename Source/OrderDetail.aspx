@@ -20,7 +20,7 @@
                         <ItemTemplate>
                             <div class="flex gap-4 p-5 sm:items-center sm:p-6">
                                 <div class="book-cover aspect-[3/4] w-16 flex-shrink-0 rounded-xl p-1.5">
-                                    <img src='<%# Eval("HinhAnh") %>' onerror="this.src='https://placehold.co/400x550/f8f1e3/3b3028?text=Book';" alt='<%# Eval("TenSP") %>' class="h-full w-full" />
+                                    <img src='<%# Eval("HinhAnh") %>' onerror="this.src='https://placehold.co/400x550/f8f1e3/3b3028?text=Book';" alt='<%# Eval("TenSP") %>' class="h-full w-full" loading="lazy" />
                                 </div>
                                 <div class="min-w-0 flex-1">
                                     <h3 class="line-clamp-2 font-black"><%# Eval("TenSP") %></h3>
@@ -39,6 +39,10 @@
                     <div>
                         <dt class="font-black uppercase tracking-[0.12em] text-[var(--muted)]">Trạng thái</dt>
                         <dd class="mt-2"><span id="statusPill" runat="server" class="status-pill"><asp:Literal ID="litStatus" runat="server"></asp:Literal></span></dd>
+                    </div>
+                    <div class="rounded-3xl bg-[var(--paper)] p-4">
+                        <dt class="font-black uppercase tracking-[0.12em] text-[var(--muted)]">Tiến trình</dt>
+                        <dd class="mt-4"><asp:Literal ID="litTimeline" runat="server"></asp:Literal></dd>
                     </div>
                     <div>
                         <dt class="font-black uppercase tracking-[0.12em] text-[var(--muted)]">Ngày đặt</dt>
@@ -66,6 +70,10 @@
                         <dd class="mt-1 leading-7 text-[var(--ink-soft)]"><asp:Literal ID="litShippingInfo" runat="server"></asp:Literal></dd>
                     </div>
                 </dl>
+                <div class="mt-6 grid gap-3">
+                    <a href="FAQ.aspx" class="account-inline-link">Liên hệ hỗ trợ</a>
+                    <a href="DanhMuc.aspx" class="account-inline-link">Mua thêm sách</a>
+                </div>
             </aside>
         </div>
     </section>

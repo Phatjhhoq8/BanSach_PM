@@ -23,7 +23,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" Runat="Server">
     <section class="catalog-hero border-b border-[var(--line)] bg-[var(--surface)]">
-        <video autoplay loop muted playsinline class="absolute inset-0 h-full w-full object-cover">
+        <video autoplay loop muted playsinline poster="img/banner/section_banner_2.jpg" data-motion-video class="absolute inset-0 h-full w-full object-cover">
             <source src="videos/book.mp4" type="video/mp4" />
         </video>
         <div class="container-page py-12 lg:py-16">
@@ -42,35 +42,36 @@
 
     <section class="container-page py-10 lg:py-14">
         <div class="grid gap-8 lg:grid-cols-[17rem_1fr]">
-            <aside class="space-y-5">
-                <details class="surface-panel p-5" open>
+            <aside class="space-y-5 lg:sticky lg:top-28 lg:self-start">
+                <details class="surface-panel p-5" open data-catalog-filter>
                     <summary class="cursor-pointer list-none text-sm font-black uppercase tracking-[0.12em] text-[var(--primary-dark)]">Danh mục</summary>
                     <ul class="mt-5 space-y-2 text-sm font-bold">
-                        <li><a href="DanhMuc.aspx" class='<%= IsAllCategoryActive() ? "flex rounded-2xl border border-[var(--primary)] bg-white px-4 py-3 text-[var(--primary-dark)] shadow-sm" : "flex rounded-2xl px-4 py-3 text-[var(--ink-soft)] hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]" %>'>Tất cả sản phẩm</a></li>
+                        <li><a href='<%= GetAllProductsUrl() %>' class='<%= IsAllCategoryActive() ? "flex rounded-2xl border border-[var(--primary)] bg-white px-4 py-3 text-[var(--primary-dark)] shadow-sm" : "flex rounded-2xl px-4 py-3 text-[var(--ink-soft)] hover:bg-[var(--paper-soft)] hover:text-[var(--primary-dark)]" %>'>Tất cả sản phẩm</a></li>
                         <asp:Repeater ID="rptCategories" runat="server">
                             <ItemTemplate>
-                                <li><a href='DanhMuc.aspx?cat=<%# Eval("MaDM") %>' class='<%# GetCategoryLinkClass(Eval("MaDM")) %>'><%# Eval("TenDM") %></a></li>
+                                <li><a href='<%# GetCategoryUrl(Eval("MaDM")) %>' class='<%# GetCategoryLinkClass(Eval("MaDM")) %>'><%# Eval("TenDM") %></a></li>
                             </ItemTemplate>
                         </asp:Repeater>
                     </ul>
                 </details>
 
-                <details class="surface-panel p-5" open>
+                <details class="surface-panel p-5" open data-catalog-filter>
                     <summary class="cursor-pointer list-none text-sm font-black uppercase tracking-[0.12em] text-[var(--primary-dark)]">Khoảng giá</summary>
                     <div class="mt-5 space-y-2 text-sm font-bold">
-                        <a href="DanhMuc.aspx" class='<%= GetPriceFilterClass("") %>'>Tất cả mức giá</a>
-                        <a href="DanhMuc.aspx?price=under100" class='<%= GetPriceFilterClass("under100") %>'>Dưới 100.000đ</a>
-                        <a href="DanhMuc.aspx?price=100-200" class='<%= GetPriceFilterClass("100-200") %>'>100.000đ - 200.000đ</a>
-                        <a href="DanhMuc.aspx?price=200-500" class='<%= GetPriceFilterClass("200-500") %>'>200.000đ - 500.000đ</a>
-                        <a href="DanhMuc.aspx?price=over500" class='<%= GetPriceFilterClass("over500") %>'>Trên 500.000đ</a>
+                        <a href='<%= GetPriceUrl("") %>' class='<%= GetPriceFilterClass("") %>'>Tất cả mức giá</a>
+                        <a href='<%= GetPriceUrl("under100") %>' class='<%= GetPriceFilterClass("under100") %>'>Dưới 100.000đ</a>
+                        <a href='<%= GetPriceUrl("100-200") %>' class='<%= GetPriceFilterClass("100-200") %>'>100.000đ - 200.000đ</a>
+                        <a href='<%= GetPriceUrl("200-500") %>' class='<%= GetPriceFilterClass("200-500") %>'>200.000đ - 500.000đ</a>
+                        <a href='<%= GetPriceUrl("over500") %>' class='<%= GetPriceFilterClass("over500") %>'>Trên 500.000đ</a>
                     </div>
                 </details>
             </aside>
 
             <div class="min-w-0">
-                <div class="surface-panel mb-8 flex flex-col gap-4 p-4 md:flex-row md:items-center md:justify-between">
-                    <div class="flex-1">
-                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control rounded-full text-sm" placeholder="Tìm tên sách hoặc tác giả..." AutoPostBack="true" OnTextChanged="btnSearch_Click"></asp:TextBox>
+                <div class="surface-panel mb-5 flex flex-col gap-4 p-4 md:flex-row md:items-center md:justify-between">
+                    <div class="flex flex-1 flex-col gap-3 sm:flex-row">
+                        <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control rounded-full text-sm" placeholder="Tìm tên sách hoặc tác giả..."></asp:TextBox>
+                        <asp:Button ID="btnSearch" runat="server" Text="Tìm" OnClick="btnSearch_Click" CssClass="btn-primary min-w-24 text-sm" />
                     </div>
                     <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
                         <span class="text-xs font-black uppercase tracking-[0.12em] text-[var(--muted)]">Sắp xếp</span>
@@ -82,13 +83,14 @@
                         </asp:DropDownList>
                     </div>
                 </div>
+                <asp:Literal ID="litActiveFilters" runat="server"></asp:Literal>
 
                 <div class="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 xl:grid-cols-4 xl:gap-x-7">
                     <asp:Repeater ID="rptSach" runat="server">
                         <ItemTemplate>
                             <article class="book-card group">
                                 <a href='ChiTiet.aspx?id=<%# Eval("MaSP") %>' class="book-cover aspect-[3/4]">
-                                    <img src='<%# Eval("DisplayImageUrl") %>' onerror="this.src='https://placehold.co/400x550/f8f1e3/3b3028?text=Book';" alt='<%# Eval("TenSP") %>' class="h-full w-full" />
+                                    <img src='<%# Eval("DisplayImageUrl") %>' onerror="this.src='https://placehold.co/400x550/f8f1e3/3b3028?text=Book';" alt='<%# Eval("TenSP") %>' class="h-full w-full" loading="lazy" />
                                     <span class='<%# string.IsNullOrEmpty(Eval("DiscountText") as string) ? "hidden" : "badge-sale absolute right-3 top-3" %>'><%# Eval("DiscountText") %></span>
                                 </a>
                                 <div class="mt-4 flex flex-1 flex-col">
@@ -99,8 +101,8 @@
                                         <span class='<%# string.IsNullOrEmpty(Eval("GiaGocText") as string) ? "hidden" : "text-xs text-[var(--muted)] line-through" %>'><%# Eval("GiaGocText") %></span>
                                     </div>
                                     <div class="mt-4 flex gap-2">
-                                        <button type="button" onclick="addToCart(<%# Eval("MaSP") %>, this)" class="flex-1 rounded-full border border-[var(--line)] px-3 py-2 text-xs font-black text-[var(--primary-dark)] hover:border-[var(--primary)] hover:bg-[var(--primary-soft)]">Thêm vào giỏ</button>
-                                        <button type="button" onclick="toggleWishlist(<%# Eval("MaSP") %>, this)" class="rounded-full border border-[var(--line)] px-3 py-2 text-xs font-black text-rose-600 hover:border-rose-300 hover:bg-rose-50">♡</button>
+                                        <button type="button" onclick="addToCart(<%# Eval("MaSP") %>, this)" class="product-card-action touch-target flex-1 rounded-full border border-[var(--line)] px-4 py-2 text-xs font-black hover:border-[var(--primary)] hover:bg-[var(--primary-soft)]">Thêm vào giỏ</button>
+                                        <button type="button" onclick="toggleWishlist(<%# Eval("MaSP") %>, this)" class="wishlist-action touch-target rounded-full border border-[var(--line)] px-4 py-2 text-sm font-black hover:border-rose-300 hover:bg-rose-50" aria-label='<%# Eval("WishlistButtonLabel") %>' aria-pressed='<%# Eval("WishlistPressed") %>'><%# Eval("WishlistSymbol") %></button>
                                     </div>
                                 </div>
                             </article>
@@ -126,6 +128,12 @@
 
 <asp:Content ID="Content3" ContentPlaceHolderID="ScriptsContent" Runat="Server">
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.matchMedia && window.matchMedia('(max-width: 1023px)').matches) {
+                document.querySelectorAll('[data-catalog-filter]').forEach(panel => panel.removeAttribute('open'));
+            }
+        });
+
         function addToCart(maSP, btn) {
             const originalText = btn.innerText;
             btn.disabled = true;
@@ -142,17 +150,19 @@
                         const countEl = document.getElementById('cartCount');
                         if (countEl) countEl.innerText = data.cartCount;
                         btn.innerText = 'Đã thêm';
+                        AppUX.showToast(data.message || 'Đã thêm sách vào giỏ hàng.', 'success');
                         setTimeout(() => { btn.innerText = originalText; btn.disabled = false; }, 1200);
                     } else if (data.code === 'auth_required') {
-                        window.location.href = 'Login.aspx?ReturnUrl=' + encodeURIComponent(window.location.pathname + window.location.search);
+                        AppUX.showToast('Đăng nhập để thêm sách vào giỏ hàng.', 'info');
+                        setTimeout(() => { window.location.href = 'Login.aspx?ReturnUrl=' + encodeURIComponent(window.location.pathname + window.location.search); }, 500);
                     } else {
-                        alert(data.message || 'Không thể thêm sách vào giỏ hàng.');
+                        AppUX.showToast(data.message || 'Không thể thêm sách vào giỏ hàng.', 'error');
                         btn.innerText = originalText;
                         btn.disabled = false;
                     }
                 })
                 .catch(() => {
-                    alert('Đã xảy ra lỗi mạng khi thêm vào giỏ hàng.');
+                    AppUX.showToast('Đã xảy ra lỗi mạng khi thêm vào giỏ hàng.', 'error');
                     btn.innerText = originalText;
                     btn.disabled = false;
                 });
@@ -169,15 +179,19 @@
                 .then(data => {
                     if (data.success) {
                         btn.innerText = data.code === 'added' ? '♥' : '♡';
+                        btn.setAttribute('aria-pressed', data.code === 'added' ? 'true' : 'false');
+                        btn.setAttribute('aria-label', data.code === 'added' ? 'Bỏ khỏi yêu thích' : 'Thêm vào yêu thích');
+                        AppUX.showToast(data.message || 'Đã cập nhật danh sách yêu thích.', 'success');
                     } else if (data.code === 'auth_required') {
-                        window.location.href = 'Login.aspx?ReturnUrl=' + encodeURIComponent(window.location.pathname + window.location.search);
+                        AppUX.showToast('Đăng nhập để lưu sách yêu thích.', 'info');
+                        setTimeout(() => { window.location.href = 'Login.aspx?ReturnUrl=' + encodeURIComponent(window.location.pathname + window.location.search); }, 500);
                     } else {
-                        alert(data.message || 'Không thể xử lý yêu thích.');
+                        AppUX.showToast(data.message || 'Không thể xử lý yêu thích.', 'error');
                         btn.innerText = originalText;
                     }
                     btn.disabled = false;
                 })
-                .catch(() => { alert('Đã xảy ra lỗi mạng.'); btn.innerText = originalText; btn.disabled = false; });
+                .catch(() => { AppUX.showToast('Đã xảy ra lỗi mạng.', 'error'); btn.innerText = originalText; btn.disabled = false; });
         }
     </script>
 </asp:Content>

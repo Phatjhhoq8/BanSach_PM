@@ -3,6 +3,7 @@
 using System;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Web;
 using System.Web.SessionState;
 
@@ -68,14 +69,14 @@ public class CartHandler : IHttpHandler, IRequiresSessionState
                     }
 
                     UpdateItem(conn, userId, maSP, qty);
-                    WriteJson(context, true, "Đã cập nhật giỏ hàng.", GetCartCount(conn, userId), string.Empty);
+                    WriteJson(context, true, "Đã cập nhật giỏ hàng.", GetCartCount(conn, userId), string.Empty, FormatCurrency(GetCartSubtotal(conn, userId)), FormatCurrency(GetItemTotal(conn, userId, maSP)));
                     return;
                 }
 
                 if (action == "remove")
                 {
                     RemoveItem(conn, userId, maSP);
-                    WriteJson(context, true, "Đã xóa sách khỏi giỏ hàng.", GetCartCount(conn, userId), string.Empty);
+                    WriteJson(context, true, "Đã xóa sách khỏi giỏ hàng.", GetCartCount(conn, userId), string.Empty, FormatCurrency(GetCartSubtotal(conn, userId)), string.Empty);
                     return;
                 }
 
@@ -187,12 +188,58 @@ public class CartHandler : IHttpHandler, IRequiresSessionState
         }
     }
 
+    private static decimal GetCartSubtotal(SqlConnection conn, int userId)
+    {
+        string sql = @"
+            SELECT SUM(ct.SoLuong * (CASE WHEN sp.GiaKhuyenMai > 0 THEN sp.GiaKhuyenMai ELSE sp.Gia END))
+            FROM dbo.ChiTietGioHang ct
+            JOIN dbo.SanPham sp ON ct.MaSP = sp.MaSP
+            WHERE ct.MaKH = @UID";
+        using (SqlCommand cmd = new SqlCommand(sql, conn))
+        {
+            cmd.Parameters.AddWithValue("@UID", userId);
+            object result = cmd.ExecuteScalar();
+            return result == null || result == DBNull.Value ? 0 : Convert.ToDecimal(result);
+        }
+    }
+
+    private static decimal GetItemTotal(SqlConnection conn, int userId, int maSP)
+    {
+        string sql = @"
+            SELECT ct.SoLuong * (CASE WHEN sp.GiaKhuyenMai > 0 THEN sp.GiaKhuyenMai ELSE sp.Gia END)
+            FROM dbo.ChiTietGioHang ct
+            JOIN dbo.SanPham sp ON ct.MaSP = sp.MaSP
+            WHERE ct.MaKH = @UID AND ct.MaSP = @MID";
+        using (SqlCommand cmd = new SqlCommand(sql, conn))
+        {
+            cmd.Parameters.AddWithValue("@UID", userId);
+            cmd.Parameters.AddWithValue("@MID", maSP);
+            object result = cmd.ExecuteScalar();
+            return result == null || result == DBNull.Value ? 0 : Convert.ToDecimal(result);
+        }
+    }
+
+    private static string FormatCurrency(decimal value)
+    {
+        return value.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) + "đ";
+    }
+
     private static void WriteJson(HttpContext context, bool success, string message, int cartCount, string code)
     {
         context.Response.Write("{\"success\":" + (success ? "true" : "false") +
             ",\"message\":\"" + EscapeJson(message) + "\"" +
             ",\"cartCount\":" + cartCount +
             ",\"code\":\"" + EscapeJson(code) + "\"}");
+    }
+
+    private static void WriteJson(HttpContext context, bool success, string message, int cartCount, string code, string subtotalText, string itemTotalText)
+    {
+        context.Response.Write("{\"success\":" + (success ? "true" : "false") +
+            ",\"message\":\"" + EscapeJson(message) + "\"" +
+            ",\"cartCount\":" + cartCount +
+            ",\"code\":\"" + EscapeJson(code) + "\"" +
+            ",\"subtotalText\":\"" + EscapeJson(subtotalText) + "\"" +
+            ",\"itemTotalText\":\"" + EscapeJson(itemTotalText) + "\"}");
     }
 
     private static string EscapeJson(string value)

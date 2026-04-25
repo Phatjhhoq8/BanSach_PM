@@ -36,7 +36,7 @@
                                 <ItemTemplate>
                                     <div class="flex items-center gap-4">
                                         <div class="book-cover aspect-[3/4] w-14 flex-shrink-0 rounded-xl p-1.5">
-                                            <img src='<%# Eval("HinhAnh") %>' onerror="this.src='https://placehold.co/400x550/f8f1e3/3b3028?text=Book';" alt='<%# Eval("TenSP") %>' class="h-full w-full" />
+                                            <img src='<%# Eval("HinhAnh") %>' onerror="this.src='https://placehold.co/400x550/f8f1e3/3b3028?text=Book';" alt='<%# Eval("TenSP") %>' class="h-full w-full" loading="lazy" />
                                         </div>
                                         <div class="min-w-0 flex-1">
                                             <h4 class="line-clamp-1 text-sm font-black"><%# Eval("TenSP") %></h4>
@@ -45,7 +45,8 @@
                                     </div>
                                 </ItemTemplate>
                             </asp:Repeater>
-                            <div class="flex justify-end pt-2">
+                            <div class="flex flex-col justify-end gap-2 pt-2 sm:flex-row">
+                                <a href="DanhMuc.aspx" class="account-inline-link">Mua thêm sách</a>
                                 <a href="OrderDetail.aspx?id=<%# Eval("MaDH") %>" class="account-inline-link">Xem chi tiết đơn hàng</a>
                             </div>
                         </div>

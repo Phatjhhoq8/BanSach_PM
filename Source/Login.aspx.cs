@@ -7,6 +7,9 @@ public partial class Login : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        txtEmail.Attributes["autocomplete"] = "email";
+        txtPassword.Attributes["autocomplete"] = "current-password";
+
         if (Session["UserEmail"] != null)
         {
             Response.Redirect("~/Default.aspx");
@@ -16,6 +19,9 @@ public partial class Login : System.Web.UI.Page
         {
             litError.Text = "<div class='mt-4 rounded-3xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-bold text-emerald-700'>Đăng ký thành công. Bạn có thể đăng nhập ngay.</div>";
         }
+
+        string returnUrl = Request.QueryString["ReturnUrl"];
+        lnkRegister.HRef = IsSafeReturnUrl(returnUrl) ? "Register.aspx?ReturnUrl=" + HttpUtility.UrlEncode(returnUrl) : "Register.aspx";
     }
 
     protected void btnLogin_Click(object sender, EventArgs e)

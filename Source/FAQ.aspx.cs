@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web;
 
 public partial class FAQ : System.Web.UI.Page
 {
@@ -27,5 +28,11 @@ public partial class FAQ : System.Web.UI.Page
             rptFaq.DataSource = dt;
             rptFaq.DataBind();
         }
+    }
+
+    protected string GetSearchText(object group, object question, object answer)
+    {
+        string text = ((group ?? string.Empty) + " " + (question ?? string.Empty) + " " + (answer ?? string.Empty)).ToLowerInvariant();
+        return HttpUtility.HtmlAttributeEncode(text);
     }
 }

@@ -25,7 +25,7 @@ public partial class NewsDetail : System.Web.UI.Page
         using (SqlConnection conn = new SqlConnection(DbConfig.GetConnectionString()))
         {
             SqlCommand cmd = new SqlCommand(@"
-                SELECT TOP 1 TieuDe, TomTat, NoiDung, ChuyenMuc
+                SELECT TOP 1 TieuDe, TomTat, NoiDung, ChuyenMuc, NgayDang
                 FROM dbo.TinTuc
                 WHERE MaTin = @Id AND TrangThai = 1", conn);
             cmd.Parameters.AddWithValue("@Id", id);
@@ -41,6 +41,7 @@ public partial class NewsDetail : System.Web.UI.Page
                 litCategory.Text = HttpUtility.HtmlEncode(reader["ChuyenMuc"].ToString());
                 litTitle.Text = HttpUtility.HtmlEncode(reader["TieuDe"].ToString());
                 litSummary.Text = HttpUtility.HtmlEncode(reader["TomTat"].ToString());
+                litDate.Text = Convert.ToDateTime(reader["NgayDang"]).ToString("dd/MM/yyyy");
                 litContent.Text = ToParagraphs(reader["NoiDung"].ToString());
             }
         }

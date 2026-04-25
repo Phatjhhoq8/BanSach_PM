@@ -8,6 +8,15 @@ public partial class Register : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        txtFullName.Attributes["autocomplete"] = "name";
+        txtEmail.Attributes["autocomplete"] = "email";
+        txtPhone.Attributes["inputmode"] = "tel";
+        txtPhone.Attributes["autocomplete"] = "tel";
+        txtPassword.Attributes["autocomplete"] = "new-password";
+        txtConfirmPassword.Attributes["autocomplete"] = "new-password";
+
+        string returnUrl = Request.QueryString["ReturnUrl"];
+        lnkLogin.HRef = IsSafeReturnUrl(returnUrl) ? "Login.aspx?ReturnUrl=" + HttpUtility.UrlEncode(returnUrl) : "Login.aspx";
     }
 
     protected void btnRegister_Click(object sender, EventArgs e)
