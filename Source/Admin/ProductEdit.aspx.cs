@@ -43,6 +43,7 @@ public partial class Admin_ProductEdit : System.Web.UI.Page
             ddlCategory.DataTextField = "TenDM";
             ddlCategory.DataValueField = "MaDM";
             ddlCategory.DataBind();
+            ddlCategory.Items.Insert(0, new ListItem("Chọn thể loại", ""));
         }
     }
 
@@ -102,7 +103,7 @@ public partial class Admin_ProductEdit : System.Web.UI.Page
             txtHinhAnhUrl.Text = "img/books/" + fileName;
             imgPreview.ImageUrl = "~/img/books/" + fileName;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             ShowError("Không thể tải ảnh lên. Vui lòng thử lại.");
         }
@@ -113,7 +114,7 @@ public partial class Admin_ProductEdit : System.Web.UI.Page
         string id = Request.QueryString["id"];
         string connString = DbConfig.GetConnectionString();
         decimal gia;
-        decimal giaKhuyenMai;
+        decimal giaKhuyenMai = 0;
         int soLuongTon;
 
         if (string.IsNullOrWhiteSpace(txtTenSP.Text))
@@ -135,6 +136,19 @@ public partial class Admin_ProductEdit : System.Web.UI.Page
             return;
         }
 
+        string normalizedNewCategory = CategoryResolver.NormalizeCategoryName(txtNewCategory.Text);
+        if (!string.IsNullOrWhiteSpace(txtNewCategory.Text) && normalizedNewCategory.Length < 2)
+        {
+            ShowError("Tên danh mục mới quá ngắn.");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(normalizedNewCategory) && string.IsNullOrWhiteSpace(ddlCategory.SelectedValue))
+        {
+            ShowError("Vui lòng chọn thể loại hoặc nhập thể loại mới.");
+            return;
+        }
+
         if (!int.TryParse(txtSoLuongTon.Text.Trim(), out soLuongTon) || soLuongTon < 0)
         {
             ShowError("Số lượng tồn chưa hợp lệ.");
@@ -150,50 +164,74 @@ public partial class Admin_ProductEdit : System.Web.UI.Page
             discountPercent = (int)Math.Round((gia - giaKhuyenMai) * 100m / gia, 0);
             discountValue = discountPercent;
         }
+
+        int maDM;
         
         using (SqlConnection conn = new SqlConnection(connString))
         {
-            string sql = "";
-            if (string.IsNullOrEmpty(id))
+            conn.Open();
+            using (SqlTransaction transaction = conn.BeginTransaction())
             {
-                sql = @"INSERT INTO dbo.SanPham 
+                maDM = ResolveSelectedCategoryId(conn, transaction, normalizedNewCategory);
+
+                string sql = "";
+                if (string.IsNullOrEmpty(id))
+                {
+                    sql = @"INSERT INTO dbo.SanPham 
                         (TenSP, TacGia, MoTa, Gia, GiaKhuyenMai, PhanTramGiam, SoLuongTon, HinhAnh, LoaiBia, NhaXuatBan, NhaCungCap, MaDM, TrangThai)
                         VALUES (@TenSP, @TacGia, @MoTa, @Gia, @GiaKhuyenMai, @PhanTramGiam, @SoLuongTon, @HinhAnh, @LoaiBia, @NhaXuatBan, @NhaCungCap, @MaDM, @TrangThai)";
-            }
-            else
-            {
-                sql = @"UPDATE dbo.SanPham SET 
+                }
+                else
+                {
+                    sql = @"UPDATE dbo.SanPham SET 
                         TenSP=@TenSP, TacGia=@TacGia, MoTa=@MoTa, Gia=@Gia, GiaKhuyenMai=@GiaKhuyenMai, PhanTramGiam=@PhanTramGiam,
                         SoLuongTon=@SoLuongTon, HinhAnh=@HinhAnh, LoaiBia=@LoaiBia, NhaXuatBan=@NhaXuatBan, 
                         NhaCungCap=@NhaCungCap, MaDM=@MaDM, TrangThai=@TrangThai 
                         WHERE MaSP=@Id";
+                }
+
+                SqlCommand cmd = new SqlCommand(sql, conn, transaction);
+                cmd.Parameters.AddWithValue("@TenSP", txtTenSP.Text.Trim());
+                cmd.Parameters.AddWithValue("@TacGia", txtTacGia.Text.Trim());
+                cmd.Parameters.AddWithValue("@MoTa", txtMoTa.Text.Trim());
+                cmd.Parameters.AddWithValue("@Gia", gia);
+                cmd.Parameters.AddWithValue("@GiaKhuyenMai", saleValue);
+                cmd.Parameters.AddWithValue("@PhanTramGiam", discountValue);
+                cmd.Parameters.AddWithValue("@SoLuongTon", soLuongTon);
+                cmd.Parameters.AddWithValue("@HinhAnh", txtHinhAnhUrl.Text.Trim());
+                cmd.Parameters.AddWithValue("@LoaiBia", txtLoaiBia.Text.Trim());
+                cmd.Parameters.AddWithValue("@NhaXuatBan", txtNhaXuatBan.Text.Trim());
+                cmd.Parameters.AddWithValue("@NhaCungCap", txtNhaCungCap.Text.Trim());
+                cmd.Parameters.AddWithValue("@MaDM", maDM);
+                cmd.Parameters.AddWithValue("@TrangThai", rbActive.Checked);
+
+                if (!string.IsNullOrEmpty(id))
+                {
+                    cmd.Parameters.AddWithValue("@Id", int.Parse(id));
+                }
+
+                cmd.ExecuteNonQuery();
+                transaction.Commit();
             }
-
-            SqlCommand cmd = new SqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@TenSP", txtTenSP.Text.Trim());
-            cmd.Parameters.AddWithValue("@TacGia", txtTacGia.Text.Trim());
-            cmd.Parameters.AddWithValue("@MoTa", txtMoTa.Text.Trim());
-            cmd.Parameters.AddWithValue("@Gia", gia);
-            cmd.Parameters.AddWithValue("@GiaKhuyenMai", saleValue);
-            cmd.Parameters.AddWithValue("@PhanTramGiam", discountValue);
-            cmd.Parameters.AddWithValue("@SoLuongTon", soLuongTon);
-            cmd.Parameters.AddWithValue("@HinhAnh", txtHinhAnhUrl.Text.Trim());
-            cmd.Parameters.AddWithValue("@LoaiBia", txtLoaiBia.Text.Trim());
-            cmd.Parameters.AddWithValue("@NhaXuatBan", txtNhaXuatBan.Text.Trim());
-            cmd.Parameters.AddWithValue("@NhaCungCap", txtNhaCungCap.Text.Trim());
-            cmd.Parameters.AddWithValue("@MaDM", ddlCategory.SelectedValue);
-            cmd.Parameters.AddWithValue("@TrangThai", rbActive.Checked);
-
-            if (!string.IsNullOrEmpty(id))
-            {
-                cmd.Parameters.AddWithValue("@Id", int.Parse(id));
-            }
-
-            conn.Open();
-            cmd.ExecuteNonQuery();
         }
 
         Response.Redirect("Products.aspx");
+    }
+
+    private int ResolveSelectedCategoryId(SqlConnection conn, SqlTransaction transaction, string normalizedNewCategory)
+    {
+        if (!string.IsNullOrWhiteSpace(normalizedNewCategory))
+        {
+            return CategoryResolver.ResolveCategoryId(conn, transaction, normalizedNewCategory);
+        }
+
+        int categoryId;
+        if (int.TryParse(ddlCategory.SelectedValue, out categoryId) && categoryId > 0)
+        {
+            return categoryId;
+        }
+
+        throw new InvalidOperationException("Không xác định được danh mục cho sản phẩm.");
     }
 
     private bool TryParseMoney(string raw, out decimal value)

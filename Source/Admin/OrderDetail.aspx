@@ -63,6 +63,12 @@
                 <h2 class="text-xl font-black text-white">Trạng thái</h2>
                 <p class="mt-4 text-sm text-slate-400">Ngày đặt: <asp:Literal ID="litDate" runat="server"></asp:Literal></p>
                 <p class="mt-2 text-2xl font-black text-white"><asp:Literal ID="litTotal" runat="server"></asp:Literal></p>
+                <div class="mt-5 space-y-2 rounded-2xl bg-adminbg p-4 text-sm text-slate-300">
+                    <div class="flex justify-between gap-3"><span>Tạm tính</span><strong class="text-white"><asp:Literal ID="litSubtotal" runat="server"></asp:Literal></strong></div>
+                    <div class="flex justify-between gap-3"><span>Vận chuyển</span><strong class="text-white"><asp:Literal ID="litShippingFee" runat="server"></asp:Literal></strong></div>
+                    <div class="flex justify-between gap-3"><span>Giảm giá</span><strong class="text-emerald-400"><asp:Literal ID="litDiscount" runat="server"></asp:Literal></strong></div>
+                    <div class="flex justify-between gap-3"><span>Mã ưu đãi</span><strong class="text-white"><asp:Literal ID="litCoupon" runat="server"></asp:Literal></strong></div>
+                </div>
                 <div class="mt-6">
                     <asp:DropDownList ID="ddlStatus" runat="server" CssClass="admin-input w-full rounded-xl px-4 py-3">
                         <asp:ListItem Value="0">Chờ xác nhận</asp:ListItem>

@@ -54,9 +54,21 @@ public partial class Register : System.Web.UI.Page
             return;
         }
 
-        if (CreateUser(fullName, email, phone, password))
+        int userId = CreateUser(fullName, email, phone, password);
+        if (userId > 0)
         {
-            Response.Redirect("~/Login.aspx?msg=success");
+            Session["UserId"] = userId;
+            Session["UserEmail"] = email;
+            Session["UserName"] = fullName;
+
+            string returnUrl = Request.QueryString["ReturnUrl"];
+            if (!string.IsNullOrWhiteSpace(returnUrl) && IsSafeReturnUrl(returnUrl))
+            {
+                Response.Redirect(returnUrl);
+                return;
+            }
+
+            Response.Redirect("~/Default.aspx");
         }
         else
         {
@@ -80,7 +92,7 @@ public partial class Register : System.Web.UI.Page
         }
     }
 
-    private bool CreateUser(string fullName, string email, string phone, string password)
+    private int CreateUser(string fullName, string email, string phone, string password)
     {
         string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
@@ -88,17 +100,31 @@ public partial class Register : System.Web.UI.Page
             string sql = @"
                 INSERT INTO dbo.KhachHang (HoTen, Email, SoDienThoai, MatKhau) VALUES (@Name, @Email, @Phone, @Pass);
                 DECLARE @NewId INT = CAST(SCOPE_IDENTITY() AS INT);
-                INSERT INTO dbo.GioHang (MaKH) VALUES (@NewId);";
+                INSERT INTO dbo.GioHang (MaKH) VALUES (@NewId);
+                SELECT @NewId;";
             using (SqlCommand cmd = new SqlCommand(sql, conn))
             {
                 cmd.Parameters.AddWithValue("@Name", fullName);
                 cmd.Parameters.AddWithValue("@Email", email);
                 cmd.Parameters.AddWithValue("@Phone", phone);
-                cmd.Parameters.AddWithValue("@Pass", password);
+                cmd.Parameters.AddWithValue("@Pass", SecurityHelper.HashPassword(password));
                 conn.Open();
-                return cmd.ExecuteNonQuery() > 0;
+                object result = cmd.ExecuteScalar();
+                return result == null || result == DBNull.Value ? 0 : Convert.ToInt32(result);
             }
         }
+    }
+
+    private bool IsSafeReturnUrl(string returnUrl)
+    {
+        if (string.IsNullOrWhiteSpace(returnUrl))
+        {
+            return false;
+        }
+
+        return returnUrl.IndexOf("://", StringComparison.Ordinal) < 0 &&
+               !returnUrl.StartsWith("//", StringComparison.Ordinal) &&
+               !returnUrl.StartsWith("\\\\", StringComparison.Ordinal);
     }
 
     private void ShowError(string message)

@@ -77,13 +77,27 @@
                                         <span class="price-text text-sm"><%# Eval("GiaText") %></span>
                                         <span class='<%# string.IsNullOrEmpty(Eval("GiaGocText") as string) ? "hidden" : "text-xs text-[var(--muted)] line-through" %>'><%# Eval("GiaGocText") %></span>
                                     </div>
-                                    <button type="button" onclick="addToCart(<%# Eval("MaSP") %>, this)" class="mt-4 rounded-full border border-[var(--line)] px-3 py-2 text-xs font-black text-[var(--primary-dark)] hover:border-[var(--primary)] hover:bg-[var(--primary-soft)]">Thêm vào giỏ</button>
+                                    <div class="mt-4 flex gap-2">
+                                        <button type="button" onclick="addToCart(<%# Eval("MaSP") %>, this)" class="flex-1 rounded-full border border-[var(--line)] px-3 py-2 text-xs font-black text-[var(--primary-dark)] hover:border-[var(--primary)] hover:bg-[var(--primary-soft)]">Thêm vào giỏ</button>
+                                        <button type="button" onclick="toggleWishlist(<%# Eval("MaSP") %>, this)" class="rounded-full border border-[var(--line)] px-3 py-2 text-xs font-black text-rose-600 hover:border-rose-300 hover:bg-rose-50">♡</button>
+                                    </div>
                                 </div>
                             </article>
                         </ItemTemplate>
                     </asp:Repeater>
                 </div>
                 <asp:Label ID="LabelNoData" runat="server" Text="Không tìm thấy sách phù hợp. Hãy thử từ khóa hoặc bộ lọc khác." Visible="false" CssClass="block rounded-3xl border border-dashed border-[var(--line)] bg-[var(--surface)] p-10 text-center text-[var(--muted)]" />
+                <asp:PlaceHolder ID="phPagination" runat="server" Visible="false">
+                    <nav class="mt-12 flex flex-wrap items-center justify-center gap-2" aria-label="Phân trang sản phẩm">
+                        <a href='<%= GetPrevPageUrl() %>' class='<%= HasPrevPage() ? "flex h-10 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 text-sm font-black text-[var(--ink-soft)] hover:border-[var(--primary)] hover:text-[var(--primary-dark)]" : "pointer-events-none flex h-10 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--paper)] px-4 text-sm font-black text-[var(--muted)] opacity-50" %>'>Trước</a>
+                        <asp:Repeater ID="rptPagination" runat="server">
+                            <ItemTemplate>
+                                <a href='<%# BuildPageUrl(Container.DataItem) %>' class='<%# GetPageLinkClass(Container.DataItem) %>'><%# Container.DataItem %></a>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                        <a href='<%= GetNextPageUrl() %>' class='<%= HasNextPage() ? "flex h-10 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--surface)] px-4 text-sm font-black text-[var(--ink-soft)] hover:border-[var(--primary)] hover:text-[var(--primary-dark)]" : "pointer-events-none flex h-10 items-center justify-center rounded-full border border-[var(--line)] bg-[var(--paper)] px-4 text-sm font-black text-[var(--muted)] opacity-50" %>'>Sau</a>
+                    </nav>
+                </asp:PlaceHolder>
             </div>
         </div>
     </section>
@@ -121,6 +135,28 @@
                     btn.innerText = originalText;
                     btn.disabled = false;
                 });
+        }
+
+        function toggleWishlist(maSP, btn) {
+            const originalText = btn.innerText;
+            btn.disabled = true;
+            const formData = new URLSearchParams();
+            formData.append('action', 'toggle');
+            formData.append('maSP', maSP);
+            fetch('WishlistHandler.ashx', { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        btn.innerText = data.code === 'added' ? '♥' : '♡';
+                    } else if (data.code === 'auth_required') {
+                        window.location.href = 'Login.aspx?ReturnUrl=' + encodeURIComponent(window.location.pathname + window.location.search);
+                    } else {
+                        alert(data.message || 'Không thể xử lý yêu thích.');
+                        btn.innerText = originalText;
+                    }
+                    btn.disabled = false;
+                })
+                .catch(() => { alert('Đã xảy ra lỗi mạng.'); btn.innerText = originalText; btn.disabled = false; });
         }
     </script>
 </asp:Content>

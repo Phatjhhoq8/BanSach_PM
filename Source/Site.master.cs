@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Web;
 using System.Web.UI;
 
 public partial class SiteMaster : MasterPage
@@ -10,6 +11,7 @@ public partial class SiteMaster : MasterPage
         if (!IsPostBack)
         {
             EnsureCatalogReady();
+            LoadStoreSettings();
             CheckLogin();
         }
     }
@@ -18,7 +20,7 @@ public partial class SiteMaster : MasterPage
     {
         try
         {
-            FahasaCatalogService.GetFeaturedProducts(1);
+            DatabaseInitializer.EnsureInitialized();
         }
         catch
         {
@@ -41,6 +43,27 @@ public partial class SiteMaster : MasterPage
             phGuest.Visible = true;
             phUser.Visible = false;
             cartCount.InnerText = "0";
+        }
+    }
+
+    private void LoadStoreSettings()
+    {
+        try
+        {
+            string storeName = DatabaseInitializer.GetSetting("StoreName", "Premium Books");
+            string hotline = DatabaseInitializer.GetSetting("Hotline", "1900 123456");
+            string email = DatabaseInitializer.GetSetting("SupportEmail", "cskh@premiumbooks.vn");
+            string address = DatabaseInitializer.GetSetting("StoreAddress", "55 Quang Trung, Hai Bà Trưng, Hà Nội");
+
+            litHeaderStoreName.Text = HttpUtility.HtmlEncode(storeName);
+            litFooterStoreName.Text = HttpUtility.HtmlEncode(storeName);
+            litTopHotline.Text = HttpUtility.HtmlEncode(hotline);
+            litFooterHotline.Text = HttpUtility.HtmlEncode(hotline);
+            litFooterEmail.Text = HttpUtility.HtmlEncode(email);
+            litFooterAddress.Text = HttpUtility.HtmlEncode(address);
+        }
+        catch
+        {
         }
     }
 

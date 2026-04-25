@@ -60,7 +60,10 @@
                                 <span class="price-text text-sm"><%# Eval("GiaText") %></span>
                                 <span class='<%# string.IsNullOrEmpty(Eval("GiaGocText") as string) ? "hidden" : "text-xs text-[var(--muted)] line-through" %>'><%# Eval("GiaGocText") %></span>
                             </div>
-                            <button type="button" onclick="addToCart(<%# Eval("MaSP") %>, this)" class="mt-4 rounded-full border border-[var(--line)] px-3 py-2 text-xs font-black text-[var(--primary-dark)] hover:border-[var(--primary)] hover:bg-[var(--primary-soft)]">Thêm vào giỏ</button>
+                            <div class="mt-4 flex gap-2">
+                                <button type="button" onclick="addToCart(<%# Eval("MaSP") %>, this)" class="flex-1 rounded-full border border-[var(--line)] px-3 py-2 text-xs font-black text-[var(--primary-dark)] hover:border-[var(--primary)] hover:bg-[var(--primary-soft)]">Thêm vào giỏ</button>
+                                <button type="button" onclick="toggleWishlist(<%# Eval("MaSP") %>, this)" class="rounded-full border border-[var(--line)] px-3 py-2 text-xs font-black text-rose-600 hover:border-rose-300 hover:bg-rose-50">♡</button>
+                            </div>
                         </div>
                     </article>
                 </ItemTemplate>
@@ -134,6 +137,28 @@
                         btn.disabled = false;
                     }
                 });
+        }
+
+        function toggleWishlist(maSP, btn) {
+            const originalText = btn.innerText;
+            btn.disabled = true;
+            const formData = new URLSearchParams();
+            formData.append('action', 'toggle');
+            formData.append('maSP', maSP);
+            fetch('WishlistHandler.ashx', { method: 'POST', body: formData })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        btn.innerText = data.code === 'added' ? '♥' : '♡';
+                    } else if (data.code === 'auth_required') {
+                        window.location.href = 'Login.aspx?ReturnUrl=' + encodeURIComponent('Default.aspx');
+                    } else {
+                        alert(data.message || 'Không thể xử lý yêu thích.');
+                        btn.innerText = originalText;
+                    }
+                    btn.disabled = false;
+                })
+                .catch(() => { alert('Đã xảy ra lỗi mạng.'); btn.innerText = originalText; btn.disabled = false; });
         }
     </script>
 </asp:Content>

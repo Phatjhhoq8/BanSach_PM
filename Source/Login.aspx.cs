@@ -68,15 +68,14 @@ public partial class Login : System.Web.UI.Page
         string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
-            string sql = "SELECT MaKH, HoTen, Email FROM dbo.KhachHang WHERE Email = @Email AND MatKhau = @Pass";
+            string sql = "SELECT MaKH, HoTen, Email, MatKhau FROM dbo.KhachHang WHERE Email = @Email";
             using (SqlCommand cmd = new SqlCommand(sql, conn))
             {
                 cmd.Parameters.AddWithValue("@Email", email);
-                cmd.Parameters.AddWithValue("@Pass", password);
                 conn.Open();
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    if (reader.Read())
+                    if (reader.Read() && SecurityHelper.VerifyPassword(password, reader["MatKhau"].ToString()))
                     {
                         Session["UserId"] = reader["MaKH"];
                         Session["UserEmail"] = reader["Email"];

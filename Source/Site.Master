@@ -20,8 +20,8 @@
                         muted: 'oklch(56% 0.026 64)'
                     },
                     fontFamily: {
-                        heading: ['Libre Baskerville', 'Georgia', 'serif'],
-                        sans: ['Nunito Sans', 'system-ui', 'sans-serif']
+                        heading: ['Be Vietnam Pro', 'Inter', 'Segoe UI', 'system-ui', 'sans-serif'],
+                        sans: ['Nunito Sans', 'Segoe UI', 'system-ui', 'sans-serif']
                     }
                 }
             }
@@ -30,8 +30,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="css/site.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600;700;800;900&display=swap&subset=vietnamese" rel="stylesheet">
+    <link href="css/site.css?v=20260425-fontfix" rel="stylesheet" />
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -39,8 +39,8 @@
     <form id="form1" runat="server" class="min-h-screen flex flex-col">
         <div class="bg-[var(--primary-dark)] text-[oklch(98%_0.012_78)] text-xs">
             <div class="container-page flex min-h-10 items-center justify-between gap-4 py-2">
-                <p class="hidden sm:block font-semibold tracking-wide">Miễn phí vận chuyển cho đơn từ 499.000đ</p>
-                <p class="font-semibold">Hotline: 1900 123456</p>
+                <p class="hidden sm:block font-semibold tracking-wide">Nhà sách trực tuyến lấy dữ liệu từ database</p>
+                <p class="font-semibold">Hotline: <asp:Literal ID="litTopHotline" runat="server">1900 123456</asp:Literal></p>
                 <div class="hidden md:flex items-center gap-5 opacity-90">
                     <a href="DanhMuc.aspx" class="hover:opacity-75">Cửa hàng</a>
                     <a href="Orders.aspx" class="hover:opacity-75">Tra cứu đơn</a>
@@ -52,7 +52,7 @@
             <div class="container-page">
                 <div class="flex min-h-20 items-center justify-between gap-4">
                     <a href="Default.aspx" class="group flex flex-col leading-none" aria-label="Về trang chủ Premium Books">
-                        <span class="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-[var(--ink)] group-hover:text-[var(--primary-dark)]">Premium Books</span>
+                        <span class="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-[var(--ink)] group-hover:text-[var(--primary-dark)]"><asp:Literal ID="litHeaderStoreName" runat="server">Premium Books</asp:Literal></span>
                         <span class="mt-1 text-[0.65rem] font-black uppercase tracking-[0.28em] text-[var(--muted)]">Editorial Bookstore</span>
                     </a>
 
@@ -137,7 +137,7 @@
             <div class="container-page py-12 lg:py-16">
                 <div class="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_1fr]">
                     <div>
-                        <h2 class="font-heading text-2xl font-bold text-[oklch(98%_0.012_78)]">Premium Books</h2>
+                        <h2 class="font-heading text-2xl font-bold text-[oklch(98%_0.012_78)]"><asp:Literal ID="litFooterStoreName" runat="server">Premium Books</asp:Literal></h2>
                         <p class="mt-4 max-w-sm text-sm leading-7 text-[oklch(86%_0.025_78)]">Nhà sách editorial hiện đại, chọn lọc những đầu sách đáng đọc và giúp trải nghiệm mua sách trực tuyến rõ ràng hơn.</p>
                     </div>
                     <div>
@@ -160,9 +160,9 @@
                     <div>
                         <h3 class="text-xs font-black uppercase tracking-[0.12em] text-[oklch(92%_0.026_78)]">Liên hệ</h3>
                         <div class="mt-4 space-y-3 text-sm leading-7 text-[oklch(86%_0.025_78)]">
-                            <p>55 Quang Trung, Hai Bà Trưng, Hà Nội</p>
-                            <p>cskh@premiumbooks.vn</p>
-                            <p>1900 123456</p>
+                            <p><asp:Literal ID="litFooterAddress" runat="server">55 Quang Trung, Hai Bà Trưng, Hà Nội</asp:Literal></p>
+                            <p><asp:Literal ID="litFooterEmail" runat="server">cskh@premiumbooks.vn</asp:Literal></p>
+                            <p><asp:Literal ID="litFooterHotline" runat="server">1900 123456</asp:Literal></p>
                         </div>
                     </div>
                 </div>

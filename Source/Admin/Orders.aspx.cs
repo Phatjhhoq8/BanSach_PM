@@ -62,14 +62,55 @@ public partial class Admin_Orders : System.Web.UI.Page
         string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
-            string sql = "UPDATE dbo.DonHang SET TrangThai = @Status WHERE MaDH = @Id";
-            SqlCommand cmd = new SqlCommand(sql, conn);
-            cmd.Parameters.AddWithValue("@Status", status);
-            cmd.Parameters.AddWithValue("@Id", id);
             conn.Open();
-            cmd.ExecuteNonQuery();
+            UpdateOrderStatus(conn, id, status);
         }
         Response.Redirect("Orders.aspx");
+    }
+
+    private void UpdateOrderStatus(SqlConnection conn, int orderId, int newStatus)
+    {
+        int oldStatus = GetCurrentStatus(conn, orderId);
+        using (SqlTransaction trans = conn.BeginTransaction())
+        {
+            try
+            {
+                if (newStatus == 4 && oldStatus != 4)
+                {
+                    RestoreStock(conn, trans, orderId);
+                }
+
+                SqlCommand cmd = new SqlCommand("UPDATE dbo.DonHang SET TrangThai = @Status WHERE MaDH = @Id", conn, trans);
+                cmd.Parameters.AddWithValue("@Status", newStatus);
+                cmd.Parameters.AddWithValue("@Id", orderId);
+                cmd.ExecuteNonQuery();
+                trans.Commit();
+            }
+            catch
+            {
+                try { trans.Rollback(); } catch { }
+                throw;
+            }
+        }
+    }
+
+    private int GetCurrentStatus(SqlConnection conn, int orderId)
+    {
+        SqlCommand cmd = new SqlCommand("SELECT TrangThai FROM dbo.DonHang WHERE MaDH = @Id", conn);
+        cmd.Parameters.AddWithValue("@Id", orderId);
+        object value = cmd.ExecuteScalar();
+        return value == null || value == DBNull.Value ? -1 : Convert.ToInt32(value);
+    }
+
+    private void RestoreStock(SqlConnection conn, SqlTransaction trans, int orderId)
+    {
+        SqlCommand cmd = new SqlCommand(@"
+            UPDATE sp SET sp.SoLuongTon = sp.SoLuongTon + ct.SoLuong
+            FROM dbo.SanPham sp
+            JOIN dbo.ChiTietDonHang ct ON ct.MaSP = sp.MaSP
+            WHERE ct.MaDH = @Id", conn, trans);
+        cmd.Parameters.AddWithValue("@Id", orderId);
+        cmd.ExecuteNonQuery();
     }
 
     protected void btnSearch_Click(object sender, EventArgs e)

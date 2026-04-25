@@ -71,6 +71,7 @@
                             <button type="button" onclick="changeQty(1)" class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-[var(--paper-soft)]" aria-label="Tăng số lượng">+</button>
                         </div>
                         <button type="button" onclick="addToCart(this)" class="btn-primary flex-1 py-4 text-base">Thêm vào giỏ hàng</button>
+                        <button type="button" onclick="toggleWishlist(this)" class="rounded-full border border-[var(--line)] px-6 py-4 text-base font-black text-rose-600 hover:border-rose-300 hover:bg-rose-50">♡</button>
                     </div>
                 </asp:PlaceHolder>
                 <asp:PlaceHolder ID="phOutOfStock" runat="server" Visible="false">
@@ -145,6 +146,29 @@
                     btn.innerText = originalText;
                     btn.disabled = false;
                 });
+        }
+
+        function toggleWishlist(btn) {
+            const id = document.getElementById('<%= hdnMaSP.ClientID %>').value;
+            const originalText = btn.innerText;
+            btn.disabled = true;
+            const formData = new URLSearchParams();
+            formData.append('action', 'toggle');
+            formData.append('maSP', id);
+            fetch('WishlistHandler.ashx', { method: 'POST', body: formData })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        btn.innerText = data.code === 'added' ? '♥' : '♡';
+                    } else if (data.code === 'auth_required') {
+                        window.location.href = 'Login.aspx?ReturnUrl=' + encodeURIComponent(window.location.pathname + window.location.search);
+                    } else {
+                        alert(data.message || 'Không thể xử lý yêu thích.');
+                        btn.innerText = originalText;
+                    }
+                    btn.disabled = false;
+                })
+                .catch(() => { alert('Đã xảy ra lỗi mạng.'); btn.innerText = originalText; btn.disabled = false; });
         }
     </script>
 </asp:Content>

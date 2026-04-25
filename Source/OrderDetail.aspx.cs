@@ -36,7 +36,7 @@ public partial class OrderDetail : System.Web.UI.Page
         {
             conn.Open();
             SqlCommand cmd = new SqlCommand(@"
-                SELECT MaDH, NgayDat, TongTien, DiaChiGiaoHang, SoDienThoaiGiao, GhiChu, TrangThai, HinhThucThanhToan
+                SELECT MaDH, NgayDat, TamTinh, PhiVanChuyen, GiamGia, TongTien, MaKM, DiaChiGiaoHang, SoDienThoaiGiao, GhiChu, TrangThai, HinhThucThanhToan
                 FROM dbo.DonHang
                 WHERE MaDH = @OrderId AND MaKH = @UserId", conn);
             cmd.Parameters.AddWithValue("@OrderId", orderId);
@@ -52,7 +52,16 @@ public partial class OrderDetail : System.Web.UI.Page
 
                 litOrderId.Text = orderId.ToString();
                 litDate.Text = Convert.ToDateTime(reader["NgayDat"]).ToString("dd/MM/yyyy HH:mm");
-                litTotal.Text = Convert.ToDecimal(reader["TongTien"]).ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) + "đ";
+                decimal subtotal = Convert.ToDecimal(reader["TamTinh"]);
+                decimal shippingFee = Convert.ToDecimal(reader["PhiVanChuyen"]);
+                decimal discount = Convert.ToDecimal(reader["GiamGia"]);
+                decimal total = Convert.ToDecimal(reader["TongTien"]);
+
+                litSubtotal.Text = FormatCurrency(subtotal);
+                litShippingFee.Text = FormatCurrency(shippingFee);
+                litDiscount.Text = discount > 0 ? "-" + FormatCurrency(discount) : "0đ";
+                litCoupon.Text = reader["MaKM"] == DBNull.Value ? "Không áp dụng" : HttpUtility.HtmlEncode(reader["MaKM"].ToString());
+                litTotal.Text = FormatCurrency(total);
                 litPayment.Text = HttpUtility.HtmlEncode(reader["HinhThucThanhToan"].ToString());
                 litShippingInfo.Text = HttpUtility.HtmlEncode(reader["DiaChiGiaoHang"].ToString()) + "<br/>" + HttpUtility.HtmlEncode(reader["SoDienThoaiGiao"].ToString());
 
@@ -104,5 +113,10 @@ public partial class OrderDetail : System.Web.UI.Page
             case 4: return "bg-red-100 text-red-700";
             default: return "bg-stone-100 text-stone-700";
         }
+    }
+
+    private string FormatCurrency(decimal value)
+    {
+        return value.ToString("N0", CultureInfo.GetCultureInfo("vi-VN")) + "đ";
     }
 }

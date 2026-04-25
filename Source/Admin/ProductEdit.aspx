@@ -26,14 +26,18 @@
                         <label class="block text-sm font-medium text-slate-400 mb-2">Tác giả</label>
                         <asp:TextBox ID="txtTacGia" runat="server" CssClass="w-full bg-slate-900/50 border border-slate-700 text-white px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Dale Carnegie"></asp:TextBox>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-400 mb-2">Thể loại</label>
-                        <asp:DropDownList ID="ddlCategory" runat="server" CssClass="w-full bg-slate-900/50 border border-slate-700 text-white px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
-                        </asp:DropDownList>
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-slate-400 mb-2">Mô tả sản phẩm</label>
-                        <asp:TextBox ID="txtMoTa" runat="server" TextMode="MultiLine" Rows="6" CssClass="w-full bg-slate-900/50 border border-slate-700 text-white px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Nội dung tóm tắt của cuốn sách..."></asp:TextBox>
+                     <div>
+                         <label class="block text-sm font-medium text-slate-400 mb-2">Thể loại</label>
+                         <asp:DropDownList ID="ddlCategory" runat="server" CssClass="w-full bg-slate-900/50 border border-slate-700 text-white px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                         </asp:DropDownList>
+                     </div>
+                     <div>
+                         <label class="block text-sm font-medium text-slate-400 mb-2">Hoặc nhập thể loại mới</label>
+                         <asp:TextBox ID="txtNewCategory" runat="server" CssClass="w-full bg-slate-900/50 border border-slate-700 text-white px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="VD: Sách học ngoại ngữ"></asp:TextBox>
+                     </div>
+                     <div class="md:col-span-2">
+                         <label class="block text-sm font-medium text-slate-400 mb-2">Mô tả sản phẩm</label>
+                         <asp:TextBox ID="txtMoTa" runat="server" TextMode="MultiLine" Rows="6" CssClass="w-full bg-slate-900/50 border border-slate-700 text-white px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Nội dung tóm tắt của cuốn sách..."></asp:TextBox>
                     </div>
                 </div>
             </div>

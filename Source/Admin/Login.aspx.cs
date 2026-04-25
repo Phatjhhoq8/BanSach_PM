@@ -13,7 +13,7 @@ public partial class Admin_Login : System.Web.UI.Page
         {
             try
             {
-                FahasaCatalogService.GetFeaturedProducts(1);
+                DatabaseInitializer.EnsureInitialized();
             }
             catch
             {
@@ -49,14 +49,13 @@ public partial class Admin_Login : System.Web.UI.Page
         string connString = DbConfig.GetConnectionString();
         using (SqlConnection conn = new SqlConnection(connString))
         {
-            string sql = "SELECT COUNT(1) FROM dbo.AdminUser WHERE Username = @User AND Password = @Pass";
+            string sql = "SELECT Password FROM dbo.AdminUser WHERE Username = @User";
             using (SqlCommand cmd = new SqlCommand(sql, conn))
             {
                 cmd.Parameters.AddWithValue("@User", username);
-                cmd.Parameters.AddWithValue("@Pass", password);
                 conn.Open();
-                int count = (int)cmd.ExecuteScalar();
-                return count > 0;
+                object storedPassword = cmd.ExecuteScalar();
+                return storedPassword != null && storedPassword != DBNull.Value && SecurityHelper.VerifyPassword(password, storedPassword.ToString());
             }
         }
     }

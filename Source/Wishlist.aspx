@@ -15,13 +15,32 @@
         <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
             <asp:Repeater ID="rptWishlist" runat="server">
                 <ItemTemplate>
-                    <a href='ChiTiet.aspx?id=<%# Eval("MaSP") %>' class="group bg-white rounded-3xl border border-amber-100 p-4 hover:shadow-xl transition-shadow">
-                        <img src='<%# Eval("HinhAnh") %>' alt='<%# Eval("TenSP") %>' class="w-full aspect-[3/4] object-contain rounded-2xl bg-amber-50" loading="lazy" />
-                        <h2 class="mt-4 text-sm font-bold text-zinc-900 line-clamp-2 group-hover:text-primary transition-colors"><%# Eval("TenSP") %></h2>
+                    <article class="group bg-white rounded-3xl border border-amber-100 p-4 hover:shadow-xl transition-shadow">
+                        <a href='ChiTiet.aspx?id=<%# Eval("MaSP") %>'>
+                            <img src='<%# Eval("HinhAnh") %>' alt='<%# Eval("TenSP") %>' class="w-full aspect-[3/4] object-contain rounded-2xl bg-amber-50" loading="lazy" />
+                            <h2 class="mt-4 text-sm font-bold text-zinc-900 line-clamp-2 group-hover:text-primary transition-colors"><%# Eval("TenSP") %></h2>
+                        </a>
                         <p class="mt-2 text-sm font-bold text-primary"><%# Eval("GiaHienThi", "{0:N0}đ") %></p>
-                    </a>
+                        <button type="button" onclick="removeWishlist(<%# Eval("MaSP") %>, this)" class="mt-3 w-full rounded-full border border-rose-100 px-3 py-2 text-xs font-black text-rose-600 hover:bg-rose-50">Xóa yêu thích</button>
+                    </article>
                 </ItemTemplate>
             </asp:Repeater>
         </div>
     </div>
+    <script>
+        function removeWishlist(maSP, btn) {
+            btn.disabled = true;
+            const formData = new URLSearchParams();
+            formData.append('action', 'remove');
+            formData.append('maSP', maSP);
+            fetch('WishlistHandler.ashx', { method: 'POST', body: formData })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) window.location.reload();
+                    else alert(data.message || 'Không thể xóa yêu thích.');
+                    btn.disabled = false;
+                })
+                .catch(() => { alert('Đã xảy ra lỗi mạng.'); btn.disabled = false; });
+        }
+    </script>
 </asp:Content>

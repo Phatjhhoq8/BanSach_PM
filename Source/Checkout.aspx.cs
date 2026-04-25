@@ -8,7 +8,10 @@ using System.Web;
 
 public partial class Checkout : System.Web.UI.Page
 {
-    private const decimal ShippingFee = 30000m;
+    private decimal ShippingFee
+    {
+        get { return DatabaseInitializer.GetDecimalSetting("ShippingFee", 30000m); }
+    }
 
     private class CouponResult
     {
@@ -150,7 +153,7 @@ public partial class Checkout : System.Web.UI.Page
                 }
 
                 decimal total = Math.Max(0, subtotal + ShippingFee - coupon.Discount);
-                int orderId = CreateOrder(conn, trans, userId, total, coupon.IsValid ? coupon.Code : string.Empty, address, phone, note);
+                int orderId = CreateOrder(conn, trans, userId, subtotal, ShippingFee, coupon.Discount, total, coupon.IsValid ? coupon.Code : string.Empty, address, phone, note);
                 CreateOrderDetails(conn, trans, orderId, userId);
                 UpdateStock(conn, trans, userId);
                 MarkCouponUsed(conn, trans, coupon);
@@ -267,14 +270,17 @@ public partial class Checkout : System.Web.UI.Page
         }
     }
 
-    private int CreateOrder(SqlConnection conn, SqlTransaction trans, int userId, decimal total, string couponCode, string address, string phone, string note)
+    private int CreateOrder(SqlConnection conn, SqlTransaction trans, int userId, decimal subtotal, decimal shippingFee, decimal discount, decimal total, string couponCode, string address, string phone, string note)
     {
         string sql = @"
-            INSERT INTO dbo.DonHang (MaKH, TongTien, MaKM, DiaChiGiaoHang, SoDienThoaiGiao, GhiChu, HinhThucThanhToan, TrangThai)
-            VALUES (@UID, @Total, @MaKM, @Address, @Phone, @Note, N'COD', 0);
+            INSERT INTO dbo.DonHang (MaKH, TamTinh, PhiVanChuyen, GiamGia, TongTien, MaKM, DiaChiGiaoHang, SoDienThoaiGiao, GhiChu, HinhThucThanhToan, TrangThai)
+            VALUES (@UID, @Subtotal, @ShippingFee, @Discount, @Total, @MaKM, @Address, @Phone, @Note, N'COD', 0);
             SELECT SCOPE_IDENTITY();";
         SqlCommand cmd = new SqlCommand(sql, conn, trans);
         cmd.Parameters.AddWithValue("@UID", userId);
+        cmd.Parameters.AddWithValue("@Subtotal", subtotal);
+        cmd.Parameters.AddWithValue("@ShippingFee", shippingFee);
+        cmd.Parameters.AddWithValue("@Discount", discount);
         cmd.Parameters.AddWithValue("@Total", total);
         cmd.Parameters.AddWithValue("@MaKM", string.IsNullOrWhiteSpace(couponCode) ? (object)DBNull.Value : couponCode);
         cmd.Parameters.AddWithValue("@Address", address);

@@ -10,7 +10,7 @@ public partial class Admin_Admin : System.Web.UI.MasterPage
         {
             try
             {
-                FahasaCatalogService.GetFeaturedProducts(1);
+                DatabaseInitializer.EnsureInitialized();
             }
             catch
             {

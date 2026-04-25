@@ -48,6 +48,15 @@
                         <dt class="font-black uppercase tracking-[0.12em] text-[var(--muted)]">Tổng tiền</dt>
                         <dd class="mt-1 price-text text-xl"><asp:Literal ID="litTotal" runat="server"></asp:Literal></dd>
                     </div>
+                    <div class="rounded-3xl bg-[var(--paper)] p-4">
+                        <dt class="font-black uppercase tracking-[0.12em] text-[var(--muted)]">Thanh toán chi tiết</dt>
+                        <dd class="mt-3 space-y-2">
+                            <div class="flex justify-between gap-4"><span>Tạm tính</span><strong><asp:Literal ID="litSubtotal" runat="server"></asp:Literal></strong></div>
+                            <div class="flex justify-between gap-4"><span>Vận chuyển</span><strong><asp:Literal ID="litShippingFee" runat="server"></asp:Literal></strong></div>
+                            <div class="flex justify-between gap-4"><span>Giảm giá</span><strong class="text-[var(--success)]"><asp:Literal ID="litDiscount" runat="server"></asp:Literal></strong></div>
+                            <div class="flex justify-between gap-4"><span>Mã ưu đãi</span><strong><asp:Literal ID="litCoupon" runat="server"></asp:Literal></strong></div>
+                        </dd>
+                    </div>
                     <div>
                         <dt class="font-black uppercase tracking-[0.12em] text-[var(--muted)]">Thanh toán</dt>
                         <dd class="mt-1 font-bold"><asp:Literal ID="litPayment" runat="server"></asp:Literal></dd>

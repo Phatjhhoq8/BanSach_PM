@@ -116,6 +116,7 @@ internal class FahasaSeedProduct
     public string thumbnailUrl { get; set; }
     public string id { get; set; }
     public string pageUrl { get; set; }
+    public string category { get; set; }
     public int pageNumber { get; set; }
     public string scrapedAt { get; set; }
     public string supplier { get; set; }
@@ -353,6 +354,7 @@ public static class FahasaCatalogService
             int importedCount = GetCount(connection, "SELECT COUNT(1) FROM dbo.SanPham WHERE NguonDuLieu = @NguonDuLieu", true);
             if (importedCount > 0)
             {
+                ReclassifyImportedProducts(connection, LoadSeedProducts());
                 return;
             }
 
@@ -364,7 +366,6 @@ public static class FahasaCatalogService
 
             using (SqlTransaction transaction = connection.BeginTransaction())
             {
-                int maDanhMuc = EnsureThieuNhiCategory(connection, transaction);
                 List<KeyValuePair<string, FahasaSeedProduct>> orderedProducts = sourceProducts
                     .Where(pair => pair.Value != null)
                     .OrderBy(pair => pair.Value.pageNumber)
@@ -397,6 +398,7 @@ public static class FahasaCatalogService
 
                     int? discountPercent = ParseNullableInt(item.discount);
                     decimal? rating = ParseNullableDecimal(item.rating);
+                    int maDanhMuc = ResolveImportedCategoryId(connection, transaction, item);
 
                     using (SqlCommand insertProduct = new SqlCommand(@"
 INSERT INTO dbo.SanPham
@@ -429,6 +431,46 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);", connection, transaction))
 
                 transaction.Commit();
             }
+        }
+    }
+
+    private static void ReclassifyImportedProducts(SqlConnection connection, Dictionary<string, FahasaSeedProduct> sourceProducts)
+    {
+        if (sourceProducts == null || sourceProducts.Count == 0)
+        {
+            return;
+        }
+
+        using (SqlTransaction transaction = connection.BeginTransaction())
+        {
+            foreach (KeyValuePair<string, FahasaSeedProduct> pair in sourceProducts)
+            {
+                FahasaSeedProduct item = pair.Value;
+                if (item == null)
+                {
+                    continue;
+                }
+
+                int maDanhMuc = ResolveImportedCategoryId(connection, transaction, item);
+
+                using (SqlCommand update = new SqlCommand(@"
+UPDATE dbo.SanPham
+SET MaDM = @MaDM
+WHERE NguonDuLieu = @NguonDuLieu
+  AND (
+      (Slug IS NOT NULL AND Slug = @Slug)
+      OR (NguonUrl IS NOT NULL AND NguonUrl = @NguonUrl)
+  )", connection, transaction))
+                {
+                    update.Parameters.AddWithValue("@MaDM", maDanhMuc);
+                    update.Parameters.AddWithValue("@NguonDuLieu", SourceName);
+                    update.Parameters.AddWithValue("@Slug", ToDbValue(Truncate(item.id, 255)));
+                    update.Parameters.AddWithValue("@NguonUrl", ToDbValue(Truncate(item.productUrl, 500)));
+                    update.ExecuteNonQuery();
+                }
+            }
+
+            transaction.Commit();
         }
     }
 
@@ -472,21 +514,10 @@ SELECT CAST(SCOPE_IDENTITY() AS INT);", connection, transaction))
         }
     }
 
-    private static int EnsureThieuNhiCategory(SqlConnection connection, SqlTransaction transaction)
+    private static int ResolveImportedCategoryId(SqlConnection connection, SqlTransaction transaction, FahasaSeedProduct item)
     {
-        using (SqlCommand command = new SqlCommand("SELECT TOP 1 MaDM FROM dbo.DanhMuc WHERE TenDM = N'Thiếu nhi'", connection, transaction))
-        {
-            object existing = command.ExecuteScalar();
-            if (existing != null && existing != DBNull.Value)
-            {
-                return Convert.ToInt32(existing);
-            }
-        }
-
-        using (SqlCommand insert = new SqlCommand("INSERT INTO dbo.DanhMuc (TenDM, TrangThai) VALUES (N'Thiếu nhi', 1); SELECT CAST(SCOPE_IDENTITY() AS INT);", connection, transaction))
-        {
-            return Convert.ToInt32(insert.ExecuteScalar());
-        }
+        string categoryName = CategoryResolver.ResolveImportedCategoryName(item.category, item.pageUrl);
+        return CategoryResolver.ResolveCategoryId(connection, transaction, categoryName);
     }
 
     private static Dictionary<string, FahasaSeedProduct> LoadSeedProducts()

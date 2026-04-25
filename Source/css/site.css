@@ -36,8 +36,11 @@ body {
 
 h1, h2, h3, h4, h5, h6, .font-heading {
     color: var(--ink);
-    font-family: "Libre Baskerville", Georgia, "Times New Roman", serif;
+    font-family: "Be Vietnam Pro", "Inter", "Segoe UI", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-kerning: normal;
+    letter-spacing: -0.025em;
     text-wrap: balance;
+    word-spacing: normal;
 }
 
 p {
