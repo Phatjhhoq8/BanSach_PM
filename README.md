@@ -1,4 +1,4 @@
-# The Book Haven
+﻿# The Book Haven
 
 Website bán sách dùng ASP.NET Web Forms, SQL Server và giao diện storefront/admin tùy biến. Repo hỗ trợ 2 cách chạy:
 
@@ -42,13 +42,28 @@ Website bán sách dùng ASP.NET Web Forms, SQL Server và giao diện storefron
 - IIS Express
 - Visual Studio hỗ trợ ASP.NET Web Forms nếu muốn chạy bằng IDE
 
-### Cấu Hình Database
-1. Cài SQL Server hoặc SQL Server Express.
-2. Tạo database tên `BanSachPremium`, hoặc dùng tên khác nếu bạn tự đổi connection string.
-3. Mở `Source/Web.config`.
-4. Cập nhật connection string `BanSachConnectionString` cho đúng máy của bạn.
+### Các Bước Làm Thủ Công
 
-SQL Server Express mặc định trong repo:
+#### Bước 1: Cài SQL Server Express
+1. Tải và cài `SQL Server Express` từ Microsoft.
+2. Chọn instance mặc định là `SQLEXPRESS` nếu được hỏi.
+3. Sau khi cài xong, mở `Services` bằng `Win + R` -> nhập `services.msc`.
+4. Tìm `SQL Server (SQLEXPRESS)`.
+5. Nếu service đang dừng, bấm `Start`.
+
+#### Bước 2: Tạo Database
+1. Mở `SQL Server Management Studio` nếu bạn có.
+2. Kết nối tới server `.\SQLEXPRESS` bằng `Windows Authentication`.
+3. Chuột phải `Databases` -> `New Database...`.
+4. Đặt tên database là `BanSachPremium`.
+5. Bấm `OK`.
+
+Nếu bạn không dùng SSMS, có thể tạo database bằng `sqlcmd` hoặc trong Visual Studio, miễn là tên database khớp với connection string.
+
+#### Bước 3: Kiểm Tra Connection String
+1. Mở file `Source/Web.config`.
+2. Kiểm tra phần `BanSachConnectionString`.
+3. Mặc định của repo là:
 
 ```xml
 <add name="BanSachConnectionString"
@@ -56,7 +71,7 @@ SQL Server Express mặc định trong repo:
      providerName="System.Data.SqlClient" />
 ```
 
-SQL Server local:
+4. Nếu máy bạn dùng SQL Server local hoặc LocalDB, sửa lại cho đúng:
 
 ```xml
 <add name="BanSachConnectionString"
@@ -64,27 +79,42 @@ SQL Server local:
      providerName="System.Data.SqlClient" />
 ```
 
-LocalDB:
-
 ```xml
 <add name="BanSachConnectionString"
      connectionString="Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=BanSachPremium;Integrated Security=True;TrustServerCertificate=True"
      providerName="System.Data.SqlClient" />
 ```
 
-### Chạy Bằng IIS Express Có Sẵn Trong Repo
-Mở PowerShell tại thư mục gốc repo và chạy:
+#### Bước 4: Chạy Website Bằng IIS Express
+1. Mở PowerShell tại thư mục gốc của repo.
+2. Chạy lệnh:
 
 ```powershell
 & ".\tools\IISExpress\IIS Express\iisexpress.exe" /path:"$PWD\Source" /port:8080 /clr:v4.0
 ```
 
-Truy cập:
+3. Đợi cửa sổ IIS Express chạy xong.
 
-```text
-Storefront: http://localhost:8080/Default.aspx
-Admin:      http://localhost:8080/Admin/Login.aspx
-```
+Nếu muốn chạy một chạm từ đầu, dùng file `start/3_start-all.cmd`. File này sẽ tự kiểm tra quyền admin, cài SQL Server Express bằng `winget` nếu máy chưa có, tạo database `BanSachPremium` nếu thiếu, rồi khởi động web. Cần có internet để tải gói cài đặt.
+
+#### Bước 5: Mở Trình Duyệt
+1. Mở `http://localhost:8080/Default.aspx` để xem trang chủ.
+2. Mở `http://localhost:8080/Admin/Login.aspx` để vào trang quản trị.
+
+#### Bước 6: Đăng Nhập Demo
+- Khách hàng: `user@gmail.com` / `123456`
+- Admin: `admin` / `123456`
+
+#### Bước 7: Dữ Liệu Lần Đầu
+- Khi ứng dụng chạy lần đầu, hệ thống sẽ tự khởi tạo schema và import dữ liệu sách từ `Source/App_Data/product-details.json`.
+- Nếu cần đối chiếu cấu trúc bảng, xem `Database_Schema.sql`.
+
+#### Bước 8: Nếu Gặp Lỗi
+- Kiểm tra service `SQL Server (SQLEXPRESS)` đã chạy.
+- Kiểm tra database `BanSachPremium` đã tồn tại.
+- Kiểm tra connection string trong `Source/Web.config`.
+- Kiểm tra IIS Express đã mở đúng thư mục `Source`.
+- Nếu cần, thử tải lại trang bằng `Ctrl + F5`.
 
 ### Chạy Bằng Visual Studio
 1. Mở Visual Studio.

@@ -14,7 +14,7 @@
             background: linear-gradient(90deg, oklch(100% 0 0 / 0.88), oklch(100% 0 0 / 0.72) 42%, oklch(100% 0 0 / 0.35));
         }
 
-        .catalog-hero > * {
+        .catalog-hero > :not(video) {
             position: relative;
             z-index: 1;
         }

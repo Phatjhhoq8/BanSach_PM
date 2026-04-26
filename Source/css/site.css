@@ -126,7 +126,14 @@ input[type="submit"]:disabled {
 
 .content-shell .btn-secondary {
     background: var(--surface);
+    border-color: oklch(84% 0.06 250);
     color: var(--ink);
+}
+
+.content-shell .btn-secondary:hover {
+    background: oklch(96% 0.025 250);
+    border-color: var(--primary);
+    color: var(--primary-dark);
 }
 
 .content-shell .account-nav-link {
@@ -520,10 +527,6 @@ input[type="submit"]:disabled {
 
 .touch-target {
     min-height: 2.75rem;
-}
-
-.video-paused-for-motion {
-    display: none;
 }
 
 .galaxy-glass {

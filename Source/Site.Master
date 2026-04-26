@@ -150,39 +150,39 @@
             </asp:ContentPlaceHolder>
         </main>
 
-        <footer class="mt-auto border-t border-[var(--line)] bg-[linear-gradient(180deg,oklch(12%_0.024_278),oklch(8%_0.02_275))] text-[var(--ink)]">
+        <footer class="mt-auto border-t border-blue-800 bg-[linear-gradient(180deg,#1d4ed8,#1e3a8a)] text-white">
             <div class="container-page py-12 lg:py-16">
                 <div class="grid gap-10 md:grid-cols-[1.2fr_0.8fr_0.8fr_1fr]">
                     <div>
-                        <h2 class="font-heading text-2xl font-bold text-[var(--ink)]"><asp:Literal ID="litFooterStoreName" runat="server">The Book Haven</asp:Literal></h2>
+                        <h2 class="font-heading text-2xl font-bold text-white"><asp:Literal ID="litFooterStoreName" runat="server">The Book Haven</asp:Literal></h2>
                     </div>
                     <div>
-                        <h3 class="text-xs font-black uppercase tracking-[0.12em] text-[var(--accent)]">Dịch vụ</h3>
-                        <ul class="mt-4 space-y-3 text-sm text-[var(--ink-soft)]">
-                            <li><a href="About.aspx" class="hover:text-[var(--ink)]">Giới thiệu</a></li>
-                            <li><a href="News.aspx" class="hover:text-[var(--ink)]">Tin tức</a></li>
-                            <li><a href="FAQ.aspx" class="hover:text-[var(--ink)]">Chính sách hỗ trợ</a></li>
+                        <h3 class="text-xs font-black uppercase tracking-[0.12em] text-blue-100">Dịch vụ</h3>
+                        <ul class="mt-4 space-y-3 text-sm text-blue-100/90">
+                            <li><a href="About.aspx" class="hover:text-white">Giới thiệu</a></li>
+                            <li><a href="News.aspx" class="hover:text-white">Tin tức</a></li>
+                            <li><a href="FAQ.aspx" class="hover:text-white">Chính sách hỗ trợ</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="text-xs font-black uppercase tracking-[0.12em] text-[var(--accent)]">Hỗ trợ</h3>
-                        <ul class="mt-4 space-y-3 text-sm text-[var(--ink-soft)]">
-                            <li><a href="GioHang.aspx" class="hover:text-[var(--ink)]">Giỏ hàng</a></li>
-                            <li><a href="Orders.aspx" class="hover:text-[var(--ink)]">Theo dõi đơn</a></li>
-                            <li><a href="Account.aspx" class="hover:text-[var(--ink)]">Tài khoản</a></li>
-                            <li><a href="Wishlist.aspx" class="hover:text-[var(--ink)]">Yêu thích</a></li>
+                        <h3 class="text-xs font-black uppercase tracking-[0.12em] text-blue-100">Hỗ trợ</h3>
+                        <ul class="mt-4 space-y-3 text-sm text-blue-100/90">
+                            <li><a href="GioHang.aspx" class="hover:text-white">Giỏ hàng</a></li>
+                            <li><a href="Orders.aspx" class="hover:text-white">Theo dõi đơn</a></li>
+                            <li><a href="Account.aspx" class="hover:text-white">Tài khoản</a></li>
+                            <li><a href="Wishlist.aspx" class="hover:text-white">Yêu thích</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3 class="text-xs font-black uppercase tracking-[0.12em] text-[var(--accent)]">Liên hệ</h3>
-                        <div class="mt-4 space-y-3 text-sm leading-7 text-[var(--ink-soft)]">
+                        <h3 class="text-xs font-black uppercase tracking-[0.12em] text-blue-100">Liên hệ</h3>
+                        <div class="mt-4 space-y-3 text-sm leading-7 text-blue-100/90">
                             <p><asp:Literal ID="litFooterAddress" runat="server">55 Quang Trung, Hai Bà Trưng, Hà Nội</asp:Literal></p>
-                            <p><a id="footerEmailLink" runat="server" class="hover:text-[var(--ink)]"><asp:Literal ID="litFooterEmail" runat="server">cskh@premiumbooks.vn</asp:Literal></a></p>
-                            <p><a id="footerHotlineLink" runat="server" class="hover:text-[var(--ink)]"><asp:Literal ID="litFooterHotline" runat="server">1900 123456</asp:Literal></a></p>
+                            <p><a id="footerEmailLink" runat="server" class="hover:text-white"><asp:Literal ID="litFooterEmail" runat="server">cskh@premiumbooks.vn</asp:Literal></a></p>
+                            <p><a id="footerHotlineLink" runat="server" class="hover:text-white"><asp:Literal ID="litFooterHotline" runat="server">1900 123456</asp:Literal></a></p>
                         </div>
                     </div>
                 </div>
-                <div class="mt-10 flex flex-col justify-between gap-4 border-t border-[oklch(98%_0.012_78_/_0.12)] pt-6 text-xs text-[var(--muted)] md:flex-row">
+                <div class="mt-10 flex flex-col justify-between gap-4 border-t border-blue-300/25 pt-6 text-xs text-blue-100/80 md:flex-row">
                     <p>&copy; 2026 The Book Haven. Trải nghiệm mua sách trực tuyến rõ ràng, an toàn và dễ theo dõi.</p>
                 </div>
             </div>
@@ -265,12 +265,12 @@
             }
 
             function initMotionVideos() {
-                const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
                 document.querySelectorAll('[data-motion-video]').forEach(video => {
-                    if (reduceMotion) {
-                        video.pause();
-                        video.removeAttribute('autoplay');
-                        video.classList.add('video-paused-for-motion');
+                    const playPromise = typeof video.play === 'function' ? video.play() : null;
+                    if (playPromise && typeof playPromise.catch === 'function') {
+                        playPromise.catch(() => {
+                            video.setAttribute('controls', 'controls');
+                        });
                     }
                 });
             }
